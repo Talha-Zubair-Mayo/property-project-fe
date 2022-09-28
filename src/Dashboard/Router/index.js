@@ -1,5 +1,5 @@
 import { Switch } from 'react-router-dom';
-import React from 'react';      
+import React from 'react';
 import Dashboard from '../pages/UserDashoard';
 import UserProfile from '../pages/UserProfile';
 import UserProperties from '../pages/UserProperties';

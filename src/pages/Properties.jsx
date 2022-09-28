@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropertiesGridView from '../components/Properties/PropertiesGridView';
 import SearchForm from '../components/Home/SearchForm';
 import PropertiesListview from '../components/Properties/PropertiesListView';
-import { getBlockBySocietyAndPhaseIdApi, getAllPropertiesApi } from '../store/api';
+import { getPropertyBySocietyPhaseAndBlockIdApi, getAllPropertiesApi } from '../store/api';
 import { useLocation } from 'react-router-dom';
 
 export default function PropertiesGrid() {
@@ -21,17 +21,17 @@ export default function PropertiesGrid() {
   const block = new URLSearchParams(search).get('block');
   const [AllProperties, setAllProperties] = useState([]);
   useEffect(() => {
-    if (society !== null && phase !== null) {
+    if (society && phase && block !== null) {
       getPropertyBySocietyPhaseAndBlockIdApi(society, phase, block)
-        .then((block) => {
-          setAllProperties(block?.data?.result);
+        .then((property) => {
+          setAllProperties(property?.data?.result);
         })
         .catch((error) => {});
     } else {
       getAllPropertiesApi()
-        .then((block) => {
-          console.log(block?.data?.result);
-          setAllProperties(block?.data?.result);
+        .then((property) => {
+          console.log(property?.data?.result);
+          setAllProperties(property?.data?.result);
         })
         .catch((error) => {});
     }

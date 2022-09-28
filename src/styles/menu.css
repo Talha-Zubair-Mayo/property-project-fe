@@ -511,6 +511,12 @@ a.button {
 #navigation.style-1 ul li:hover a {
   color: #fff;
 }
+
+#navigation.style-1 ul li .current {
+  background-color: #ff385c;
+  color: #fff;
+}
+
 #navigation.style-1 ul a {
   font-size: 16px;
   text-transform: capitalize;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataEncryption, registerValidationSchema } from '../utils';
+import { DataEncryption, FormDataFunc, registerValidationSchema } from '../utils';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { userRegisterApi } from '../store/api';
 import { Link, useHistory } from 'react-router-dom';
@@ -8,7 +8,7 @@ function Register() {
   const history = useHistory();
 
   const onSubmit = (values, props) => {
-    userRegisterApi(values)
+    userRegisterApi(FormDataFunc(values))
       .then((response) => {
         history.push('/login');
       })
@@ -28,6 +28,7 @@ function Register() {
     email: '',
     password: '',
     confirmPassword: '',
+    photo: '',
     userType: 'customer',
   };
 
@@ -49,7 +50,7 @@ function Register() {
           validationSchema={registerValidationSchema}
           onSubmit={onSubmit}
         >
-          {({ touched, errors, isSubmitting, values }) => (
+          {({ touched, errors, isSubmitting, values, setFieldValue }) => (
             <div className="login">
               <Form autoComplete="off">
                 <div className="form-group">
@@ -121,6 +122,20 @@ function Register() {
                     name="confirmPassword"
                     className="invalid-feedback"
                   />
+                </div>
+                <div className="form-group">
+                  <label>Profile Image</label>
+                  <input
+                    type="file"
+                    name="photo"
+                    accept="image/png, image/gif, image/jpeg"
+                    onChange={(event) => {
+                      setFieldValue('photo', event.currentTarget.files[0]);
+                    }}
+                    className={`${touched.photo && errors.photo ? 'is-invalid' : ''}`}
+                  />
+                  <i className="icon_lock_alt" />
+                  <ErrorMessage component="div" name="photo" className="invalid-feedback" />
                 </div>
                 <div className="row mb-2 form-group">
                   <div className="col-8">

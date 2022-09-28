@@ -113,7 +113,6 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
               editMode ? 'col-lg-12' : 'col-lg-9'
             } col-md-12 mb-2 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2`}
           >
-            <p>{JSON.stringify(errors)}</p>
             <div className="single-add-property">
               <h3>Property description and price</h3>
               <div className="property-form-group">

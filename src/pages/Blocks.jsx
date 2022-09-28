@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getBlockBySocietyAndPhaseIdApi, getAllPhasesApi } from '../store/api';
+import { getBlockBySocietyAndPhaseIdApi, getAllBlocksApi } from '../store/api';
 import Block from '../components/Blocks/Block';
 import { useLocation } from 'react-router-dom';
 

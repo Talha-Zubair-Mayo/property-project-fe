@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Hooks from '../../hooks';
-import UserDropdownRoutes from './UserDropdownRoutes';
+import { UserDropdownRoutes, NavbarRoutes } from './HeaderRoutes';
 
 export default function Header() {
   const userinfo = useSelector((state) => state.UserLogin.data.user);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { Logout, AgentRole, IsUserLoggedIn, SuperAdmin } = Hooks();
-
+  const { Logout, AgentRole, IsUserLoggedIn, SuperAdmin, ActivatedRoutes } = Hooks();
+  console.log(ActivatedRoutes());
   const ToggleProfileDropdown = () => {
     setShowDropdown(!showDropdown);
   };
   const dropDown = UserDropdownRoutes();
+  const NavBarRoutes = NavbarRoutes();
   return (
     <>
       <header id="header-container">
@@ -33,16 +34,20 @@ export default function Header() {
               </div>
               <nav id="navigation" className="style-1">
                 <ul id="responsive">
-                  <li>
-                    <Link to="societies">Societies</Link>
-                  </li>
-                  <li>
-                    <Link to="agents">Agents</Link>
-                  </li>
-
-                  <li>
-                    <Link to="properties">Properties</Link>
-                  </li>
+                  {NavBarRoutes.map((item, key) => {
+                    if (item.visiblity) {
+                      return (
+                        <li>
+                          <Link
+                            className={item.link === ActivatedRoutes() && 'current'}
+                            to={item.link}
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      );
+                    }
+                  })}
                   <li>
                     <a href="contact-us.html">Contact</a>
                   </li>
@@ -89,7 +94,7 @@ export default function Header() {
               >
                 <div onClick={() => ToggleProfileDropdown()} className="header-user-name">
                   <span>
-                    <img src={process.env.PUBLIC_URL + '/images/testimonials/ts-1.jpg'} alt="" />
+                    <img src={process.env.REACT_APP_IMAGE_URL + userinfo?.photo} alt="" />
                   </span>
                   Hi, {userinfo?.firstName}!
                 </div>

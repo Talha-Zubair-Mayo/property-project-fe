@@ -19,6 +19,19 @@ export const registerValidationSchema = Yup.object().shape({
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Password not matched')
         .required('Confrim Your Password'),
+    photo: Yup.mixed()
+        .nullable()
+        .required('Profile Image is required')
+        // .test(
+        //     "fileSize",
+        //     "File is too large",
+        //     value => !value || (value && value.size <= 1024 * 1024 * 1024 * 1024)
+        // )
+        .test(
+            "fileFormat",
+            "Unsupported Format",
+            value => !value || (value => value && ["image/jpg", "image/jpeg", "image/gif", "image/png"].includes(value.type))
+        )
 
 });
 
@@ -88,6 +101,7 @@ export const PropertySchema = Yup.object().shape({
     photo: Yup.array().required('Images Are Required'),
 })
 export const FormDataFunc = (Data) => {
+    console.log(Data);
     const formData = new FormData();
     var objMap = new Map(Object.entries(Data));
     objMap.forEach((item, key) => {
