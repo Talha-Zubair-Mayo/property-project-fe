@@ -1,4 +1,6 @@
-import AgentGridCard from '../components/Agents/AgentGridCard';
+import { useState, useEffect } from 'react';
+import { getAllAgentsApi } from '../store/api';
+
 import FeatureProperties from '../components/Agents/FeatureProperties';
 import RecentProperties from '../components/Agents/RecentProperties';
 import Schedule from '../components/Agents/Schedule';
@@ -6,12 +8,12 @@ import Special from '../components/Agents/Special';
 import Sorting from '../components/Agents/Sorting';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AgentsGridview from '../components/Agents/AgentsGridview';
-import AgentsListview from '../components/Agents/AgentListView';
-import { useState } from 'react';
+import AgentGridCard from '../components/Agents/AgentGridCard';
+import AgentListCard from '../components/Agents/AgentListCard';
 
 export default function AgentListingGrid() {
   const [Gridview, setGridView] = useState(true);
+  const [agentList, setAgentList] = useState([]);
   const ToggleView = (view) => {
     if (view === 'Grid') {
       setGridView(true);
@@ -19,6 +21,14 @@ export default function AgentListingGrid() {
       setGridView(false);
     }
   };
+
+  useEffect(() => {
+    getAllAgentsApi()
+      .then((res) => {
+        setAgentList(res?.data?.result);
+      })
+      .catch(() => {});
+  }, []);
   return (
     <>
       <div className="inner-pages agents homepage-4 hd-white">
@@ -46,7 +56,9 @@ export default function AgentListingGrid() {
                       <div className="detail-wrapper-body">
                         <div className="listing-title-bar">
                           <div className="text-heading text-left">
-                            <p className="font-weight-bold mb-0 mt-3">7 Search results</p>
+                            <p className="font-weight-bold mb-0 mt-3">
+                              {agentList?.length} Search results
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -97,7 +109,13 @@ export default function AgentListingGrid() {
                     </div>
                   </section>
                   <div className="row">
-                    <div className="row">{Gridview ? <AgentsGridview /> : <AgentsListview />}</div>
+                    {agentList?.map((agent) => {
+                      if (Gridview) {
+                        return <AgentGridCard agent={agent} />;
+                      } else {
+                        return <AgentListCard agent={agent} />;
+                      }
+                    })}
                   </div>
                 </div>
                 <aside className="col-lg-4 col-md-12 car">

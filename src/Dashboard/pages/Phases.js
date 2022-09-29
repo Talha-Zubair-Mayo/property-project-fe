@@ -2,19 +2,42 @@ import React, { useState, useEffect } from 'react'
 import Hooks from '../../hooks';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { FormDataFunc, PhasesValidationSchema } from '../../utils';
-import { addNewPhaseApi, deletePhaseApi, editPhaseApi } from '../../store/api';
+import { addNewPhaseApi, deletePhaseApi, editPhaseApi, getPhaseBySocietyidApi, getAllPhasesApi } from '../../store/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSocietiesAction, getAllPhasesAction } from '../../store/actions';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
+import { Link, useLocation } from 'react-router-dom';
 export default function AllPhases() {
   const allSocieties = useSelector(state => state.AllSocieties);
-  const AllPhases = useSelector(state => state.AllPhases);
+  // const AllPhases = useSelector(state => state.AllPhases);
 
   const [show, setShow] = useState(false);
   const [editMode, setEditMode] = useState(false)
   const handleClose = () => setShow(false);
   const dispatch = useDispatch();
+
+  const search = useLocation().search;
+  const society = new URLSearchParams(search).get('society');
+  const [AllPhases, setAllPhases] = useState([]);
+  useEffect(() => {
+    if (society !== null) {
+      getPhaseBySocietyidApi(society)
+        .then((phase) => {
+          setAllPhases(phase?.data?.result);
+        })
+        .catch((error) => { });
+    } else {
+      getAllPhasesApi()
+        .then((phase) => {
+          console.log(phase?.data?.result);
+          setAllPhases(phase?.data?.result);
+        })
+        .catch((error) => { });
+    }
+  }, []);
+
+
   useEffect(() => {
     dispatch(getAllSocietiesAction())
     dispatch(getAllPhasesAction())
@@ -33,7 +56,20 @@ export default function AllPhases() {
       editPhaseApi(initialValues._id, FormDataFunc(values)).then((response) => {
         handleClose();
         props.resetForm();
-        dispatch(getAllPhasesAction())
+        if (society !== null) {
+          getPhaseBySocietyidApi(society)
+            .then((phase) => {
+              setAllPhases(phase?.data?.result);
+            })
+            .catch((error) => { });
+        } else {
+          getAllPhasesApi()
+            .then((phase) => {
+              console.log(phase?.data?.result);
+              setAllPhases(phase?.data?.result);
+            })
+            .catch((error) => { });
+        }
         setEditMode(false);
         setInitialValues({
           name: '',
@@ -45,7 +81,20 @@ export default function AllPhases() {
       }).catch((err) => { })
     } else {
       addNewPhaseApi(FormDataFunc(values)).then((response) => {
-        dispatch(getAllPhasesAction())
+        if (society !== null) {
+          getPhaseBySocietyidApi(society)
+            .then((phase) => {
+              setAllPhases(phase?.data?.result);
+            })
+            .catch((error) => { });
+        } else {
+          getAllPhasesApi()
+            .then((phase) => {
+              console.log(phase?.data?.result);
+              setAllPhases(phase?.data?.result);
+            })
+            .catch((error) => { });
+        }
         props.resetForm();
         handleClose();
       }).catch((err) => { })
@@ -128,7 +177,7 @@ export default function AllPhases() {
                           <label htmlFor="inputEmail4">Society</label>
                           <Field as="select" className='form-control' name="society">
                             {allSocieties?.data?.map((item, key) => {
-                              return <option key={key} value={item._id}>{item.name}</option>
+                              return <option key={key} value={item?._id}>{item?.name}</option>
                             })}
                           </Field>
                           <ErrorMessage component="div" name="society" className="invalid-feedback" />
@@ -190,40 +239,38 @@ export default function AllPhases() {
             </thead>
             <tbody>
 
-              {AllPhases?.data?.map((item, key) => {
+              {AllPhases?.map((item, key) => {
                 return (<tr>
                   <td className="image myelist">
-                    <a href="single-property-1.html">
+                    <Link to={`/dashboard/blocks?society=${item?.society._id}&phase=${item?._id}`}>
                       <img
                         alt="my-properties-3"
-                        src={process.env.REACT_APP_IMAGE_URL + item.photo}
+                        src={process.env.REACT_APP_IMAGE_URL + item?.photo}
                         className="img-fluid"
                       />
-                    </a>
+                    </Link>
                   </td>
                   <td>
                     <div className="inner">
-                      <a href="single-property-1.html">
-                        <h2>{item.name}</h2>
-                      </a>
+                      <Link to={`/dashboard/blocks?society=${item?.society._id}&phase=${item?._id}`}> <h2>{item?.name}</h2></Link>
                       <figure>
-                        <i className="lni-map-marker" /> {item.address}
+                        <i className="lni-map-marker" /> {item?.address}
                       </figure>
 
                     </div>
                   </td>
-                  <td>{moment(item.createdAt).format('llll')}</td>
-                  <td>{item.society.name}</td>
-                  <td>{item.ownerName}</td>
+                  <td>{moment(item?.createdAt).format('llll')}</td>
+                  <td>{item?.society?.name}</td>
+                  <td>{item?.ownerName}</td>
 
-                  <td>{`${item.createdBy.firstName}  ${item.createdBy.lastName}`}</td>
+                  <td>{`${item?.createdBy.firstName}  ${item?.createdBy.lastName}`}</td>
 
                   {SuperAdmin() && (<td className="actions">
                     <button onClick={() => editModeFunc(item)} className="edit">
                       <i className="fa fa-pencil-alt" />
 
                     </button>
-                    <button onClick={() => deletePhase(item._id)} className="delete" >
+                    <button onClick={() => deletePhase(item?._id)} className="delete" >
                       <i className="far fa-trash-alt" />
                     </button>
                   </td>)}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import jwt_decode from "jwt-decode";
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Hooks = () => {
     const location = useLocation();
@@ -32,6 +32,14 @@ const Hooks = () => {
             return false;
         }
     }
+    const Customer = () => {
+        if (token) {
+            const decoded = jwt_decode(token);
+            return decoded.role === "customer";
+        } else {
+            return false;
+        }
+    }
     const ActivatedRoutes = () => {
         return location.pathname
     }
@@ -41,8 +49,17 @@ const Hooks = () => {
         window.location.href = "/"
     }
 
+    const UserDetails = () => {
+        if (token) {
+            const decoded = jwt_decode(token);
+            return decoded;
+        } else {
+            return false;
+        }
+    }
+
     return {
-        IsUserLoggedIn, AgentRole, ActivatedRoutes, Logout, SuperAdmin
+        IsUserLoggedIn, AgentRole, ActivatedRoutes, Logout, SuperAdmin, Customer, UserDetails
     }
 }
 

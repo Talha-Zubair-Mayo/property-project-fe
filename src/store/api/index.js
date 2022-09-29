@@ -132,6 +132,8 @@ export const getBlockBySocietyAndPhaseIdApi = async (society, phase) => {
 
 // Property Api
 export const addNewPropertyApi = async (Data) => {
+  console.log(Data)
+  config.ContentType = "multipart/form-data";
   const res = await api.post("/property/create", Data, config);
   return res;
 };
@@ -166,3 +168,19 @@ export const getPropertyDetailsApi = async (propertyId) => {
   const res = await api.get(`/property/read/${propertyId}`);
   return res;
 }
+export const getPropertiesByUserIdApi = async (user) => {
+  const res = await api.get(`/property/list?user=${user}`);
+  return res;
+}
+
+
+// Agents
+
+export const getAllAgentsApi = async (query) => {
+  const res = await api.get('/agents/list');
+  return res;
+};
+export const getAgentByIdApi = async (id) => {
+  const res = await api.get(`agents/read/${id}`);
+  return res;
+};

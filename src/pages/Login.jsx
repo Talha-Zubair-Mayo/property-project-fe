@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { DataEncryption, loginValidationSchema } from '../utils';
 import { userLoginApi } from '../store/api';
 import { useDispatch } from 'react-redux';
@@ -8,16 +8,15 @@ import { loginAction } from '../store/actions';
 
 function Login() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const onSubmit = (values, props) => {
     userLoginApi(values)
       .then((response) => {
         localStorage.setItem('token', response?.data?.result?.token);
-        history.push('/');
+        navigate('/');
         dispatch(loginAction(response.data.result));
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const initialValues = {

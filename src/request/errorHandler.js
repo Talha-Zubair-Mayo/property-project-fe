@@ -18,7 +18,7 @@ const errorHandler = (error) => {
       description: errorText,
     });
     if (response.data && response.data.jwtExpired) {
-      history.push('/logout');
+      navigate('/logout');
     }
     return response.data;
   } else {

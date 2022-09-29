@@ -1,4 +1,4 @@
-import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Route, Link, Routes, Navigate } from 'react-router-dom';
 import React from 'react';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
@@ -18,22 +18,22 @@ import Phases from '../pages/Phases';
 
 const Router = () => {
   return (
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/properties" component={Properties} />
-      <Route exact path="/agents" component={Agents} />
-      <Route exact path="/propertydetails/:id" component={SingleProperty} />
-      <Route exact path="/agentdetails" component={AgentDetails} />
-      <AuthRoutes exact path="/login" component={Login} />
-      <AuthRoutes exact path="/register" component={Register} />
-      <Route exact path="/faq" component={Faq} />
-      <Route exact path="/contact" component={ContactUs} />
-      <Route exact path="/blog-details" component={BlogDetails} />
-      <Route exact path="/coming-soon" component={ComingSoon} />
-      <Route exact path="/societies" component={Societies} />
-      <Route exact path="/blocks" component={Blocks} />
-      <Route exact path="/phases" component={Phases} />
-    </Switch>
+    <Routes>
+      <Route exact path="/" element={<Home />} />
+      <Route exact path="/properties" element={<Properties />} />
+      <Route exact path="/agents" element={<Agents />} />
+      <Route exact path="/propertydetails/:id" element={<SingleProperty />} />
+      <Route exact path="/agentdetails/:id" element={<AgentDetails />} />
+      <Route path="/login" element={<AuthRoutes component={Login} />} />
+      <Route path="/register" element={<AuthRoutes component={Register} />} />
+      <Route exact path="/faq" element={<Faq />} />
+      <Route exact path="/contact" element={<ContactUs />} />
+      <Route exact path="/blog-details" element={<BlogDetails />} />
+      <Route exact path="/coming-soon" element={<ComingSoon />} />
+      <Route exact path="/societies" element={<Societies />} />
+      <Route exact path="/blocks" element={<Blocks />} />
+      <Route exact path="/phases" element={<Phases />} />
+    </Routes>
   );
 };
 

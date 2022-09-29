@@ -1,4 +1,4 @@
-import { Switch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import React from 'react';
 import Dashboard from '../pages/UserDashoard';
 import UserProfile from '../pages/UserProfile';
@@ -15,19 +15,21 @@ import AllPhases from '../pages/Phases';
 import { AdminRoutes, ProtectedRoutes, AuthenticatedRoutes } from '../../utils/ProtectedRoutes';
 const UserRouter = () => {
     return (
-        <Switch>
-            <ProtectedRoutes exact path="/dashboard" component={Dashboard} />
-            <AuthenticatedRoutes exact path="/dashboard/profile" component={UserProfile} />
-            <ProtectedRoutes exact path="/dashboard/properties" component={UserProperties} />
-            <AuthenticatedRoutes exact path="/dashboard/favproperties" component={UserFavoriteProperties} />
-            <ProtectedRoutes exact path="/dashboard/addproperty" component={UserAddProperty} />
-            <ProtectedRoutes exact path="'/dashboard/paymentmethod" component={UserPaymentMethod} />
-            <ProtectedRoutes exact path="/dashboard/invoice" component={UserInvoice} />
-            <ProtectedRoutes exact path="/dashboard/societies" component={AllSocieties} />
-            <ProtectedRoutes exact path="/dashboard/blocks" component={AllBlocks} />
-            <ProtectedRoutes exact path="/dashboard/phases" component={AllPhases} />
-            <AuthenticatedRoutes exact path="/dashboard/changepassword" component={UserChangePassword} />
-        </Switch>
+        <Routes>
+            <Route exact path="/dashboard" element={<ProtectedRoutes component={Dashboard} />} />
+            <Route exact path="/dashboard/profile" element={<AuthenticatedRoutes component={UserProfile} />} />
+            <Route exact path="/dashboard/properties" element={<ProtectedRoutes component={UserProperties} />} />
+            <Route exact path="/dashboard/favproperties" element={<AuthenticatedRoutes component={UserFavoriteProperties} />} />
+            <Route exact path="/dashboard/addproperty" element={<ProtectedRoutes component={UserAddProperty} />} />
+            <Route exact path="'/dashboard/paymentmethod" element={<ProtectedRoutes component={UserPaymentMethod} />} />
+            <Route exact path="/dashboard/invoice" element={<ProtectedRoutes component={UserInvoice} />} />
+            <Route exact path="/dashboard/societies" element={<ProtectedRoutes component={AllSocieties} />} />
+            <Route exact path="/dashboard/blocks" element={<ProtectedRoutes component={AllBlocks} />} />
+            <Route exact path="/dashboard/phases" element={<ProtectedRoutes component={AllPhases} />} />
+            <Route exact path="/dashboard/changepassword" element={<AuthenticatedRoutes component={AllPhases} />}
+
+            />
+        </Routes>
     );
 };
 

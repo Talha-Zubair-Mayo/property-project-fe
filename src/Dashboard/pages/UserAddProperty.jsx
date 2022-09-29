@@ -10,9 +10,11 @@ import {
   editPropertyApi,
 } from '../../store/api';
 import { useDropzone } from 'react-dropzone';
+import { useNavigate } from 'react-router-dom';
 export default function UserAddProperty({ editMode, setEditMode, Values, handleClose }) {
   const allSocieties = useSelector((state) => state?.AllSocieties);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [phasesBySociety, setPhasesBySociety] = useState([]);
   const [BlockBySocietyAndPhaseId, setBlockBySocietyAndPhaseId] = useState([]);
   const [photos, setPhotos] = useState([]);
@@ -69,7 +71,6 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
     // console.log(Values?.features);
   }, [editMode]);
   const onSubmit = (values, props) => {
-    console.log(values);
     if (editMode) {
       editPropertyApi(Values._id, FormDataMultipleFiles(values))
         .then((response) => {
@@ -81,7 +82,10 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
     } else {
       addNewPropertyApi(FormDataMultipleFiles(values))
         .then((response) => {
+          console.log(response);
+
           props.resetForm();
+          navigate('/dashboard/properties');
         })
         .catch((err) => {});
     }
@@ -263,6 +267,7 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         name="society"
                       >
                         <option>Select Society</option>
+
                         {allSocieties?.data?.map((item, key) => {
                           return (
                             <option key={key} value={item._id}>
@@ -553,9 +558,7 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                 <div className="row">
                   <div className="col-md-12 mb-2">
                     <div className="prperty-submit-button">
-                      <button type="submit" disabled={isSubmitting}>
-                        Submit Property
-                      </button>
+                      <button type="submit">Submit Property</button>
                     </div>
                   </div>
                 </div>

@@ -59,31 +59,6 @@ export default function PersonalInformation() {
                 </div>
               </div>
             </div>
-            <div className="password-section">
-              <h6>Update Password</h6>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>New Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Write new password"
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Repeat Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Write same password again"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
             <button type="submit" className="btn btn-primary btn-lg mt-2">
               Submit
             </button>

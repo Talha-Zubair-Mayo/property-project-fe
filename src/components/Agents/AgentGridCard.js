@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom"
-export default function AgentGridCard() {
+export default function AgentGridCard({ agent }) {
   return (
     <>
       <div className="item col-lg-6 col-md-6 col-xs-12 landscapes sale">
@@ -8,9 +8,8 @@ export default function AgentGridCard() {
           <div className="project-inner project-head">
             <div className="homes">
               {/* homes img */}
-              <Link to="agentdetails" className="homes-img">
-                <div className="homes-tag button alt featured">3 Listings</div>
-                <img src={process.env.PUBLIC_URL + "/images/team/a-1.png"} alt="home-1" className="img-responsive" />
+              <Link to={`/agentdetails/${agent._id}`} className="homes-img">
+                <img src={process.env.REACT_APP_IMAGE_URL + agent.photo} alt="home-1" className="img-responsive" />
               </Link>
             </div>
           </div>
@@ -19,29 +18,25 @@ export default function AgentGridCard() {
             {/* homes address */}
             <div className="the-agents">
               <h3>
-                <Link to="agentdetails">Carls Jhons</Link>
+                <Link to={`/agentdetails/${agent._id}`}>{`${agent?.firstName}  ${agent?.lastName}`}</Link>
               </h3>
               <ul className="the-agents-details">
+
                 <li>
-                  <a href="#">Office: (234) 0200 17813</a>
+                  <Link to={`/agentdetails/${agent._id}`}>Phone: {agent?.phone}</Link>
                 </li>
+
                 <li>
-                  <a href="#">Mobile: (657) 9854 12095</a>
-                </li>
-                <li>
-                  <a href="#">Fax: 809 123 0951</a>
-                </li>
-                <li>
-                  <a href="#">Email: info@agent.com</a>
+                  <Link to={`/agentdetails/${agent._id}`}>Email: {agent?.email}</Link>
                 </li>
               </ul>
             </div>
             <div className="footer">
-              <a href="agent-details.html">
-                <img src={process.env.PUBLIC_URL + "/images/partners/1.png"} alt="" className="mr-2" /> Company Name
-              </a>
+              <Link to={`/agentdetails/${agent._id}`}>
+                {agent?.company}
+              </Link>
               <span className="view-my-listing">
-                <a href="properties-full-grid-2.html">View My Listings</a>
+                <Link to={`/properties?agent=${agent._id}`}>View My Listings</Link>
               </span>
             </div>
           </div>

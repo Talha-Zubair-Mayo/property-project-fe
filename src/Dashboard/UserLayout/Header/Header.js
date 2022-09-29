@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Hooks from "../../../hooks"
-import UserDropdownRoutes from './UserDropdownRoutes';
+import { UserDropdownRoutes, NavbarRoutes } from './HeaderRoutes';
 export default function Header() {
   const userinfo = useSelector((state) => state.UserLogin.data.user);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { Logout } = Hooks();
+  const { Logout, ActivatedRoutes } = Hooks();
   const ToggleProfileDropdown = () => {
     setShowDropdown(!showDropdown);
   };
   const dropDown = UserDropdownRoutes();
+  const NavBarRoutes = NavbarRoutes();
+
   return (
     <>
       <div className="dash-content-wrap">
@@ -22,7 +24,7 @@ export default function Header() {
               <div className="left-side">
                 {/* Logo */}
                 <div id="logo">
-                  <Link to="/">
+                  <Link to="/dashboard">
                     <img src={process.env.PUBLIC_URL + "/images/logo.svg"} alt="" />
                   </Link>
                 </div>
@@ -38,34 +40,28 @@ export default function Header() {
                 <nav id="navigation" className="style-1">
                   <ul id="responsive">
 
-                    <li>
-                      <a href="#">Property</a>
-                      <ul>
-                        <li>
-                          <a href="single-property-1.html">Single Property 1</a>
-                        </li>
-                        <li>
-                          <a href="single-property-2.html">Single Property 2</a>
-                        </li>
-                        <li>
-                          <a href="single-property-3.html">Single Property 3</a>
-                        </li>
-                        <li>
-                          <a href="single-property-4.html">Single Property 4</a>
-                        </li>
-                        <li>
-                          <a href="single-property-5.html">Single Property 5</a>
-                        </li>
-                        <li>
-                          <a href="single-property-6.html">Single Property 6</a>
-                        </li>
-                      </ul>
-                    </li>
-
-
-                    <li>
-                      <a href="contact-us.html">Contact</a>
-                    </li>
+                    {NavBarRoutes.map((item, key) => {
+                      if (item.visiblity) {
+                        return (
+                          <li>
+                            <NavLink
+                              to={item.link}
+                              className={({ isActive }) =>
+                                isActive ? 'current' : undefined
+                              }
+                            >
+                              {item.name}
+                            </NavLink>
+                            {/* <Link
+                              className={item.link === ActivatedRoutes() && 'current'}
+                              to={item.link}
+                            >
+                            
+                            </Link> */}
+                          </li>
+                        );
+                      }
+                    })}
                     <li className="d-none d-xl-none d-block d-lg-block">
                       <a href="login.html">Login</a>
                     </li>
@@ -87,7 +83,7 @@ export default function Header() {
               }>
                 <div onClick={() => ToggleProfileDropdown()} className="header-user-name">
                   <span>
-                    <img src={process.env.PUBLIC_URL + "/images/testimonials/ts-1.jpg"} alt="" />
+                    <img src={process.env.REACT_APP_IMAGE_URL + userinfo?.photo} alt="" />
                   </span>
                   Hi, {userinfo?.firstName}!
                 </div>

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllSocietiesAction } from '../../store/actions';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
+import { Link } from 'react-router-dom';
 export default function AllSocieties() {
   const allSocieties = useSelector(state => state.AllSocieties)
   const [show, setShow] = useState(false);
@@ -193,19 +194,17 @@ export default function AllSocieties() {
               {allSocieties?.data?.map((item, key) => {
                 return (<tr>
                   <td className="image myelist">
-                    <a href="single-property-1.html">
+                    <Link to={`/dashboard/phases?society=${item?._id}`}>
                       <img
                         alt="my-properties-3"
                         src={process.env.REACT_APP_IMAGE_URL + item.photo}
                         className="img-fluid"
                       />
-                    </a>
+                    </Link>
                   </td>
                   <td>
                     <div className="inner">
-                      <a href="single-property-1.html">
-                        <h2>{item.name}</h2>
-                      </a>
+                      <Link to={`/dashboard/phases?society=${item?._id}`}> <h2>{item?.name}</h2></Link>
                       <figure>
                         <i className="lni-map-marker" /> {item.address}
                       </figure>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function AgentName() {
+export default function AgentName({ agent }) {
   return (
     <>
       <section className="headings-2 pt-0 hee">
@@ -12,7 +12,7 @@ export default function AgentName() {
                   <a href="index.html">Home </a> &nbsp;/&nbsp; <span>Agent Details</span>
                 </p>
               </div>
-              <h3>Carls Jhons</h3>
+              <h3>{`${agent.firstName} ${agent.lastName}`}</h3>
             </div>
           </div>
         </div>

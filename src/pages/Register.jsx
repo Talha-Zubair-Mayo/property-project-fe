@@ -2,15 +2,15 @@ import React from 'react';
 import { DataEncryption, FormDataFunc, registerValidationSchema } from '../utils';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { userRegisterApi } from '../store/api';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const onSubmit = (values, props) => {
     userRegisterApi(FormDataFunc(values))
       .then((response) => {
-        history.push('/login');
+        navigate('/login');
       })
       .catch((error) => {
         console.log;

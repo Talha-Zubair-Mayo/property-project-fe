@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react'
 import Hooks from '../../hooks';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { FormDataFunc, BlocksValidationSchema } from '../../utils';
-import { addNewBlockApi, deleteBlockApi, editBlockApi, getPhaseBySocietyidApi } from '../../store/api';
+import { addNewBlockApi, deleteBlockApi, editBlockApi, getPhaseBySocietyidApi, getAllBlocksApi, getBlockBySocietyAndPhaseIdApi } from '../../store/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSocietiesAction, getAllBlocksAction } from '../../store/actions';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
+import { Link, useLocation } from 'react-router-dom';
 export default function AllBlocks() {
   const allSocieties = useSelector(state => state.AllSocieties);
-  const AllBlocks = useSelector(state => state.AllBlocks);
+  // const AllBlocks = useSelector(state => state.AllBlocks);
   const [show, setShow] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [phasesBySociety, setPhasesBySociety] = useState([])
@@ -19,6 +20,29 @@ export default function AllBlocks() {
     dispatch(getAllSocietiesAction())
     dispatch(getAllBlocksAction())
   }, [])
+  
+  const search = useLocation().search;
+  const society = new URLSearchParams(search).get('society');
+  const phase = new URLSearchParams(search).get('phase');
+  const [AllBlocks, setAllBlocks] = useState([]);
+  useEffect(() => {
+    if (society !== null && phase !== null) {
+      getBlockBySocietyAndPhaseIdApi(society, phase)
+        .then((block) => {
+          setAllBlocks(block?.data?.result);
+        })
+        .catch((error) => { });
+    } else {
+      getAllBlocksApi()
+        .then((block) => {
+          console.log(block?.data?.result);
+          setAllBlocks(block?.data?.result);
+        })
+        .catch((error) => { });
+    }
+  }, [society, phase]);
+
+
   const { SuperAdmin } = Hooks();
   const [initialValues, setInitialValues] = useState({
     name: '',
@@ -64,7 +88,6 @@ export default function AllBlocks() {
       dispatch(getAllBlocksAction())
     }).catch((err) => { })
   }
-
   const editModeFunc = (data) => {
     getPhaseBySocietyidApi(data.society._id).then((res) => {
       setPhasesBySociety(res.data.result);
@@ -146,7 +169,7 @@ export default function AllBlocks() {
                               return <option key={key} value={item._id}>{item.name}</option>
                             })}
                           </Field>
-                        <ErrorMessage component="div" name="society" className="invalid-feedback" />
+                          <ErrorMessage component="div" name="society" className="invalid-feedback" />
 
                         </div>
                         <div className="form-group col-md-6">
@@ -157,7 +180,7 @@ export default function AllBlocks() {
                               return <option key={key} value={item._id}>{item.name}</option>
                             })}
                           </Field>
-                        <ErrorMessage component="div" name="phase" className="invalid-feedback" />
+                          <ErrorMessage component="div" name="phase" className="invalid-feedback" />
 
                         </div>
 
@@ -221,24 +244,22 @@ export default function AllBlocks() {
             </thead>
             <tbody>
 
-              {AllBlocks?.data?.map((item, key) => {
+              {AllBlocks?.map((item, key) => {
                 return (<tr>
                   <td className="image myelist">
-                    <a href="single-property-1.html">
+                    <Link to={`/dashboard/properties?society=${item?.society._id}&phase=${item?.phase?._id}&block=${item?._id}`}>
                       <img
                         alt="my-properties-3"
                         src={process.env.REACT_APP_IMAGE_URL + item.photo}
                         className="img-fluid"
                       />
-                    </a>
+                    </Link>
                   </td>
                   <td>
                     <div className="inner">
-                      <a href="single-property-1.html">
-                        <h2>{item.name}</h2>
-                      </a>
+                      <Link to={`/dashboard/properties?society=${item?.society._id}&phase=${item?.phase?._id}&block=${item?._id}`}> <h2>{item?.name}</h2></Link>
                       <figure>
-                        <i className="lni-map-marker" /> {item.address}
+                        <i className="lni-map-marker" />{item.address}
                       </figure>
 
                     </div>

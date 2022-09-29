@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { getAllPropertiesApi, deletePropertyApi } from '../../store/api';
+import {
+  getAllPropertiesApi,
+  deletePropertyApi,
+  getPropertyBySocietyPhaseAndBlockIdApi,
+} from '../../store/api';
 import Hooks from '../../hooks';
 import moment from 'moment';
 import UserAddProperty from './UserAddProperty';
 import Modal from 'react-bootstrap/Modal';
+import { useLocation } from 'react-router-dom';
 
 export default function UserProperties() {
   const [show, setShow] = useState(false);
@@ -16,15 +21,28 @@ export default function UserProperties() {
     setEditMode(false);
   };
   const [allProperties, setAllProperties] = useState([]);
-  const { SuperAdmin } = Hooks();
+  const { SuperAdmin, AgentRole, UserDetails } = Hooks();
 
+  const search = useLocation().search;
+  const society = new URLSearchParams(search).get('society');
+  const phase = new URLSearchParams(search).get('phase');
+  const block = new URLSearchParams(search).get('block');
   useEffect(() => {
-    getAllPropertiesApi()
-      .then((properties) => {
-        setAllProperties(properties.data.result);
-      })
-      .catch((err) => {});
-  }, []);
+    if (society && phase && block !== null) {
+      getPropertyBySocietyPhaseAndBlockIdApi(society, phase, block)
+        .then((property) => {
+          setAllProperties(property?.data?.result);
+        })
+        .catch((error) => {});
+    } else {
+      getAllPropertiesApi()
+        .then((property) => {
+          console.log(property?.data?.result);
+          setAllProperties(property?.data?.result);
+        })
+        .catch((error) => {});
+    }
+  }, [society, phase, block]);
 
   const editModeFunc = (data) => {
     setEditMode(true);
@@ -86,7 +104,7 @@ export default function UserProperties() {
                 <th>Block</th>
                 <th>Owner Name</th>
                 <th>Added by</th>
-                {SuperAdmin() && <th>Actions</th>}
+                {SuperAdmin() || (AgentRole() && <th>Actions</th>)}
               </tr>
             </thead>
             <tbody>
@@ -121,6 +139,16 @@ export default function UserProperties() {
                     <td>{`${item?.createdBy.firstName}  ${item?.createdBy.lastName}`}</td>
 
                     {SuperAdmin() && (
+                      <td className="actions">
+                        <button onClick={() => editModeFunc(item)} className="edit">
+                          <i className="fa fa-pencil-alt" />
+                        </button>
+                        <button onClick={() => deleteProperty(item?._id)} className="delete">
+                          <i className="far fa-trash-alt" />
+                        </button>
+                      </td>
+                    )}
+                    {AgentRole() && UserDetails().id === item?.createdBy._id && (
                       <td className="actions">
                         <button onClick={() => editModeFunc(item)} className="edit">
                           <i className="fa fa-pencil-alt" />

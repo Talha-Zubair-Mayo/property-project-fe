@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Hooks from '../../hooks';
 import { UserDropdownRoutes, NavbarRoutes } from './HeaderRoutes';
 
@@ -38,12 +38,12 @@ export default function Header() {
                     if (item.visiblity) {
                       return (
                         <li>
-                          <Link
-                            className={item.link === ActivatedRoutes() && 'current'}
+                          <NavLink
                             to={item.link}
+                            className={({ isActive }) => (isActive ? 'current' : undefined)}
                           >
                             {item.name}
-                          </Link>
+                          </NavLink>
                         </li>
                       );
                     }
