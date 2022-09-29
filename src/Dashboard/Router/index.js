@@ -11,7 +11,6 @@ import UserChangePassword from '../pages/UserChangePassword';
 import AllSocieties from "../pages/AllSocieties";
 import AllBlocks from '../pages/Blocks';
 import AllPhases from '../pages/Phases';
-
 import { AdminRoutes, ProtectedRoutes, AuthenticatedRoutes } from '../../utils/ProtectedRoutes';
 const UserRouter = () => {
     return (
