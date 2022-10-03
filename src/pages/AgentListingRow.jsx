@@ -41,7 +41,6 @@ export default function AgentListingGrid() {
                 </div>
                 <aside className="col-lg-4 col-md-12 car">
                   <div className="single widget">
-                    <Schedule/>
                       <div className="sidebar">
                         <div className="main-search-field-2">
                           <RecentProperties/>

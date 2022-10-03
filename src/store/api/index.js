@@ -181,6 +181,19 @@ export const getAllAgentsApi = async (query) => {
   return res;
 };
 export const getAgentByIdApi = async (id) => {
-  const res = await api.get(`agents/read/${id}`);
+  const res = await api.get(`/agents/read/${id}`);
   return res;
 };
+
+export const contactAgentApi = async (id, Data) => {
+  const res = await api.post(`/agents/contact/${id}`, Data, config);
+  return res;
+}
+
+
+
+export const getAllAppointmentsApi = async (query) => {
+  const res = await api.get(`/agents/appointements/list?${query}`, config);
+  return res;
+}
+

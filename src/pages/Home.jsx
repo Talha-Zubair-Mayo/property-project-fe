@@ -19,7 +19,7 @@ const Home = () => {
           <WhyChooseUs />
           <PopularProperties />
           <MeetOurAgents />
-          <ClientTestimonials />
+          {/* <ClientTestimonials /> */}
         </div>
       </div>
     </>

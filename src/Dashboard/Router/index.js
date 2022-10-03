@@ -11,7 +11,9 @@ import UserChangePassword from '../pages/UserChangePassword';
 import AllSocieties from "../pages/AllSocieties";
 import AllBlocks from '../pages/Blocks';
 import AllPhases from '../pages/Phases';
+
 import { AdminRoutes, ProtectedRoutes, AuthenticatedRoutes } from '../../utils/ProtectedRoutes';
+import Appointments from '../pages/Appointments';
 const UserRouter = () => {
     return (
         <Routes>
@@ -25,9 +27,8 @@ const UserRouter = () => {
             <Route exact path="/dashboard/societies" element={<ProtectedRoutes component={AllSocieties} />} />
             <Route exact path="/dashboard/blocks" element={<ProtectedRoutes component={AllBlocks} />} />
             <Route exact path="/dashboard/phases" element={<ProtectedRoutes component={AllPhases} />} />
-            <Route exact path="/dashboard/changepassword" element={<AuthenticatedRoutes component={AllPhases} />}
-
-            />
+            <Route exact path="/dashboard/appointment/:id" element={<AuthenticatedRoutes component={Appointments} />} />
+            {/* <Route exact path="/dashboard/changepassword" element={<AuthenticatedRoutes component={AllPhases} />}/> */}
         </Routes>
     );
 };

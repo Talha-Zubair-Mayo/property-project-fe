@@ -99,7 +99,21 @@ export const PropertySchema = Yup.object().shape({
     phase: Yup.string().required('Phase is Required'),
     block: Yup.string().required('Block is Required'),
     photo: Yup.array().required('Images Are Required'),
-})
+});
+
+
+export const agentContactFormValidationSchema = Yup.object().shape({
+    fullName: Yup.string().required('Full Name is Required'),
+    email: Yup.string().email('Enter valid email').required('Email is Required'),
+    phone: Yup.string().required('Phone is Required'),
+    meetingTime: Yup.date()
+        .required('Please enter a date of birth')
+        .min(new Date(), "Please Select Correct Date and time"),
+    message: Yup.string().required('Message is Required'),
+
+});
+
+
 export const FormDataFunc = (Data) => {
     console.log(Data);
     const formData = new FormData();

@@ -13,10 +13,11 @@ import Special from '../components/PropertyDetails/Special';
 import AgentListCard from '../components/Agents/AgentListCard';
 import { getAgentByIdApi, getPropertiesByUserIdApi } from "../store/api"
 import { useParams } from 'react-router-dom';
+import Hooks from '../hooks';
 export default function AgentDetails() {
   const [agentdetails, setAgentDetails] = useState({})
   const [AgentProperties, setAgentProperties] = useState([]);
-
+  const { IsUserLoggedIn, UserDetails } = Hooks();
   const { id } = useParams();
   useEffect(() => {
     if (id) {
@@ -60,9 +61,8 @@ export default function AgentDetails() {
                 </div>
                 <aside className="col-lg-4 col-md-12 car">
                   <div className="single widget">
-                    <Schedule />
                     <div className="sidebar">
-                      <ContactAgent />
+                      {UserDetails().id !== agentdetails._id && <ContactAgent agent={agentdetails} />}
                       <div className="main-search-field-2">
                         <RecentProperties />
                         <FeatureProperties />

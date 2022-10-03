@@ -1,8 +1,10 @@
 import Hooks from '../../../hooks';
 import React from 'react'
+import { useParams } from 'react-router-dom';
 
 const SideBarRoutes = () => {
-    const { IsUserLoggedIn, AgentRole, SuperAdmin } = Hooks();
+    const { IsUserLoggedIn, AgentRole, SuperAdmin, UserDetails } = Hooks();
+    const { id } = useParams();
 
     const Routes = [
         {
@@ -52,7 +54,15 @@ const SideBarRoutes = () => {
             link: '/dashboard/favproperties',
             icon: 'fa fa-heart',
             visiblity: AgentRole() || SuperAdmin()
-        }, {
+        }
+        , {
+            name: " Appointments",
+            link: `/dashboard/appointment/${UserDetails().id}`,
+            icon: 'fas fa-calendar',
+            visiblity: AgentRole() || SuperAdmin()
+        }
+
+        , {
             name: "Payments",
             link: '/dashboard/paymentmethod',
             icon: 'fa fa-credit-card',

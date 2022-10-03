@@ -11,6 +11,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 AOS.init({
   duration: 1200,
 });
@@ -19,6 +21,19 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <App />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        // pauseOnFocusLoss
+        // draggable
+        // pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

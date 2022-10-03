@@ -8,6 +8,7 @@ import { getAllSocietiesAction } from '../../store/actions';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
 export default function AllSocieties() {
   const allSocieties = useSelector(state => state.AllSocieties)
   const [show, setShow] = useState(false);
@@ -230,37 +231,7 @@ export default function AllSocieties() {
 
             </tbody>
           </table>
-          <div className="pagination-container">
-            <nav>
-              <ul className="pagination">
-                <li className="page-item">
-                  <a className="btn btn-common" href="#">
-                    <i className="lni-chevron-left" /> Previous{' '}
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    1
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="btn btn-common" href="#">
-                    Next <i className="lni-chevron-right" />
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          <Pagination count={10} color="primary" />
         </div>
       </div>
     </>
