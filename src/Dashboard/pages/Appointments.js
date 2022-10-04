@@ -35,6 +35,7 @@ export default function Appointments() {
                 <div className="my-properties">
                     <table className="table-responsive">
                         <thead>
+                            
                             <tr>
                                 <th>Appointment Date</th>
                                 <th>Date Added</th>
