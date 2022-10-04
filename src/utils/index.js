@@ -37,6 +37,17 @@ export const registerValidationSchema = Yup.object().shape({
 
 
 
+
+export const profileValidationSchema = Yup.object().shape({
+    firstName: Yup.string().min(3, 'Minimum Length Should Be 3').required('First Name is Required'),
+    lastName: Yup.string().min(3, 'Minimum Length Should Be 3').required('Last Name is Required'),
+    phone: Yup.string().min(3, 'Minimum Length Should Be 3').required('Phonee is Required'),
+    company: Yup.string().min(3, 'Minimum Length Should Be 3').required('Company Name is Required'),
+    address: Yup.string().min(3, 'Minimum Length Should Be 3').required('Address is Required'),
+    about: Yup.string().min(3, 'Minimum Length Should Be 3').required('about  is Required')
+
+});
+
 export const loginValidationSchema = Yup.object().shape({
     email: Yup.string().email('Enter valid email').required('Email is Required'),
     password: Yup.string()

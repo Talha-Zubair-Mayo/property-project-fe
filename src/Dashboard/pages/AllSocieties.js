@@ -46,7 +46,11 @@ export default function AllSocieties() {
         handleClose();
         props.resetForm();
         dispatch(getAllSocietiesAction())
-      }).catch((err) => { })
+      }).catch((err) => { 
+
+
+        
+      })
     }
 
   };

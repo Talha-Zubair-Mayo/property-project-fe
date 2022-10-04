@@ -43,6 +43,12 @@ export const resetPasswordApi = async (Data) => {
   return res;
 };
 
+export const updateUserApi = async (id, Data) => {
+  const res = await api.patch(`/user/${id}`, Data, config);
+  return res;
+};
+
+
 // Society Api
 export const addNewSocietyApi = async (Data) => {
   const res = await api.post("/society/create", Data, config);
@@ -51,7 +57,6 @@ export const addNewSocietyApi = async (Data) => {
 
 
 export const editSocietyApi = async (id, Data) => {
-  console.log(id, Data)
   const res = await api.patch(`/society/update/${id}`, Data, config);
   return res;
 };

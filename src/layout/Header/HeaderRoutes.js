@@ -28,7 +28,8 @@ export const NavbarRoutes = () => {
             name: "Properties",
             link: '/properties',
             visiblity: true
-        }
+        },
+
 
 
     ]

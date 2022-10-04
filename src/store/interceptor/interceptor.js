@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 export const API_URL = process.env.REACT_APP_API_URL;
 export const api = axios.create({
   baseURL: API_URL,
+  
 });
 
 api.interceptors.request.use((request) => {
@@ -24,8 +25,9 @@ api.interceptors.response.use(
   function (error) {
     switch (error?.response?.status) {
       case 401:
-        // localStorage.clear();
-        // window.location.href = '/'
+        localStorage.clear();
+
+        window.location.href = '/'
         break;
       case 500:
         // code block
