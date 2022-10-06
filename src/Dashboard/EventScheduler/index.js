@@ -53,23 +53,7 @@ export default function EventScheduler() {
                 end: new Date(response?.data?.result?.end)
             }
         }
-        /**
-         * Make sure to return 4 mandatory fields:
-         * event_id: string|number
-         * title: string
-         * start: Date|string
-         * end: Date|string
-         * ....extra other fields depend on your custom fields/editor properties
-         */
-        // Simulate http request: return added/edited event
-        // return new Promise((res, rej) => {
-        //     setTimeout(() => {
-        //         res({
-        //             ...event,
-        //             event_id: event.event_id || Math.random()
-        //         });
-        //     }, 3000);
-        // });
+       
     };
 
     const handleDelete = async (deletedId) => {
