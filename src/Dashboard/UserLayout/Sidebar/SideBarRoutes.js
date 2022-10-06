@@ -61,7 +61,12 @@ const SideBarRoutes = () => {
             icon: 'fas fa-calendar',
             visiblity: AgentRole() || SuperAdmin()
         }
-
+        , {
+            name: " Events",
+            link: `/dashboard/events/${UserDetails().id}`,
+            icon: 'fas fa-calendar',
+            visiblity: AgentRole() || SuperAdmin()
+        }
         , {
             name: "Payments",
             link: '/dashboard/paymentmethod',

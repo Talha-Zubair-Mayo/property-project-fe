@@ -18,8 +18,11 @@ import Special from '../components/PropertyDetails/Special';
 import RecentProperties from '../components/PropertyDetails/RecentProperties';
 import { useParams } from 'react-router-dom';
 import { getPropertyDetailsApi } from '../store/api';
+import AddNotes from '../components/PropertyDetails/AddNotes';
+import Hooks from '../hooks';
 export default function PropertyDetails() {
   const [propertyDetails, setPropertyDetails] = useState({});
+  const { AgentRole, SuperAdmin } = Hooks();
   let { id } = useParams();
   useEffect(() => {
     if (id) {
@@ -50,12 +53,15 @@ export default function PropertyDetails() {
                   {/* <Nearby Details={propertyDetails} /> */}
                   {/* <PropertyVideo Details={propertyDetails} /> */}
                   {/* <Location Details={propertyDetails} /> */}
+                  {AgentRole() || SuperAdmin() ? <AddNotes /> : <></>}
+
                   <Reviews Details={propertyDetails} />
-                  <AddReview Details={propertyDetails} />
+                  {AgentRole() ||
+                    (SuperAdmin() === false && <AddReview Details={propertyDetails} />)}
                 </div>
                 <aside className="col-lg-4 col-md-12 car">
                   <div className="single widget">
-                    <Index Details={propertyDetails} />
+                    {/* <Index Details={propertyDetails} /> */}
                     <div className="sidebar">
                       <AgentInfo Details={propertyDetails} />
                       <div className="main-search-field-2">
@@ -68,7 +74,7 @@ export default function PropertyDetails() {
                   </div>
                 </aside>
               </div>
-              <SimilarProperties Details={propertyDetails} />
+              {/* <SimilarProperties Details={propertyDetails} /> */}
             </div>
           </section>
         </div>

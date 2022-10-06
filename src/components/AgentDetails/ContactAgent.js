@@ -7,8 +7,7 @@ import { useSelector } from 'react-redux';
 export default function ContactAgent({ agent }) {
   const userinfo = useSelector((state) => state?.UserLogin?.data?.user);
   const onSubmit = (values, props) => {
-    console.log(values)
-    contactAgentApi(agent._id, values).then((response) => {
+    contactAgentApi(agent?._id, values).then((response) => {
       props.resetForm();
       toast.success('Appointment created Successfully', {
         position: "top-right",
@@ -46,7 +45,7 @@ export default function ContactAgent({ agent }) {
       <div className="widget-boxed mt-33 mt-5">
         <div className="sidebar-widget author-widget2">
           <div className="agent-contact-form-sidebar border-0 pt-0">
-            <h4>Contact {`${agent.firstName} ${agent.lastName}`}</h4>
+            <h4>Contact {`${agent?.firstName} ${agent?.lastName}`}</h4>
             <Formik
               initialValues={initialValues}
               validationSchema={agentContactFormValidationSchema}
@@ -129,8 +128,6 @@ export default function ContactAgent({ agent }) {
                       className="multiple-send-message"
                       defaultValue="Submit Request"
                     />}
-
-
                   </Form>
                 </div>
               )}

@@ -25,9 +25,9 @@ api.interceptors.response.use(
   function (error) {
     switch (error?.response?.status) {
       case 401:
-        localStorage.clear();
+        // localStorage.clear();
 
-        window.location.href = '/'
+        // window.location.href = '/'
         break;
       case 500:
         // code block

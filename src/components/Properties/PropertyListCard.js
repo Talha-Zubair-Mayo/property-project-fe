@@ -11,7 +11,7 @@ export default function PropertyListCard({ item }) {
           <div className="project-inner project-head">
             <div className="homes">
               {/* homes img */}
-              <Link to={`propertydetails/${item?._id}`} className="homes-img">
+              <Link to={`/propertydetails/${item?._id}`} className="homes-img">
                 {item?.featured && <div className="homes-tag button alt featured">Featured</div>}
                 {item?.status === 'rent' && <div className="homes-tag button alt featured">For Rent</div>}
                 {item?.status === 'sale' && <div className="homes-tag button sale ">For Sale</div>}
@@ -20,7 +20,7 @@ export default function PropertyListCard({ item }) {
               </Link>
             </div>
             <div className="button-effect">
-              <Link to={`propertydetails/${item?._id}`} className="btn">
+              <Link to={`/propertydetails/${item?._id}`} className="btn">
                 <i className="fa fa-link" />
               </Link>
               <a
@@ -40,10 +40,10 @@ export default function PropertyListCard({ item }) {
       <div className="col-lg-8 col-md-12 homes-content pb-0 mb-44">
         {/* homes address */}
         <h3>
-          <Link to={`propertydetails/${item?._id}`}>{item?.title}</Link>
+          <Link to={`/propertydetails/${item?._id}`}>{item?.title}</Link>
         </h3>
         <p className="homes-address mb-3">
-          <Link to={`propertydetails/${item?._id}`}>
+          <Link to={`/propertydetails/${item?._id}`}>
             <i className="fa fa-map-marker" />
             <span>{`${item?.society.name} , ${item?.phase.name} , ${item?.block.name} ${item?.city} , ${item?.country}`}</span>
           </Link>

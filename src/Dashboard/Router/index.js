@@ -14,6 +14,7 @@ import AllPhases from '../pages/Phases';
 
 import { AdminRoutes, ProtectedRoutes, AuthenticatedRoutes } from '../../utils/ProtectedRoutes';
 import Appointments from '../pages/Appointments';
+import EventScheduler from '../EventScheduler';
 const UserRouter = () => {
     return (
         <Routes>
@@ -28,6 +29,8 @@ const UserRouter = () => {
             <Route exact path="/dashboard/blocks" element={<ProtectedRoutes component={AllBlocks} />} />
             <Route exact path="/dashboard/phases" element={<ProtectedRoutes component={AllPhases} />} />
             <Route exact path="/dashboard/appointment/:id" element={<AuthenticatedRoutes component={Appointments} />} />
+            <Route exact path="/dashboard/events/:id" element={<AuthenticatedRoutes component={EventScheduler} />} />
+
             {/* <Route exact path="/dashboard/changepassword" element={<AuthenticatedRoutes component={AllPhases} />}/> */}
         </Routes>
     );

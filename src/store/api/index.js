@@ -202,3 +202,23 @@ export const getAllAppointmentsApi = async (query) => {
   return res;
 }
 
+
+// Event Api
+export const addNewEventApi = async (Data) => {
+  const res = await api.post("/events/create", Data, config);
+  return res;
+};
+
+export const editEventApi = async (id, Data) => {
+  const res = await api.patch(`/events/update/${id}`, Data, config);
+  return res;
+};
+export const getAllEventsApi = async (user) => {
+  const res = await api.get(`/events/list?user=${user}`, config);
+  return res;
+};
+
+export const deleteEventApi = async (id) => {
+  const res = api.delete(`/events/delete/${id}`, config);
+  return res;
+}
