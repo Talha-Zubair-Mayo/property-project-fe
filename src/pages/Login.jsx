@@ -5,6 +5,7 @@ import { DataEncryption, loginValidationSchema } from '../utils';
 import { userLoginApi } from '../store/api';
 import { useDispatch } from 'react-redux';
 import { loginAction } from '../store/actions';
+import { toast } from 'react-toastify';
 
 function Login() {
   const dispatch = useDispatch();
@@ -15,8 +16,11 @@ function Login() {
         localStorage.setItem('token', response?.data?.result?.token);
         navigate('/');
         dispatch(loginAction(response.data.result));
+        toast.success(response?.data?.message);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        toast.error(error?.data?.message);
+      });
   };
 
   const initialValues = {

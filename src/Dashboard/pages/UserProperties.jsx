@@ -10,6 +10,7 @@ import moment from 'moment';
 import UserAddProperty from './UserAddProperty';
 import Modal from 'react-bootstrap/Modal';
 import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function UserProperties() {
   const [show, setShow] = useState(false);
@@ -33,13 +34,17 @@ export default function UserProperties() {
         .then((property) => {
           setAllProperties(property?.data?.result);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          toast.error(error?.data?.message);
+        });
     } else {
       getAllPropertiesApi()
         .then((property) => {
           setAllProperties(property?.data?.result);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          toast.error(error?.data?.message);
+        });
     }
   }, [society, phase, block]);
 
@@ -52,13 +57,18 @@ export default function UserProperties() {
   const deleteProperty = (id) => {
     deletePropertyApi(id)
       .then((response) => {
+        toast.success(response?.data?.message);
         getAllPropertiesApi()
           .then((properties) => {
             setAllProperties(properties.data.result);
           })
-          .catch((err) => {});
+          .catch((error) => {
+            toast.error(error?.data?.message);
+          });
       })
-      .catch((err) => {});
+      .catch((error) => {
+        toast.error(error?.data?.message);
+      });
   };
   return (
     <>

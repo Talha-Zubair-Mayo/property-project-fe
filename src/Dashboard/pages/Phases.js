@@ -8,6 +8,7 @@ import { getAllSocietiesAction, getAllPhasesAction } from '../../store/actions';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
 import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 export default function AllPhases() {
   const allSocieties = useSelector(state => state.AllSocieties);
   // const AllPhases = useSelector(state => state.AllPhases);
@@ -26,13 +27,17 @@ export default function AllPhases() {
         .then((phase) => {
           setAllPhases(phase?.data?.result);
         })
-        .catch((error) => { });
+        .catch((error) => {
+          toast.error(error?.data?.message);
+        });
     } else {
       getAllPhasesApi()
         .then((phase) => {
           setAllPhases(phase?.data?.result);
         })
-        .catch((error) => { });
+        .catch((error) => {
+          toast.error(error?.data?.message);
+        });
     }
   }, []);
 
@@ -60,13 +65,17 @@ export default function AllPhases() {
             .then((phase) => {
               setAllPhases(phase?.data?.result);
             })
-            .catch((error) => { });
+            .catch((error) => {
+              toast.error(error?.data?.message);
+            });
         } else {
           getAllPhasesApi()
             .then((phase) => {
               setAllPhases(phase?.data?.result);
             })
-            .catch((error) => { });
+            .catch((error) => {
+              toast.error(error?.data?.message);
+            });
         }
         setEditMode(false);
         setInitialValues({
@@ -76,32 +85,45 @@ export default function AllPhases() {
           society: '',
 
         })
-      }).catch((err) => { })
+        toast.success(response?.data?.message);
+      }).catch((error) => {
+        toast.error(error?.data?.message);
+      })
     } else {
       addNewPhaseApi(FormDataFunc(values)).then((response) => {
+        toast.success(response?.data?.message);
         if (society !== null) {
           getPhaseBySocietyidApi(society)
             .then((phase) => {
               setAllPhases(phase?.data?.result);
             })
-            .catch((error) => { });
+            .catch((error) => {
+              toast.error(error?.data?.message);
+            });
         } else {
           getAllPhasesApi()
             .then((phase) => {
               setAllPhases(phase?.data?.result);
             })
-            .catch((error) => { });
+            .catch((error) => {
+              toast.error(error?.data?.message);
+            });
         }
         props.resetForm();
         handleClose();
-      }).catch((err) => { })
+      }).catch((error) => {
+        toast.error(error?.data?.message);
+      })
     }
 
   };
   const deletePhase = (id) => {
     deletePhaseApi(id).then((response) => {
       dispatch(getAllPhasesAction())
-    }).catch((err) => { })
+      toast.success(response?.data?.message);
+    }).catch((error) => {
+      toast.error(error?.data?.message);
+    })
   }
 
   const editModeFunc = (data) => {

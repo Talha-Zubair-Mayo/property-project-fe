@@ -4,6 +4,7 @@ import { profileValidationSchema } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '../../store/actions';
 import { updateUserApi } from "../../store/api"
+import { toast } from 'react-toastify';
 export default function PersonalInformation() {
   const userInfo = useSelector((state) => state.UserLogin.data.user);
 
@@ -13,8 +14,11 @@ export default function PersonalInformation() {
     updateUserApi(userInfo?._id, values)
       .then((response) => {
         dispatch(loginAction(response.data.result));
+        toast.success(response?.data?.message)
       })
-      .catch((error) => { });
+      .catch((error) => {
+        toast.error(error?.data?.message)
+      });
   };
 
   const initialValues = {

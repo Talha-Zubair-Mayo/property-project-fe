@@ -1,5 +1,4 @@
 import { Scheduler } from "@aldabil/react-scheduler";
-import { EVENTS } from "./events";
 import { addNewEventApi, getAllEventsApi, editEventApi, deleteEventApi } from "../../store/api"
 import moment from "moment"
 import Hooks from "../../hooks";

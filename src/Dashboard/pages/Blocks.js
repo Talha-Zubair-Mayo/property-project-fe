@@ -8,6 +8,7 @@ import { getAllSocietiesAction, getAllBlocksAction } from '../../store/actions';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
 import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 export default function AllBlocks() {
   const allSocieties = useSelector(state => state.AllSocieties);
   // const AllBlocks = useSelector(state => state.AllBlocks);
@@ -20,7 +21,7 @@ export default function AllBlocks() {
     dispatch(getAllSocietiesAction())
     dispatch(getAllBlocksAction())
   }, [])
-  
+
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
   const phase = new URLSearchParams(search).get('phase');
@@ -31,13 +32,19 @@ export default function AllBlocks() {
         .then((block) => {
           setAllBlocks(block?.data?.result);
         })
-        .catch((error) => { });
+        .catch((error) => {
+          toast.error(error?.data?.message);
+
+        });
     } else {
       getAllBlocksApi()
         .then((block) => {
           setAllBlocks(block?.data?.result);
         })
-        .catch((error) => { });
+        .catch((error) => {
+          toast.error(error?.data?.message);
+
+        });
     }
   }, [society, phase]);
 
@@ -52,14 +59,15 @@ export default function AllBlocks() {
   });
   const SelectSociety = (value) => {
     if (value !== 'Select Society') {
-      getPhaseBySocietyidApi(value).then((res) => {
-        setPhasesBySociety(res.data.result);
+      getPhaseBySocietyidApi(value).then((response) => {
+        setPhasesBySociety(response.data.result);
       })
     }
   }
   const onSubmit = (values, props) => {
     if (editMode) {
       editBlockApi(initialValues._id, FormDataFunc(values)).then((response) => {
+        toast.success(response?.data?.message);
         handleClose();
         props.resetForm();
         dispatch(getAllBlocksAction())
@@ -72,24 +80,35 @@ export default function AllBlocks() {
           phase: '',
 
         })
-      }).catch((err) => { })
+      }).catch((error) => {
+        toast.error(error?.data?.message);
+
+      })
     } else {
       addNewBlockApi(FormDataFunc(values)).then((response) => {
+        toast.success(response?.data?.message);
         dispatch(getAllBlocksAction())
         props.resetForm();
         handleClose();
-      }).catch((err) => { })
+      }).catch((error) => {
+        toast.error(error?.data?.message);
+
+      })
     }
 
   };
   const deletePhase = (id) => {
     deleteBlockApi(id).then((response) => {
       dispatch(getAllBlocksAction())
-    }).catch((err) => { })
+      toast.success(response?.data?.message);
+    }).catch((error) => {
+      toast.error(error?.data?.message);
+
+    })
   }
   const editModeFunc = (data) => {
-    getPhaseBySocietyidApi(data.society._id).then((res) => {
-      setPhasesBySociety(res.data.result);
+    getPhaseBySocietyidApi(data.society._id).then((response) => {
+      setPhasesBySociety(response.data.result);
       setEditMode(true);
       setInitialValues({
         _id: data._id,

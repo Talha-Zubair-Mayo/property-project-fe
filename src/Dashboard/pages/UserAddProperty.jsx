@@ -73,19 +73,24 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
     if (editMode) {
       editPropertyApi(Values._id, FormDataMultipleFiles(values))
         .then((response) => {
+          toast.success(response?.data?.message);
           setEditMode(false);
           handleClose();
           props.resetForm();
         })
-        .catch((err) => {});
+        .catch((err) => {
+          toast.error(error?.data?.message);
+        });
     } else {
       addNewPropertyApi(FormDataMultipleFiles(values))
         .then((response) => {
-
+          toast.success(response?.data?.message);
           props.resetForm();
           navigate('/dashboard/properties');
         })
-        .catch((err) => {});
+        .catch((err) => {
+          toast.error(error?.data?.message);
+        });
     }
   };
   const SelectSociety = (value) => {

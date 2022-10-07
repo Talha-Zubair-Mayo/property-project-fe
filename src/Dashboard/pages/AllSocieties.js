@@ -9,6 +9,7 @@ import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
+import { toast } from 'react-toastify';
 export default function AllSocieties() {
   const allSocieties = useSelector(state => state.AllSocieties)
   const [show, setShow] = useState(false);
@@ -29,6 +30,7 @@ export default function AllSocieties() {
   const onSubmit = (values, props) => {
     if (editMode) {
       editSocietyApi(initialValues._id, FormDataFunc(values)).then((response) => {
+        toast.success(response?.data?.message);
         handleClose();
         props.resetForm();
         dispatch(getAllSocietiesAction())
@@ -40,24 +42,29 @@ export default function AllSocieties() {
           managerName: '',
           photo: []
         })
-      }).catch((err) => { })
+      }).catch((error) => {
+        toast.error(error?.data?.message);
+
+      })
     } else {
       addNewSocietyApi(FormDataFunc(values)).then((response) => {
+        toast.success(response?.data?.message);
         handleClose();
         props.resetForm();
         dispatch(getAllSocietiesAction())
-      }).catch((err) => { 
-
-
-        
+      }).catch((error) => {
+        toast.error(error?.data?.message);
       })
     }
 
   };
   const deleteSociety = (id) => {
     deleteSocietyApi(id).then((response) => {
+      toast.success(response?.data?.message);
       dispatch(getAllSocietiesAction())
-    }).catch((err) => { })
+    }).catch((error) => {
+      toast.error(error?.data?.message);
+    })
   }
 
   const editModeFunc = (data) => {
@@ -168,7 +175,7 @@ export default function AllSocieties() {
                         <ErrorMessage component="div" name="photo" className="invalid-feedback" />
                       </div>
 
-                      <button disabled={isSubmitting} type="submit" className="btn btn-primary">
+                      <button type="submit" className="btn btn-primary">
                         Submit
                       </button>
                     </Form>

@@ -3,6 +3,7 @@ import { DataEncryption, FormDataFunc, registerValidationSchema } from '../utils
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { userRegisterApi } from '../store/api';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Register() {
   const navigate = useNavigate();
@@ -11,13 +12,13 @@ function Register() {
     userRegisterApi(FormDataFunc(values))
       .then((response) => {
         navigate('/login');
+        props.resetForm();
+        props.setSubmitting(false);
+        toast.success(response?.data?.message);
       })
       .catch((error) => {
+        toast.error(error?.data?.message);
       });
-    setTimeout(() => {
-      props.resetForm();
-      props.setSubmitting(false);
-    }, 2000);
   };
 
   const initialValues = {
@@ -140,7 +141,6 @@ function Register() {
                     <div className="custom-control custom-radio custom-control-inline">
                       <Field
                         type="radio"
-                        checked
                         id="customRadioInline1"
                         name="userType"
                         value="customer"
