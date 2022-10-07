@@ -68,7 +68,6 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
         setBlockBySocietyAndPhaseId(res.data.result);
       });
     }
-    // console.log(Values?.features);
   }, [editMode]);
   const onSubmit = (values, props) => {
     if (editMode) {
@@ -82,7 +81,6 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
     } else {
       addNewPropertyApi(FormDataMultipleFiles(values))
         .then((response) => {
-          console.log(response);
 
           props.resetForm();
           navigate('/dashboard/properties');
@@ -579,7 +577,6 @@ const UploadComponent = (props) => {
     onDrop: (acceptedFiles) => {
       setFieldValue('photo', []);
       setPhotos([]);
-      console.log('acceptedFiles', acceptedFiles);
       setFieldValue('photo', acceptedFiles);
       setPhotos(
         acceptedFiles.map((file) => {

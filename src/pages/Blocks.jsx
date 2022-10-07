@@ -18,7 +18,6 @@ export default function AllBlocks() {
     } else {
       getAllBlocksApi()
         .then((block) => {
-          console.log(block?.data?.result);
           setAllBlocks(block?.data?.result);
         })
         .catch((error) => {});

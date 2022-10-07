@@ -13,9 +13,7 @@ function Register() {
         navigate('/login');
       })
       .catch((error) => {
-        console.log;
       });
-    console.log(props);
     setTimeout(() => {
       props.resetForm();
       props.setSubmitting(false);

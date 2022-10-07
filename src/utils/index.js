@@ -126,7 +126,6 @@ export const agentContactFormValidationSchema = Yup.object().shape({
 
 
 export const FormDataFunc = (Data) => {
-    console.log(Data);
     const formData = new FormData();
     var objMap = new Map(Object.entries(Data));
     objMap.forEach((item, key) => {

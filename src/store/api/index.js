@@ -5,7 +5,6 @@ export var countryInfo;
 export var token = localStorage.getItem("token");
 let config = {};
 if (token) {
-  console.log(token)
   config.headers = { Authorization: token };
 }
 // User Login API
@@ -83,7 +82,6 @@ export const addNewPhaseApi = async (Data) => {
 };
 
 export const editPhaseApi = async (id, Data) => {
-  console.log(id, Data)
   const res = await api.patch(`/phase/update/${id}`, Data, config);
   return res;
 };
@@ -137,7 +135,6 @@ export const getBlockBySocietyAndPhaseIdApi = async (society, phase) => {
 
 // Property Api
 export const addNewPropertyApi = async (Data) => {
-  console.log(Data)
   config.ContentType = "multipart/form-data";
   const res = await api.post("/property/create", Data, config);
   return res;
@@ -145,7 +142,6 @@ export const addNewPropertyApi = async (Data) => {
 
 
 export const editPropertyApi = async (id, Data) => {
-  console.log(id, Data)
   config.ContentType = "multipart/form-data";
   const res = await api.patch(`/property/update/${id}`, Data, config);
   return res;

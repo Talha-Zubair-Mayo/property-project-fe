@@ -8,7 +8,6 @@ export default function Header() {
   const userinfo = useSelector((state) => state.UserLogin.data.user);
   const [showDropdown, setShowDropdown] = useState(false);
   const { Logout, AgentRole, IsUserLoggedIn, SuperAdmin, ActivatedRoutes } = Hooks();
-  console.log(ActivatedRoutes());
   const ToggleProfileDropdown = () => {
     setShowDropdown(!showDropdown);
   };

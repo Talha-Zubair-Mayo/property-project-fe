@@ -30,7 +30,6 @@ export default function AllPhases() {
     } else {
       getAllPhasesApi()
         .then((phase) => {
-          console.log(phase?.data?.result);
           setAllPhases(phase?.data?.result);
         })
         .catch((error) => { });
@@ -65,7 +64,6 @@ export default function AllPhases() {
         } else {
           getAllPhasesApi()
             .then((phase) => {
-              console.log(phase?.data?.result);
               setAllPhases(phase?.data?.result);
             })
             .catch((error) => { });
@@ -90,7 +88,6 @@ export default function AllPhases() {
         } else {
           getAllPhasesApi()
             .then((phase) => {
-              console.log(phase?.data?.result);
               setAllPhases(phase?.data?.result);
             })
             .catch((error) => { });

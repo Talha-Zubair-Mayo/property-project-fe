@@ -26,7 +26,6 @@ export default function PropertiesGrid() {
   const phase = new URLSearchParams(search).get('phase');
   const block = new URLSearchParams(search).get('block');
   const agent = new URLSearchParams(search).get('agent');
-  console.log(agent);
   const [AllProperties, setAllProperties] = useState([]);
   useEffect(() => {
     if (society && phase && block !== null) {
@@ -44,7 +43,6 @@ export default function PropertiesGrid() {
     } else {
       getAllPropertiesApi()
         .then((property) => {
-          console.log(property?.data?.result);
           setAllProperties(property?.data?.result);
         })
         .catch((error) => {});

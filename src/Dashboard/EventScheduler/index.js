@@ -6,7 +6,6 @@ import Hooks from "../../hooks";
 export default function EventScheduler() {
     const { UserDetails } = Hooks();
     const fetchRemote = async (query) => {
-        console.log("Query: ", query);
         const response = await getAllEventsApi(UserDetails().id)
         return response?.data?.result?.map((item) => {
             return ({
@@ -22,7 +21,6 @@ export default function EventScheduler() {
     };
 
     const handleConfirm = async (event, action) => {
-        console.log(event, action);
         if (action === "edit") {
             const response = await editEventApi(event?.event_id, {
                 title: event?.title,

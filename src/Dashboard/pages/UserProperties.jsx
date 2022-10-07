@@ -37,7 +37,6 @@ export default function UserProperties() {
     } else {
       getAllPropertiesApi()
         .then((property) => {
-          console.log(property?.data?.result);
           setAllProperties(property?.data?.result);
         })
         .catch((error) => {});

@@ -18,7 +18,6 @@ export default function Appointments() {
         } else {
             getAllAppointmentsApi(`createdBy=${id}`)
                 .then((appointment) => {
-                    console.log(appointment?.data?.result);
                     setAllAppointments(appointment?.data?.result);
                 })
                 .catch((error) => { });
