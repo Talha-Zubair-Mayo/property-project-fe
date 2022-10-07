@@ -13,8 +13,8 @@ export default function EventScheduler() {
                 event_id: item?._id,
                 title: item?.title,
                 description: item?.description,
-                start: new Date(item?.start),
-                end: new Date(item?.end)
+                start: item?.start ? new Date(item?.start) : "",
+                end: item?.end ? new Date(item?.end) : ""
             })
         }
         );
@@ -27,8 +27,8 @@ export default function EventScheduler() {
             const response = await editEventApi(event?.event_id, {
                 title: event?.title,
                 description: event?.description,
-                start: moment(event.start).format("YYYY MM DD HH:MM"),
-                end: moment(event.end).format("YYYY MM DD HH:MM")
+                start: moment(event?.start).format("YYYY MM DD HH:MM"),
+                end: moment(event?.end).format("YYYY MM DD HH:MM")
             })
             return {
                 event_id: response?.data?.result?._id,
@@ -42,8 +42,8 @@ export default function EventScheduler() {
             const response = await addNewEventApi({
                 title: event?.title,
                 description: event?.description,
-                start: moment(event.start).format("YYYY MM DD HH:MM"),
-                end: moment(event.end).format("YYYY MM DD HH:MM")
+                start: moment(event?.start).format("YYYY MM DD HH:MM"),
+                end: moment(event?.end).format("YYYY MM DD HH:MM")
             })
             return {
                 event_id: response?.data?.result?._id,
@@ -53,7 +53,7 @@ export default function EventScheduler() {
                 end: new Date(response?.data?.result?.end)
             }
         }
-       
+
     };
 
     const handleDelete = async (deletedId) => {
@@ -76,7 +76,8 @@ export default function EventScheduler() {
                 ]}
                 day={{
                     startHour: 0,
-                    endHour: 24
+                    endHour: 24,
+                    step: 60,
                 }}
                 week={{
                     weekDays: [0, 1, 2, 3, 4, 5],

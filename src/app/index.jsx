@@ -22,19 +22,15 @@ function App() {
   const location = useLocation();
   if (location.pathname.includes('dashboard')) {
     return (
-      <>
-        <UserLayout>
-          <UserRouter />
-        </UserLayout>
-      </>
+      <UserLayout>
+        <UserRouter />
+      </UserLayout>
     );
   } else {
     return (
-      <>
-        <Layout>
-          <Router />
-        </Layout>
-      </>
+      <Layout>
+        <Router />
+      </Layout>
     );
   }
 }
