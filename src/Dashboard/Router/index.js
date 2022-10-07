@@ -18,7 +18,7 @@ import EventScheduler from '../EventScheduler';
 const UserRouter = () => {
     return (
         <Routes>
-            <Route exact path="/dashboard" element={<ProtectedRoutes component={Dashboard} />} />
+            {/* <Route exact path="/dashboard" element={<ProtectedRoutes component={Dashboard} />} /> */}
             <Route exact path="/dashboard/profile" element={<AuthenticatedRoutes component={UserProfile} />} />
             <Route exact path="/dashboard/properties" element={<ProtectedRoutes component={UserProperties} />} />
             <Route exact path="/dashboard/favproperties" element={<AuthenticatedRoutes component={UserFavoriteProperties} />} />

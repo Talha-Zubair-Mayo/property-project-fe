@@ -11,6 +11,7 @@ import UserAddProperty from './UserAddProperty';
 import Modal from 'react-bootstrap/Modal';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Pagination } from '@mui/material';
 
 export default function UserProperties() {
   const [show, setShow] = useState(false);
@@ -23,29 +24,39 @@ export default function UserProperties() {
   };
   const [allProperties, setAllProperties] = useState([]);
   const { SuperAdmin, AgentRole, UserDetails } = Hooks();
-
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
   const phase = new URLSearchParams(search).get('phase');
   const block = new URLSearchParams(search).get('block');
-  useEffect(() => {
+  const getAllProperties = (page) => {
     if (society && phase && block !== null) {
-      getPropertyBySocietyPhaseAndBlockIdApi(society, phase, block)
-        .then((property) => {
-          setAllProperties(property?.data?.result);
+      getPropertyBySocietyPhaseAndBlockIdApi(society, phase, block, page)
+        .then((response) => {
+          setAllProperties(response?.data?.result);
+          setTotalPages(response?.data?.pagination?.pages);
+          setCurrentPage(response?.data?.pagination?.page);
         })
         .catch((error) => {
           toast.error(error?.data?.message);
         });
     } else {
-      getAllPropertiesApi()
-        .then((property) => {
-          setAllProperties(property?.data?.result);
+      const query = `page=${page}`;
+      getAllPropertiesApi(query)
+        .then((response) => {
+          setAllProperties(response?.data?.result);
+          setTotalPages(response?.data?.pagination?.pages);
+          setCurrentPage(response?.data?.pagination?.page);
         })
         .catch((error) => {
           toast.error(error?.data?.message);
         });
     }
+  };
+
+  useEffect(() => {
+    getAllProperties(1);
   }, [society, phase, block]);
 
   const editModeFunc = (data) => {
@@ -58,17 +69,16 @@ export default function UserProperties() {
     deletePropertyApi(id)
       .then((response) => {
         toast.success(response?.data?.message);
-        getAllPropertiesApi()
-          .then((properties) => {
-            setAllProperties(properties.data.result);
-          })
-          .catch((error) => {
-            toast.error(error?.data?.message);
-          });
+        getAllProperties(currentPage);
       })
       .catch((error) => {
         toast.error(error?.data?.message);
       });
+  };
+
+  const handlePageChange = (e, p) => {
+    getAllPhases(p);
+    setCurrentPage(p);
   };
   return (
     <>
@@ -173,35 +183,16 @@ export default function UserProperties() {
             </tbody>
           </table>
           <div className="pagination-container">
-            <nav>
-              <ul className="pagination">
-                <li className="page-item">
-                  <a className="btn btn-common" href="#">
-                    <i className="lni-chevron-left" /> Previous
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    1
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="btn btn-common" href="#">
-                    Next <i className="lni-chevron-right" />
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            {allProperties?.length > 0 && (
+              <Pagination
+                count={totalPages}
+                size="large"
+                page={currentPage}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePageChange}
+              />
+            )}
           </div>
         </div>
       </div>

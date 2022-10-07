@@ -4,11 +4,12 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { FormDataFunc, BlocksValidationSchema } from '../../utils';
 import { addNewBlockApi, deleteBlockApi, editBlockApi, getPhaseBySocietyidApi, getAllBlocksApi, getBlockBySocietyAndPhaseIdApi } from '../../store/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllSocietiesAction, getAllBlocksAction } from '../../store/actions';
+import { getAllSocietiesAction, } from '../../store/actions';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
 import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Pagination from '@mui/material/Pagination';
 export default function AllBlocks() {
   const allSocieties = useSelector(state => state.AllSocieties);
   // const AllBlocks = useSelector(state => state.AllBlocks);
@@ -16,37 +17,45 @@ export default function AllBlocks() {
   const [editMode, setEditMode] = useState(false);
   const [phasesBySociety, setPhasesBySociety] = useState([])
   const handleClose = () => setShow(false);
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllSocietiesAction())
-    dispatch(getAllBlocksAction())
-  }, [])
-
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
   const phase = new URLSearchParams(search).get('phase');
   const [AllBlocks, setAllBlocks] = useState([]);
-  useEffect(() => {
+
+  const getAllBlocks = (page) => {
     if (society !== null && phase !== null) {
-      getBlockBySocietyAndPhaseIdApi(society, phase)
-        .then((block) => {
-          setAllBlocks(block?.data?.result);
+      getBlockBySocietyAndPhaseIdApi(society, phase, page)
+        .then((response) => {
+          setAllBlocks(response?.data?.result);
+          setTotalPages(response?.data?.pagination?.pages);
+          setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
           toast.error(error?.data?.message);
 
         });
     } else {
-      getAllBlocksApi()
-        .then((block) => {
-          setAllBlocks(block?.data?.result);
+      getAllBlocksApi(page)
+        .then((response) => {
+          setAllBlocks(response?.data?.result);
+          setTotalPages(response?.data?.pagination?.pages);
+          setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
           toast.error(error?.data?.message);
 
         });
     }
-  }, [society, phase]);
+  }
+  useEffect(() => {
+    dispatch(getAllSocietiesAction())
+    getAllBlocks(1)
+  }, []);
+
+
 
 
   const { SuperAdmin } = Hooks();
@@ -70,7 +79,7 @@ export default function AllBlocks() {
         toast.success(response?.data?.message);
         handleClose();
         props.resetForm();
-        dispatch(getAllBlocksAction())
+        getAllBlocks(currentPage)
         setEditMode(false);
         setInitialValues({
           name: '',
@@ -87,7 +96,7 @@ export default function AllBlocks() {
     } else {
       addNewBlockApi(FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
-        dispatch(getAllBlocksAction())
+        getAllBlocks(currentPage)
         props.resetForm();
         handleClose();
       }).catch((error) => {
@@ -99,7 +108,7 @@ export default function AllBlocks() {
   };
   const deletePhase = (id) => {
     deleteBlockApi(id).then((response) => {
-      dispatch(getAllBlocksAction())
+      getAllBlocks(currentPage)
       toast.success(response?.data?.message);
     }).catch((error) => {
       toast.error(error?.data?.message);
@@ -111,16 +120,22 @@ export default function AllBlocks() {
       setPhasesBySociety(response.data.result);
       setEditMode(true);
       setInitialValues({
-        _id: data._id,
-        name: data.name,
-        ownerName: data.ownerName,
-        status: data.status,
-        society: data.society,
-        phasee: data.phasee
+        _id: data?._id,
+        name: data?.name,
+        ownerName: data?.ownerName,
+        status: data?.status,
+        society: data?.society,
+        phasee: data?.phasee
 
       });
       setShow(true)
     })
+  }
+
+  const handlePageChange = (e, p) => {
+    getAllBlocks(p)
+    setCurrentPage(p)
+
   }
 
 
@@ -303,37 +318,17 @@ export default function AllBlocks() {
 
             </tbody>
           </table>
-          <div className="pagination-container">
-            <nav>
-              <ul className="pagination">
-                <li className="page-item">
-                  <a className="btn btn-common" href="#">
-                    <i className="lni-chevron-left" /> Previous{' '}
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    1
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="btn btn-common" href="#">
-                    Next <i className="lni-chevron-right" />
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          {
+            AllBlocks?.length > 0 &&
+            <Pagination
+              count={totalPages}
+              size="large"
+              page={currentPage}
+              variant="outlined"
+              shape="rounded"
+              onChange={handlePageChange}
+            />
+          }
         </div>
       </div>
     </>

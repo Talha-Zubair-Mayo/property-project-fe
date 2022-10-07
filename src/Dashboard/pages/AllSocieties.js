@@ -2,22 +2,29 @@ import React, { useState, useEffect } from 'react'
 import Hooks from '../../hooks';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { FormDataFunc, SocietiesValidationSchema } from '../../utils';
-import { addNewSocietyApi, deleteSocietyApi, editSocietyApi } from '../../store/api';
+import { addNewSocietyApi, deleteSocietyApi, editSocietyApi, getAllSocietiesApi } from '../../store/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllSocietiesAction } from '../../store/actions';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import { toast } from 'react-toastify';
 export default function AllSocieties() {
-  const allSocieties = useSelector(state => state.AllSocieties)
+  // const allSocieties = useSelector(state => state.AllSocieties)
+  const [allSocieties, setAllSocieties] = useState([])
+  const [totalPages, setTotalPages] = useState(0)
   const [show, setShow] = useState(false);
   const [editMode, setEditMode] = useState(false)
   const handleClose = () => setShow(false);
-  const dispatch = useDispatch();
+  const getAllSocieties = (page) => {
+    getAllSocietiesApi(page ? page : 1).then((response) => {
+      setAllSocieties(response?.data?.result)
+      setTotalPages(response?.data?.pagination?.pages)
+    })
+  }
+
   useEffect(() => {
-    dispatch(getAllSocietiesAction())
+    getAllSocieties()
   }, [])
   const { SuperAdmin } = Hooks();
   const [initialValues, setInitialValues] = useState({
@@ -33,7 +40,7 @@ export default function AllSocieties() {
         toast.success(response?.data?.message);
         handleClose();
         props.resetForm();
-        dispatch(getAllSocietiesAction())
+        getAllSocieties()
         setEditMode(false);
         setInitialValues({
           name: '',
@@ -51,7 +58,7 @@ export default function AllSocieties() {
         toast.success(response?.data?.message);
         handleClose();
         props.resetForm();
-        dispatch(getAllSocietiesAction())
+        getAllSocieties()
       }).catch((error) => {
         toast.error(error?.data?.message);
       })
@@ -61,7 +68,7 @@ export default function AllSocieties() {
   const deleteSociety = (id) => {
     deleteSocietyApi(id).then((response) => {
       toast.success(response?.data?.message);
-      dispatch(getAllSocietiesAction())
+      getAllSocieties()
     }).catch((error) => {
       toast.error(error?.data?.message);
     })
@@ -78,6 +85,11 @@ export default function AllSocieties() {
       photo: data.photo
     });
     setShow(true)
+  }
+
+  const handlePageChange = (e, p) => {
+    console.log(p)
+    getAllSocieties(p)
   }
 
 
@@ -99,7 +111,6 @@ export default function AllSocieties() {
                   initialValues={initialValues}
                   onSubmit={onSubmit}
                   validationSchema={SocietiesValidationSchema}
-
                 >
                   {({ touched, errors, isSubmitting, values, setFieldValue }) => (
                     <Form autoComplete="off">
@@ -203,7 +214,7 @@ export default function AllSocieties() {
             </thead>
             <tbody>
 
-              {allSocieties?.data?.map((item, key) => {
+              {allSocieties?.map((item, key) => {
                 return (<tr>
                   <td className="image myelist">
                     <Link to={`/dashboard/phases?society=${item?._id}`}>
@@ -242,7 +253,16 @@ export default function AllSocieties() {
 
             </tbody>
           </table>
-          <Pagination count={10} color="primary" />
+          {
+            allSocieties?.length > 0 && <Pagination
+              count={totalPages}
+              size="large"
+              // page={page}
+              variant="outlined"
+              shape="rounded"
+              onChange={handlePageChange}
+            />
+          }
         </div>
       </div>
     </>

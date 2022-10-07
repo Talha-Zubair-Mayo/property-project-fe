@@ -50,7 +50,7 @@ export const updateUserApi = async (id, Data) => {
 
 // Society Api
 export const addNewSocietyApi = async (Data) => {
-  const res = await api.post("/society/create", Data);
+  const res = await api.post(`/society/create`, Data);
   return res;
 };
 
@@ -62,8 +62,8 @@ export const editSocietyApi = async (id, Data) => {
 
 
 
-export const getAllSocietiesApi = async () => {
-  const res = await api.get("/society/list");
+export const getAllSocietiesApi = async (page) => {
+  const res = await api.get(`/society/list?page=${page}`);
   return res;
 };
 
@@ -77,7 +77,7 @@ export const deleteSocietyApi = async (id) => {
 
 // Phase Api
 export const addNewPhaseApi = async (Data) => {
-  const res = await api.post("/phase/create", Data, config);
+  const res = await api.post(`/phase/create`, Data, config);
   return res;
 };
 
@@ -85,8 +85,8 @@ export const editPhaseApi = async (id, Data) => {
   const res = await api.patch(`/phase/update/${id}`, Data, config);
   return res;
 };
-export const getAllPhasesApi = async () => {
-  const res = await api.get("/phase/list");
+export const getAllPhasesApi = async (page) => {
+  const res = await api.get(`/phase/list?page=${page}`);
   return res;
 };
 
@@ -95,8 +95,8 @@ export const deletePhaseApi = async (id) => {
   return res;
 }
 
-export const getPhaseBySocietyidApi = async (id) => {
-  const res = await api.get(`/phase/list?society=${id}`);
+export const getPhaseBySocietyidApi = async (id, page) => {
+  const res = await api.get(`/phase/list?society=${id}&page=${page}`);
   return res;
 }
 
@@ -104,7 +104,7 @@ export const getPhaseBySocietyidApi = async (id) => {
 
 // block Api
 export const addNewBlockApi = async (Data) => {
-  const res = await api.post("/block/create", Data, config);
+  const res = await api.post(`/block/create`, Data, config);
   return res;
 };
 
@@ -116,8 +116,8 @@ export const editBlockApi = async (id, Data) => {
 
 
 
-export const getAllBlocksApi = async () => {
-  const res = await api.get("/block/list");
+export const getAllBlocksApi = async (page) => {
+  const res = await api.get(`/block/list?page=${page}`);
   return res;
 };
 
@@ -127,22 +127,22 @@ export const deleteBlockApi = async (id) => {
   return res;
 }
 
-export const getBlockBySocietyAndPhaseIdApi = async (society, phase) => {
-  const res = await api.get(`/block/list?society=${society}&phase=${phase}`);
+export const getBlockBySocietyAndPhaseIdApi = async (society, phase, page) => {
+  const res = await api.get(`/block/list?society=${society}&phase=${phase}&page=${page}`);
   return res;
 }
 
 
 // Property Api
 export const addNewPropertyApi = async (Data) => {
-  config.ContentType = "multipart/form-data";
-  const res = await api.post("/property/create", Data, config);
+  config.ContentType = `multipart/form-data`;
+  const res = await api.post(`/property/create`, Data, config);
   return res;
 };
 
 
 export const editPropertyApi = async (id, Data) => {
-  config.ContentType = "multipart/form-data";
+  config.ContentType = `multipart/form-data`;
   const res = await api.patch(`/property/update/${id}`, Data, config);
   return res;
 };
@@ -150,8 +150,8 @@ export const editPropertyApi = async (id, Data) => {
 
 
 export const getAllPropertiesApi = async (query) => {
-  const url = query ? `/property/list${query}` : '/property/list'
-  const res = await api.get(url);
+  // const url = query ? 
+  const res = await api.get(`/property/list?${query ? query : ''}`);
   return res;
 };
 
@@ -161,8 +161,8 @@ export const deletePropertyApi = async (id) => {
   return res;
 }
 
-export const getPropertyBySocietyPhaseAndBlockIdApi = async (society, phase, block) => {
-  const res = await api.get(`/property/list?society=${society}&phase=${phase}&block=${block}`);
+export const getPropertyBySocietyPhaseAndBlockIdApi = async (society, phase, block, page) => {
+  const res = await api.get(`/property/list?society=${society}&phase=${phase}&block=${block}&page=${page}`);
   return res;
 }
 export const getPropertyDetailsApi = async (propertyId) => {
@@ -170,7 +170,7 @@ export const getPropertyDetailsApi = async (propertyId) => {
   return res;
 }
 export const getPropertiesByUserIdApi = async (user) => {
-  const res = await api.get(`/property/list?user=${user}`);
+  const res = await api.get(`/property/list?user=${user}&page=`);
   return res;
 }
 
@@ -201,7 +201,7 @@ export const getAllAppointmentsApi = async (query) => {
 
 // Event Api
 export const addNewEventApi = async (Data) => {
-  const res = await api.post("/events/create", Data, config);
+  const res = await api.post(`/events/create`, Data, config);
   return res;
 };
 

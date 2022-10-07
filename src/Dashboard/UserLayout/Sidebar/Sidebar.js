@@ -14,7 +14,7 @@ export default function Sidebar() {
     <>
       <div className="user-profile-box mb-0">
         <div className="sidebar-header">
-          <Link to={SuperAdmin() || AgentRole() ? `/dashboard` : '/'}>
+          <Link to={SuperAdmin() || AgentRole() ? `/dashboard/profile` : '/'}>
             <img src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="header-logo2.png" />
 
           </Link>

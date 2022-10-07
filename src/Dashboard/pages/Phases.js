@@ -9,43 +9,46 @@ import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
 import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Pagination } from '@mui/material';
 export default function AllPhases() {
   const allSocieties = useSelector(state => state.AllSocieties);
-  // const AllPhases = useSelector(state => state.AllPhases);
-
   const [show, setShow] = useState(false);
   const [editMode, setEditMode] = useState(false)
   const handleClose = () => setShow(false);
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const dispatch = useDispatch();
-
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
   const [AllPhases, setAllPhases] = useState([]);
-  useEffect(() => {
+
+  const getAllPhases = (page) => {
     if (society !== null) {
-      getPhaseBySocietyidApi(society)
-        .then((phase) => {
-          setAllPhases(phase?.data?.result);
+      getPhaseBySocietyidApi(society, page)
+        .then((response) => {
+          setAllPhases(response?.data?.result);
+          setTotalPages(response?.data?.pagination?.pages);
+          setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
           toast.error(error?.data?.message);
         });
     } else {
-      getAllPhasesApi()
-        .then((phase) => {
-          setAllPhases(phase?.data?.result);
+      getAllPhasesApi(page)
+        .then((response) => {
+          setAllPhases(response?.data?.result);
+          setTotalPages(response?.data?.pagination?.pages);
+          setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
           toast.error(error?.data?.message);
         });
     }
-  }, []);
-
-
+  }
   useEffect(() => {
+    getAllPhases()
     dispatch(getAllSocietiesAction())
-    dispatch(getAllPhasesAction())
-  }, [])
+  }, []);
   const { SuperAdmin } = Hooks();
   const [initialValues, setInitialValues] = useState({
     name: '',
@@ -55,28 +58,11 @@ export default function AllPhases() {
     photo: ''
   });
   const onSubmit = (values, props) => {
-
     if (editMode) {
       editPhaseApi(initialValues._id, FormDataFunc(values)).then((response) => {
         handleClose();
         props.resetForm();
-        if (society !== null) {
-          getPhaseBySocietyidApi(society)
-            .then((phase) => {
-              setAllPhases(phase?.data?.result);
-            })
-            .catch((error) => {
-              toast.error(error?.data?.message);
-            });
-        } else {
-          getAllPhasesApi()
-            .then((phase) => {
-              setAllPhases(phase?.data?.result);
-            })
-            .catch((error) => {
-              toast.error(error?.data?.message);
-            });
-        }
+        getAllPhases(currentPage)
         setEditMode(false);
         setInitialValues({
           name: '',
@@ -92,23 +78,7 @@ export default function AllPhases() {
     } else {
       addNewPhaseApi(FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
-        if (society !== null) {
-          getPhaseBySocietyidApi(society)
-            .then((phase) => {
-              setAllPhases(phase?.data?.result);
-            })
-            .catch((error) => {
-              toast.error(error?.data?.message);
-            });
-        } else {
-          getAllPhasesApi()
-            .then((phase) => {
-              setAllPhases(phase?.data?.result);
-            })
-            .catch((error) => {
-              toast.error(error?.data?.message);
-            });
-        }
+        getAllPhases(currentPage)
         props.resetForm();
         handleClose();
       }).catch((error) => {
@@ -119,7 +89,7 @@ export default function AllPhases() {
   };
   const deletePhase = (id) => {
     deletePhaseApi(id).then((response) => {
-      dispatch(getAllPhasesAction())
+      getAllPhases(currentPage)
       toast.success(response?.data?.message);
     }).catch((error) => {
       toast.error(error?.data?.message);
@@ -137,6 +107,11 @@ export default function AllPhases() {
 
     });
     setShow(true)
+  }
+
+  const handlePageChange = (e, p) => {
+    getAllPhases(p)
+    setCurrentPage(p)
   }
 
 
@@ -299,35 +274,17 @@ export default function AllPhases() {
             </tbody>
           </table>
           <div className="pagination-container">
-            <nav>
-              <ul className="pagination">
-                <li className="page-item">
-                  <a className="btn btn-common" href="#">
-                    <i className="lni-chevron-left" /> Previous{' '}
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    1
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="btn btn-common" href="#">
-                    Next <i className="lni-chevron-right" />
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            {
+              AllPhases?.length > 0 &&
+              <Pagination
+                count={totalPages}
+                size="large"
+                page={currentPage}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePageChange}
+              />
+            }
           </div>
         </div>
       </div>

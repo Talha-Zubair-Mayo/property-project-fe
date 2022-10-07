@@ -11,7 +11,7 @@ const SideBarRoutes = () => {
             name: "Dashboard",
             link: '/dashboard',
             icon: 'fa fa-map-marker',
-            visiblity: AgentRole() || SuperAdmin()
+            visiblity: false
         }
         ,
         {
