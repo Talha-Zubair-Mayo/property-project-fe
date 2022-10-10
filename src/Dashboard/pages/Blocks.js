@@ -27,13 +27,16 @@ export default function AllBlocks() {
 
   const getAllBlocks = (page) => {
     if (society !== null && phase !== null) {
+
       getBlockBySocietyAndPhaseIdApi(society, phase, page)
         .then((response) => {
           setAllBlocks(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
+
           setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
+
           toast.error(error?.data?.message);
 
         });
@@ -42,10 +45,12 @@ export default function AllBlocks() {
         .then((response) => {
           setAllBlocks(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
+
           setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
           toast.error(error?.data?.message);
+
 
         });
     }
@@ -74,12 +79,14 @@ export default function AllBlocks() {
     }
   }
   const onSubmit = (values, props) => {
+
     if (editMode) {
       editBlockApi(initialValues._id, FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
         handleClose();
         props.resetForm();
         getAllBlocks(currentPage)
+
         setEditMode(false);
         setInitialValues({
           name: '',
@@ -92,14 +99,17 @@ export default function AllBlocks() {
       }).catch((error) => {
         toast.error(error?.data?.message);
 
+
       })
     } else {
       addNewBlockApi(FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
+
         getAllBlocks(currentPage)
         props.resetForm();
         handleClose();
       }).catch((error) => {
+
         toast.error(error?.data?.message);
 
       })
@@ -112,7 +122,6 @@ export default function AllBlocks() {
       toast.success(response?.data?.message);
     }).catch((error) => {
       toast.error(error?.data?.message);
-
     })
   }
   const editModeFunc = (data) => {

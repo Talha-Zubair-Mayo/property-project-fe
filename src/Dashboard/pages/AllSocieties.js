@@ -35,6 +35,7 @@ export default function AllSocieties() {
     photo: []
   });
   const onSubmit = (values, props) => {
+    
     if (editMode) {
       editSocietyApi(initialValues._id, FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
