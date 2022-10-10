@@ -15,6 +15,7 @@ import { AuthRoutes } from '../utils/ProtectedRoutes';
 import Societies from '../pages/Societies';
 import Blocks from '../pages/Blocks';
 import Phases from '../pages/Phases';
+import NotFound from '../components/NotFound';
 
 const Router = () => {
   return (
@@ -33,6 +34,8 @@ const Router = () => {
       <Route exact path="/societies" element={<Societies />} />
       <Route exact path="/blocks" element={<Blocks />} />
       <Route exact path="/phases" element={<Phases />} />
+      <Route path="/notfound" element={<NotFound />} />
+      <Route path="*" element={<Navigate replace to="/notfound" />} />
     </Routes>
   );
 };

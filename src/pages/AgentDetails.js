@@ -11,26 +11,36 @@ import Reviews from '../components/PropertyDetails/Reviews';
 import SimilarProperties from '../components/AgentDetails/SimilarProperties';
 import Special from '../components/PropertyDetails/Special';
 import AgentListCard from '../components/Agents/AgentListCard';
-import { getAgentByIdApi, getPropertiesByUserIdApi } from "../store/api"
+import { getAgentByIdApi, getPropertiesByUserIdApi } from '../store/api';
 import { useParams } from 'react-router-dom';
 import Hooks from '../hooks';
+import Loading from '../../utils/LoadingScreen';
+
 export default function AgentDetails() {
-  const [agentdetails, setAgentDetails] = useState({})
+  const [agentdetails, setAgentDetails] = useState({});
   const [AgentProperties, setAgentProperties] = useState([]);
   const { IsUserLoggedIn, UserDetails } = Hooks();
+  const [isLoading, setIsLoading] = useState(false);
+
   const { id } = useParams();
   useEffect(() => {
     if (id) {
+      setIsLoading(true);
       getAgentByIdApi(id).then((res) => {
         setAgentDetails(res?.data?.result);
-      })
+        setIsLoading(false);
+      });
+      setIsLoading(true);
       getPropertiesByUserIdApi(id)
         .then((property) => {
           setAgentProperties(property?.data?.result);
+          setIsLoading(false);
         })
-        .catch((error) => { });
+        .catch((error) => {
+          setIsLoading(false);
+        });
     }
-  }, [id])
+  }, [id]);
   return (
     <>
       <div className="inner-pages agents homepage-4 det hd-white">
@@ -48,11 +58,12 @@ export default function AgentDetails() {
                   <div className="blog-pots py-0">
                     <Description />
                     <div className="row">
-                      {AgentProperties?.length > 0 && AgentProperties.map((item, key) => (
-                        <div className="col-md-6 mb-3">
-                          <SimilarProperties item={item} />
-                        </div>
-                      ))}
+                      {AgentProperties?.length > 0 &&
+                        AgentProperties.map((item, key) => (
+                          <div className="col-md-6 mb-3">
+                            <SimilarProperties item={item} />
+                          </div>
+                        ))}
                     </div>
 
                     <Reviews />
@@ -62,7 +73,9 @@ export default function AgentDetails() {
                 <aside className="col-lg-4 col-md-12 car">
                   <div className="single widget">
                     <div className="sidebar">
-                      {UserDetails().id !== agentdetails._id && <ContactAgent agent={agentdetails} />}
+                      {UserDetails().id !== agentdetails._id && (
+                        <ContactAgent agent={agentdetails} />
+                      )}
                       <div className="main-search-field-2">
                         <RecentProperties />
                         <FeatureProperties />
@@ -76,6 +89,7 @@ export default function AgentDetails() {
           </section>
         </div>
       </div>
+      <Loading isLoading={isLoading} />
     </>
   );
 }

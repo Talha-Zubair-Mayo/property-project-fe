@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import React from 'react';
 import Dashboard from '../pages/UserDashoard';
 import UserProfile from '../pages/UserProfile';
@@ -15,6 +15,7 @@ import AllPhases from '../pages/Phases';
 import { AdminRoutes, ProtectedRoutes, AuthenticatedRoutes } from '../../utils/ProtectedRoutes';
 import Appointments from '../pages/Appointments';
 import EventScheduler from '../EventScheduler';
+import NotFound from '../../components/NotFound';
 const UserRouter = () => {
     return (
         <Routes>
@@ -31,6 +32,9 @@ const UserRouter = () => {
             <Route exact path="/dashboard/appointment/:id" element={<AuthenticatedRoutes component={Appointments} />} />
             <Route exact path="/dashboard/events/:id" element={<AuthenticatedRoutes component={EventScheduler} />} />
             <Route exact path="/dashboard/changepassword" element={<AuthenticatedRoutes component={UserChangePassword} />} />
+            <Route path="/dashboard/notfound" element={<NotFound />} />
+            <Route path="*" element={<Navigate replace to="/dashboard/notfound" />} />
+
         </Routes>
     );
 };

@@ -36,6 +36,7 @@ export default function AllBlocks() {
           setIsLoading(false)
           setAllBlocks(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
+
           setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
@@ -50,11 +51,13 @@ export default function AllBlocks() {
           setIsLoading(false)
           setAllBlocks(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
+
           setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
           setIsLoading(false)
           toast.error(error?.data?.message);
+
 
         });
     }
@@ -83,6 +86,7 @@ export default function AllBlocks() {
     }
   }
   const onSubmit = (values, props) => {
+
     if (editMode) {
       setIsLoading(true)
       editBlockApi(initialValues._id, FormDataFunc(values)).then((response) => {
@@ -90,6 +94,7 @@ export default function AllBlocks() {
         handleClose();
         props.resetForm();
         getAllBlocks(currentPage)
+
         setEditMode(false);
         setInitialValues({
           name: '',
@@ -103,11 +108,13 @@ export default function AllBlocks() {
         setIsLoading(false)
         toast.error(error?.data?.message);
 
+
       })
     } else {
       setIsLoading(true)
       addNewBlockApi(FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
+
         getAllBlocks(currentPage)
         props.resetForm();
         handleClose();
@@ -128,7 +135,6 @@ export default function AllBlocks() {
     }).catch((error) => {
       setIsLoading(false)
       toast.error(error?.data?.message);
-
     })
   }
   const editModeFunc = (data) => {
