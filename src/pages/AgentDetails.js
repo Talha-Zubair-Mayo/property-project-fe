@@ -14,7 +14,7 @@ import AgentListCard from '../components/Agents/AgentListCard';
 import { getAgentByIdApi, getPropertiesByUserIdApi } from '../store/api';
 import { useParams } from 'react-router-dom';
 import Hooks from '../hooks';
-import Loading from '../../utils/LoadingScreen';
+import Loading from '../utils/LoadingScreen';
 
 export default function AgentDetails() {
   const [agentdetails, setAgentDetails] = useState({});

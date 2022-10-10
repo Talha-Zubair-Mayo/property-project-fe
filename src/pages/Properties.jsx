@@ -8,10 +8,12 @@ import {
   getPropertiesByUserIdApi,
 } from '../store/api';
 import { useLocation } from 'react-router-dom';
+import Loading from '../utils/LoadingScreen';
 
 export default function PropertiesGrid() {
   const [Gridview, setGridView] = useState(true);
   const [toggleAdvancedFeatures, setToggleAdvancedFeatures] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const ToggleView = (view) => {
     if (view === 'Grid') {
@@ -29,23 +31,35 @@ export default function PropertiesGrid() {
   const [AllProperties, setAllProperties] = useState([]);
   useEffect(() => {
     if (society && phase && block !== null) {
+      setIsLoading(true);
       getPropertyBySocietyPhaseAndBlockIdApi(society, phase, block)
         .then((property) => {
           setAllProperties(property?.data?.result);
+          setIsLoading(false);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          setIsLoading(false);
+        });
     } else if (agent !== null) {
+      setIsLoading(true);
       getPropertiesByUserIdApi(agent)
         .then((property) => {
           setAllProperties(property?.data?.result);
+          setIsLoading(false);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          setIsLoading(false);
+        });
     } else {
+      setIsLoading(true);
       getAllPropertiesApi()
         .then((property) => {
           setAllProperties(property?.data?.result);
+          setIsLoading(false);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          setIsLoading(false);
+        });
     }
   }, [society, phase, block, agent]);
 
@@ -453,6 +467,7 @@ export default function PropertiesGrid() {
           </div>
         </section>
       </div>
+      <Loading isLoading={isLoading} />
     </>
   );
 }

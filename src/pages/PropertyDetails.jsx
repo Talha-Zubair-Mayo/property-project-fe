@@ -20,17 +20,25 @@ import { useParams } from 'react-router-dom';
 import { getPropertyDetailsApi } from '../store/api';
 import AddNotes from '../components/PropertyDetails/AddNotes';
 import Hooks from '../hooks';
+import Loading from '../utils/LoadingScreen';
+
 export default function PropertyDetails() {
   const [propertyDetails, setPropertyDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   const { AgentRole, SuperAdmin } = Hooks();
   let { id } = useParams();
   useEffect(() => {
     if (id) {
+      setIsLoading(true);
       getPropertyDetailsApi(id)
         .then((res) => {
           setPropertyDetails(res.data.result);
+          setIsLoading(false);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          setIsLoading(false);
+        });
     }
   }, []);
   return (
@@ -79,6 +87,7 @@ export default function PropertyDetails() {
           </section>
         </div>
       </div>
+      <Loading isLoading={isLoading} />
     </>
   );
 }

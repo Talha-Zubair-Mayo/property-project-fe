@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import Phase from '../components/Phases/index';
-
+import Loading from '../utils/LoadingScreen';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getPhaseBySocietyidApi, getAllPhasesApi } from '../store/api';
@@ -10,19 +10,30 @@ export default function AllPhases() {
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
   const [AllPhases, setAllPhases] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (society !== null) {
+      setIsLoading(true);
       getPhaseBySocietyidApi(society)
         .then((phase) => {
+          setIsLoading(false);
           setAllPhases(phase?.data?.result);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          setIsLoading(false);
+        });
     } else {
+      setIsLoading(true);
+
       getAllPhasesApi()
         .then((phase) => {
+          setIsLoading(false);
+
           setAllPhases(phase?.data?.result);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          setIsLoading(false);
+        });
     }
   }, []);
   return (
@@ -40,6 +51,7 @@ export default function AllPhases() {
           </div>
         </div>
       </section>
+      <Loading isLoading={isLoading} />
     </div>
   );
 }

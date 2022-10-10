@@ -10,10 +10,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import AgentGridCard from '../components/Agents/AgentGridCard';
 import AgentListCard from '../components/Agents/AgentListCard';
+import Loading from '../utils/LoadingScreen';
 
 export default function AgentListingGrid() {
   const [Gridview, setGridView] = useState(true);
   const [agentList, setAgentList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const ToggleView = (view) => {
     if (view === 'Grid') {
       setGridView(true);
@@ -23,11 +26,15 @@ export default function AgentListingGrid() {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     getAllAgentsApi()
       .then((res) => {
+        setIsLoading(false);
         setAgentList(res?.data?.result);
       })
-      .catch(() => {});
+      .catch(() => {
+        setIsLoading(false);
+      });
   }, []);
   return (
     <>
@@ -135,6 +142,8 @@ export default function AgentListingGrid() {
           </section>
         </div>
       </div>
+      <Loading isLoading={isLoading} />
+
     </>
   );
 }
