@@ -43,7 +43,7 @@ export default function Appointments() {
       <div className="col-lg-9 col-md-12 py-3 col-xs-12 pl-0 user-dash2">
         <div className="my-properties">
           {isLoading ? (
-            <Loading isLoading={true} />
+            <Loading isLoading={isLoading} />
           ) : (
             AllAppointments?.length > 0 ?
               (<table className="table-responsive">
@@ -84,7 +84,8 @@ export default function Appointments() {
                     );
                   })}
                 </tbody>
-              </table>) : (
+              </table>
+              ) : (
                 <RecordNotFound />
               )
           )}
