@@ -11,6 +11,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Pagination from '@mui/material/Pagination';
 import Loading from '../../utils/LoadingScreen'
+import RecordNotFound from "../../components/RecordNotFound"
 
 export default function AllBlocks() {
   const allSocieties = useSelector(state => state.AllSocieties);
@@ -281,62 +282,69 @@ export default function AllBlocks() {
           </>
         }
         <div className="my-properties">
-          <table className="table-responsive">
-            <thead>
-              <tr>
-                <th className="pl-2">All</th>
-                <th className="p-0" />
-                <th>Date Added</th>
-                <th>Society</th>
-                <th>Phase</th>
-                <th>Owner Name</th>
-                <th>Added by</th>
-                {SuperAdmin() && (<th>Actions</th>)}
-              </tr>
-            </thead>
-            <tbody>
 
-              {AllBlocks?.map((item, key) => {
-                return (<tr>
-                  <td className="image myelist">
-                    <Link to={`/dashboard/properties?society=${item?.society._id}&phase=${item?.phase?._id}&block=${item?._id}`}>
-                      <img
-                        alt="my-properties-3"
-                        src={process.env.REACT_APP_IMAGE_URL + item?.photo}
-                        className="img-fluid"
-                      />
-                    </Link>
-                  </td>
-                  <td>
-                    <div className="inner">
-                      <Link to={`/dashboard/properties?society=${item?.society._id}&phase=${item?.phase?._id}&block=${item?._id}`}> <h2>{item?.name}</h2></Link>
-                      <figure>
-                        <i className="lni-map-marker" />{item?.address}
-                      </figure>
 
-                    </div>
-                  </td>
-                  <td>{moment(item?.createdAt).format('llll')}</td>
-                  <td>{item?.society?.name}</td>
-                  <td>{item?.phase?.name}</td>
-                  <td>{item?.ownerName}</td>
+          {AllBlocks?.length > 0 && isLoading === false ? (
+            <table className="table-responsive">
+              <thead>
+                <tr>
+                  <th className="pl-2">All</th>
+                  <th className="p-0" />
+                  <th>Date Added</th>
+                  <th>Society</th>
+                  <th>Phase</th>
+                  <th>Owner Name</th>
+                  <th>Added by</th>
+                  {SuperAdmin() && (<th>Actions</th>)}
+                </tr>
+              </thead>
+              <tbody>
 
-                  <td>{`${item?.createdBy?.firstName}  ${item?.createdBy?.lastName}`}</td>
+                {AllBlocks?.map((item, key) => {
+                  return (<tr>
+                    <td className="image myelist">
+                      <Link to={`/dashboard/properties?society=${item?.society._id}&phase=${item?.phase?._id}&block=${item?._id}`}>
+                        <img
+                          alt="my-properties-3"
+                          src={process.env.REACT_APP_IMAGE_URL + item?.photo}
+                          className="img-fluid"
+                        />
+                      </Link>
+                    </td>
+                    <td>
+                      <div className="inner">
+                        <Link to={`/dashboard/properties?society=${item?.society._id}&phase=${item?.phase?._id}&block=${item?._id}`}> <h2>{item?.name}</h2></Link>
+                        <figure>
+                          <i className="lni-map-marker" />{item?.address}
+                        </figure>
 
-                  {SuperAdmin() && (<td className="actions">
-                    <button onClick={() => editModeFunc(item)} className="edit">
-                      <i className="fa fa-pencil-alt" />
+                      </div>
+                    </td>
+                    <td>{moment(item?.createdAt).format('llll')}</td>
+                    <td>{item?.society?.name}</td>
+                    <td>{item?.phase?.name}</td>
+                    <td>{item?.ownerName}</td>
 
-                    </button>
-                    <button onClick={() => deletePhase(item?._id)} className="delete" >
-                      <i className="far fa-trash-alt" />
-                    </button>
-                  </td>)}
-                </tr>)
-              })}
+                    <td>{`${item?.createdBy?.firstName}  ${item?.createdBy?.lastName}`}</td>
 
-            </tbody>
-          </table>
+                    {SuperAdmin() && (<td className="actions">
+                      <button onClick={() => editModeFunc(item)} className="edit">
+                        <i className="fa fa-pencil-alt" />
+
+                      </button>
+                      <button onClick={() => deletePhase(item?._id)} className="delete" >
+                        <i className="far fa-trash-alt" />
+                      </button>
+                    </td>)}
+                  </tr>)
+                })}
+
+              </tbody>
+            </table>
+          ) : (
+            <RecordNotFound />
+          )}
+
           {
             AllBlocks?.length > 0 &&
             <Pagination
@@ -350,7 +358,7 @@ export default function AllBlocks() {
           }
         </div>
       </div>
-      <Loading isLoading={isLoading}/>
+      <Loading isLoading={isLoading} />
     </>
   )
 }

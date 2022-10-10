@@ -22,7 +22,7 @@ const UserRouter = () => {
             {/* <Route exact path="/dashboard" element={<ProtectedRoutes component={Dashboard} />} /> */}
             <Route exact path="/dashboard/profile" element={<AuthenticatedRoutes component={UserProfile} />} />
             <Route exact path="/dashboard/properties" element={<ProtectedRoutes component={UserProperties} />} />
-            <Route exact path="/dashboard/favproperties" element={<AuthenticatedRoutes component={UserFavoriteProperties} />} />
+            {/* <Route exact path="/dashboard/favproperties" element={<AuthenticatedRoutes component={UserFavoriteProperties} />} /> */}
             <Route exact path="/dashboard/addproperty" element={<ProtectedRoutes component={UserAddProperty} />} />
             <Route exact path="'/dashboard/paymentmethod" element={<ProtectedRoutes component={UserPaymentMethod} />} />
             <Route exact path="/dashboard/invoice" element={<ProtectedRoutes component={UserInvoice} />} />

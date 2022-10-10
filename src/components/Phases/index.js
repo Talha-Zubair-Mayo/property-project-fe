@@ -15,7 +15,7 @@ export default function Phase({ item }) {
             <h4 className="sc-jb-title">
               <Link to={`/blocks?society=${item.society._id}&phase=${item._id}`}>{item.name}</Link>
             </h4>
-            <span>Society : {item.society.name}</span>
+            <span>Society : {item?.society?.name}</span>
           </div>
         </div>
       </div>

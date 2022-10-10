@@ -11,7 +11,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Pagination } from '@mui/material';
 import Loading from '../../utils/LoadingScreen'
-
+import RecordNotFound from "../../components/RecordNotFound"
 export default function AllPhases() {
   const allSocieties = useSelector(state => state.AllSocieties);
   const [show, setShow] = useState(false);
@@ -87,7 +87,7 @@ export default function AllPhases() {
         setIsLoading(false)
         toast.error(error?.data?.message);
       })
-    } else {  
+    } else {
       setIsLoading(true)
       addNewPhaseApi(FormDataFunc(values)).then((response) => {
         setIsLoading(false)
@@ -236,61 +236,67 @@ export default function AllPhases() {
           </>
         }
         <div className="my-properties">
-          <table className="table-responsive">
-            <thead>
-              <tr>
-                <th className="pl-2">All</th>
-                <th className="p-0" />
-                <th>Date Added</th>
-                <th>Society</th>
-                <th>Owner Name</th>
 
-                <th>Added by</th>
-                {SuperAdmin() && (<th>Actions</th>)}
-              </tr>
-            </thead>
-            <tbody>
+          {AllPhases?.length > 0 && isLoading === false ? (
+            <table className="table-responsive">
+              <thead>
+                <tr>
+                  <th className="pl-2">All</th>
+                  <th className="p-0" />
+                  <th>Date Added</th>
+                  <th>Society</th>
+                  <th>Owner Name</th>
 
-              {AllPhases?.map((item, key) => {
-                return (<tr>
-                  <td className="image myelist">
-                    <Link to={`/dashboard/blocks?society=${item?.society._id}&phase=${item?._id}`}>
-                      <img
-                        alt="my-properties-3"
-                        src={process.env.REACT_APP_IMAGE_URL + item?.photo}
-                        className="img-fluid"
-                      />
-                    </Link>
-                  </td>
-                  <td>
-                    <div className="inner">
-                      <Link to={`/dashboard/blocks?society=${item?.society._id}&phase=${item?._id}`}> <h2>{item?.name}</h2></Link>
-                      <figure>
-                        <i className="lni-map-marker" /> {item?.address}
-                      </figure>
+                  <th>Added by</th>
+                  {SuperAdmin() && (<th>Actions</th>)}
+                </tr>
+              </thead>
+              <tbody>
 
-                    </div>
-                  </td>
-                  <td>{moment(item?.createdAt).format('llll')}</td>
-                  <td>{item?.society?.name}</td>
-                  <td>{item?.ownerName}</td>
+                {AllPhases?.map((item, key) => {
+                  return (<tr>
+                    <td className="image myelist">
+                      <Link to={`/dashboard/blocks?society=${item?.society._id}&phase=${item?._id}`}>
+                        <img
+                          alt="my-properties-3"
+                          src={process.env.REACT_APP_IMAGE_URL + item?.photo}
+                          className="img-fluid"
+                        />
+                      </Link>
+                    </td>
+                    <td>
+                      <div className="inner">
+                        <Link to={`/dashboard/blocks?society=${item?.society._id}&phase=${item?._id}`}> <h2>{item?.name}</h2></Link>
+                        <figure>
+                          <i className="lni-map-marker" /> {item?.address}
+                        </figure>
 
-                  <td>{`${item?.createdBy.firstName}  ${item?.createdBy.lastName}`}</td>
+                      </div>
+                    </td>
+                    <td>{moment(item?.createdAt).format('llll')}</td>
+                    <td>{item?.society?.name}</td>
+                    <td>{item?.ownerName}</td>
 
-                  {SuperAdmin() && (<td className="actions">
-                    <button onClick={() => editModeFunc(item)} className="edit">
-                      <i className="fa fa-pencil-alt" />
+                    <td>{`${item?.createdBy.firstName}  ${item?.createdBy.lastName}`}</td>
 
-                    </button>
-                    <button onClick={() => deletePhase(item?._id)} className="delete" >
-                      <i className="far fa-trash-alt" />
-                    </button>
-                  </td>)}
-                </tr>)
-              })}
+                    {SuperAdmin() && (<td className="actions">
+                      <button onClick={() => editModeFunc(item)} className="edit">
+                        <i className="fa fa-pencil-alt" />
 
-            </tbody>
-          </table>
+                      </button>
+                      <button onClick={() => deletePhase(item?._id)} className="delete" >
+                        <i className="far fa-trash-alt" />
+                      </button>
+                    </td>)}
+                  </tr>)
+                })}
+
+              </tbody>
+            </table>
+          ) : (
+            <RecordNotFound />
+          )}
+
           <div className="pagination-container">
             {
               AllPhases?.length > 0 &&
@@ -306,7 +312,7 @@ export default function AllPhases() {
           </div>
         </div>
       </div>
-      <Loading isLoading={isLoading}/>
+      <Loading isLoading={isLoading} />
     </>
   )
 }

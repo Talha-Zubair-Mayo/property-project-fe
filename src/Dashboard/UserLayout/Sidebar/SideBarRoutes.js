@@ -53,7 +53,7 @@ const SideBarRoutes = () => {
             name: " Favorited Properties",
             link: '/dashboard/favproperties',
             icon: 'fa fa-heart',
-            visiblity: AgentRole() || SuperAdmin()
+            visiblity: false
         }
         , {
             name: " Appointments",
