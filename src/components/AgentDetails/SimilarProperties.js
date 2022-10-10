@@ -41,7 +41,7 @@ export default function SimilarProperties({ item }) {
           <p className="homes-address mb-3">
             <Link to={`/propertydetails/${item?._id}`}>
               <i className="fa fa-map-marker" />
-              <span>{`${item?.society.name} , ${item?.phase.name} , ${item?.block.name} ${item?.city} , ${item?.country}`}</span>
+              <span>{`${item?.society.name} , ${item?.phase?.name} , ${item?.block?.name} ${item?.city} , ${item?.country}`}</span>
             </Link>
           </p>
           {/* homes List */}
@@ -65,7 +65,7 @@ export default function SimilarProperties({ item }) {
           </ul>
           <div className="footer">
             <Link href="agent-details.html">
-              <img src={process.env.REACT_APP_IMAGE_URL + item.createdBy?.photo} alt="" className="mr-2" /> {`${item?.createdBy?.firstName}  ${item?.createdBy?.lastName}`}
+              <img src={process.env.REACT_APP_IMAGE_URL + item?.createdBy?.photo} alt="" className="mr-2" /> {`${item?.createdBy?.firstName}  ${item?.createdBy?.lastName}`}
             </Link>
             <span>{moment(item?.createdAt).fromNow()}</span>
           </div>
