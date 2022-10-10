@@ -38,7 +38,7 @@ export const verifyForgotPasswordKey = async (Data) => {
 };
 // Reset Password API
 export const resetPasswordApi = async (Data) => {
-  const res = await api.put("/reset-password", Data);
+  const res = await api.patch("/reset-password", Data, config);
   return res;
 };
 

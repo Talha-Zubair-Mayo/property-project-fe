@@ -71,7 +71,7 @@ const SideBarRoutes = () => {
             name: "Payments",
             link: '/dashboard/paymentmethod',
             icon: 'fa fa-credit-card',
-            visiblity: AgentRole() || SuperAdmin()
+            visiblity: false
         }
         , {
             name: "Change Password",

@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { profileValidationSchema } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '../../store/actions';
 import { updateUserApi } from "../../store/api"
 import { toast } from 'react-toastify';
+import Loading from '../../utils/LoadingScreen';
+
 export default function PersonalInformation() {
   const userInfo = useSelector((state) => state.UserLogin.data.user);
-
+  const [isLoading, setIsloading] = useState(false)
   const dispatch = useDispatch();
-
   const onSubmit = (values, props) => {
+    setIsloading(true)
     updateUserApi(userInfo?._id, values)
       .then((response) => {
         dispatch(loginAction(response.data.result));
         toast.success(response?.data?.message)
+        setIsloading(false)
       })
       .catch((error) => {
-        toast.error(error?.data?.message)
+        toast.error(error?.data?.message);
+        setIsloading(false);
       });
   };
 
@@ -116,6 +120,7 @@ export default function PersonalInformation() {
           </Formik>
         </div>
       </div>
+      <Loading isLoading={isLoading} />
     </>
   );
 }

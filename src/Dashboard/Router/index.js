@@ -30,8 +30,7 @@ const UserRouter = () => {
             <Route exact path="/dashboard/phases" element={<ProtectedRoutes component={AllPhases} />} />
             <Route exact path="/dashboard/appointment/:id" element={<AuthenticatedRoutes component={Appointments} />} />
             <Route exact path="/dashboard/events/:id" element={<AuthenticatedRoutes component={EventScheduler} />} />
-
-            {/* <Route exact path="/dashboard/changepassword" element={<AuthenticatedRoutes component={AllPhases} />}/> */}
+            <Route exact path="/dashboard/changepassword" element={<AuthenticatedRoutes component={UserChangePassword} />} />
         </Routes>
     );
 };

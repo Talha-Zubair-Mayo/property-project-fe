@@ -35,9 +35,6 @@ export const registerValidationSchema = Yup.object().shape({
 
 });
 
-
-
-
 export const profileValidationSchema = Yup.object().shape({
     firstName: Yup.string().min(3, 'Minimum Length Should Be 3').required('First Name is Required'),
     lastName: Yup.string().min(3, 'Minimum Length Should Be 3').required('Last Name is Required'),
@@ -48,6 +45,17 @@ export const profileValidationSchema = Yup.object().shape({
 
 });
 
+export const resetPasswordValidationSchema = Yup.object().shape({
+    currentPassword: Yup.string().required('Enter your current password '),
+    password: Yup.string()
+        .min(8, 'Password minimum length should be 8')
+        .required('Password is Required'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], "Passwords does not matched!")
+        .required('This Field is Required')
+});
+
+
 export const loginValidationSchema = Yup.object().shape({
     email: Yup.string().email('Enter valid email').required('Email is Required'),
     password: Yup.string()
@@ -55,6 +63,7 @@ export const loginValidationSchema = Yup.object().shape({
         .required('Password is Required'),
     rememberMe: Yup.boolean().oneOf([true, false], 'Required').required('Select User Type'),
 });
+
 
 
 export const SocietiesValidationSchema = Yup.object().shape({
