@@ -3,7 +3,7 @@ import { getBlockBySocietyAndPhaseIdApi, getAllBlocksApi } from '../store/api';
 import Block from '../components/Blocks/Block';
 import { useLocation } from 'react-router-dom';
 import Loading from '../utils/LoadingScreen';
-
+import RecordNotFound from '../components/RecordNotFound';
 export default function AllBlocks() {
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
@@ -43,17 +43,20 @@ export default function AllBlocks() {
             <h2>
               <span>All </span>Blocks
             </h2>
-            <p>Properties In All Blocks.</p>
           </div>
-          <div className="row">
-            {AllBlocks?.map((item, key) => (
-              <Block item={item} />
-            ))}
-          </div>
+
+          {AllBlocks.length > 0 && isLoading === false ? (
+            <div className="row">
+              {AllBlocks?.map((item, key) => (
+                <Block item={item} />
+              ))}
+            </div>
+          ) : (
+            <RecordNotFound />
+          )}
         </div>
       </section>
       <Loading isLoading={isLoading} />
-
     </>
   );
 }

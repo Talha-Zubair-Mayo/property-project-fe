@@ -41,7 +41,7 @@ export default function PropertyGridCard({ item }) {
             <p className="homes-address mb-3">
               <Link to={`/propertydetails/${item?._id}`}>
                 <i className="fa fa-map-marker" />
-                <span>{`${item?.society.name} , ${item?.phase.name} , ${item?.block.name} ${item?.city} , ${item?.country}`}</span>
+                <span>{`${item?.society?.name} , ${item?.phase?.name} , ${item?.block?.name} ${item?.city} , ${item?.country}`}</span>
               </Link>
             </p>
             {/* homes List */}

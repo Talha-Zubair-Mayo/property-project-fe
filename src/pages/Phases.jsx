@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getPhaseBySocietyidApi, getAllPhasesApi } from '../store/api';
 import { useState } from 'react';
+import RecordNotFound from '../components/RecordNotFound';
 export default function AllPhases() {
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
@@ -42,13 +43,17 @@ export default function AllPhases() {
         <div className="container-fluid">
           <div className="sec-title">
             <h2>All Phases</h2>
-            <p>Properties in all phases</p>
           </div>
-          <div className="row">
-            {AllPhases?.map((item, key) => {
-              return <Phase item={item} />;
-            })}
-          </div>
+
+          {AllPhases.length > 0 && isLoading === false ? (
+            <div className="row">
+              {AllPhases?.map((item, key) => {
+                return <Phase item={item} />;
+              })}
+            </div>
+          ) : (
+            <RecordNotFound />
+          )}
         </div>
       </section>
       <Loading isLoading={isLoading} />

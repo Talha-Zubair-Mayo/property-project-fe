@@ -11,6 +11,7 @@ import Pagination from '@mui/material/Pagination';
 import { toast } from 'react-toastify';
 import { setDefaultOptions } from 'date-fns/esm';
 import Loading from '../../utils/LoadingScreen'
+import RecordNotFound from '../../components/RecordNotFound';
 export default function AllSocieties() {
   // const allSocieties = useSelector(state => state.AllSocieties)
   const [allSocieties, setAllSocieties] = useState([])
@@ -213,59 +214,67 @@ export default function AllSocieties() {
           </>
         }
         <div className="my-properties">
-          <table className="table-responsive">
-            <thead>
-              <tr>
-                <th className="pl-2">All</th>
-                <th className="p-0" />
-                <th>Date Added</th>
-                <th>Owner Name</th>
-                <th>Manager Name</th>
-                <th>Added by</th>
-                {SuperAdmin() && (<th>Actions</th>)}
-              </tr>
-            </thead>
-            <tbody>
 
-              {allSocieties?.map((item, key) => {
-                return (<tr>
-                  <td className="image myelist">
-                    <Link to={`/dashboard/phases?society=${item?._id}`}>
-                      <img
-                        alt="my-properties-3"
-                        src={process.env.REACT_APP_IMAGE_URL + item.photo}
-                        className="img-fluid"
-                      />
-                    </Link>
-                  </td>
-                  <td>
-                    <div className="inner">
-                      <Link to={`/dashboard/phases?society=${item?._id}`}> <h2>{item?.name}</h2></Link>
-                      <figure>
-                        <i className="lni-map-marker" /> {item.address}
-                      </figure>
+          {allSocieties?.length > 0 && isLoading === false ? (
+            <table className="table-responsive">
+              <thead>
+                <tr>
+                  <th className="pl-2">All</th>
+                  <th className="p-0" />
+                  <th>Date Added</th>
+                  <th>Owner Name</th>
+                  <th>Manager Name</th>
+                  <th>Added by</th>
+                  {SuperAdmin() && (<th>Actions</th>)}
+                </tr>
+              </thead>
+              <tbody>
 
-                    </div>
-                  </td>
-                  <td>{moment(item.createdAt).format('llll')}</td>
-                  <td>{item.ownerName}</td>
-                  <td>{item.managerName}</td>
-                  <td>{`${item.createdBy.firstName}  ${item.createdBy.lastName}`}</td>
 
-                  {SuperAdmin() && (<td className="actions">
-                    <button onClick={() => editModeFunc(item)} className="edit">
-                      <i className="fa fa-pencil-alt" />
+                {allSocieties?.map((item, key) => {
+                  return (<tr>
+                    <td className="image myelist">
+                      <Link to={`/dashboard/phases?society=${item?._id}`}>
+                        <img
+                          alt="my-properties-3"
+                          src={process.env.REACT_APP_IMAGE_URL + item.photo}
+                          className="img-fluid"
+                        />
+                      </Link>
+                    </td>
+                    <td>
+                      <div className="inner">
+                        <Link to={`/dashboard/phases?society=${item?._id}`}> <h2>{item?.name}</h2></Link>
+                        <figure>
+                          <i className="lni-map-marker" /> {item.address}
+                        </figure>
 
-                    </button>
-                    <button onClick={() => deleteSociety(item._id)} className="delete" >
-                      <i className="far fa-trash-alt" />
-                    </button>
-                  </td>)}
-                </tr>)
-              })}
+                      </div>
+                    </td>
+                    <td>{moment(item.createdAt).format('llll')}</td>
+                    <td>{item.ownerName}</td>
+                    <td>{item.managerName}</td>
+                    <td>{`${item.createdBy.firstName}  ${item.createdBy.lastName}`}</td>
 
-            </tbody>
-          </table>
+                    {SuperAdmin() && (<td className="actions">
+                      <button onClick={() => editModeFunc(item)} className="edit">
+                        <i className="fa fa-pencil-alt" />
+
+                      </button>
+                      <button onClick={() => deleteSociety(item._id)} className="delete" >
+                        <i className="far fa-trash-alt" />
+                      </button>
+                    </td>)}
+                  </tr>)
+                })}
+
+              </tbody>
+            </table>
+          ) : (
+            <RecordNotFound />
+          )}
+
+
           {
             allSocieties?.length > 0 && <Pagination
               count={totalPages}
@@ -278,7 +287,7 @@ export default function AllSocieties() {
           }
         </div>
       </div>
-      <Loading isLoading={isLoading}/>
+      <Loading isLoading={isLoading} />
     </>
   )
 }

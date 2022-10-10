@@ -9,7 +9,7 @@ import {
 } from '../store/api';
 import { useLocation } from 'react-router-dom';
 import Loading from '../utils/LoadingScreen';
-
+import RecordNotFound from '../components/RecordNotFound';
 export default function PropertiesGrid() {
   const [Gridview, setGridView] = useState(true);
   const [toggleAdvancedFeatures, setToggleAdvancedFeatures] = useState(false);
@@ -125,13 +125,18 @@ export default function PropertiesGrid() {
                     </div>
                   </div>
                 </section>
-                <div className="row">
-                  {Gridview ? (
-                    <PropertiesGridView AllProperties={AllProperties} />
-                  ) : (
-                    <PropertiesListview AllProperties={AllProperties} />
-                  )}
-                </div>
+
+                {AllProperties?.length > 0 && isLoading === false ? (
+                  <div className="row">
+                    {Gridview ? (
+                      <PropertiesGridView AllProperties={AllProperties} />
+                    ) : (
+                      <PropertiesListview AllProperties={AllProperties} />
+                    )}
+                  </div>
+                ) : (
+                  <RecordNotFound />
+                )}
               </div>
               <aside className="col-lg-4 col-md-12 car">
                 <div className="widget">
