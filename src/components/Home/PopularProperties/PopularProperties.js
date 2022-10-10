@@ -57,7 +57,7 @@ export default function PopularProperties() {
           <div className="portfolio col-xl-12">
             <Slider {...settings}>
 
-              {AllProperties.map((item, key) => (<div className="agents-grid" data-aos="fade-up">
+              {AllProperties?.map((item, key) => (<div className="agents-grid" data-aos="fade-up">
                 <div className="landscapes">
                   <div className="project-single">
                     <div className="project-inner project-head">
