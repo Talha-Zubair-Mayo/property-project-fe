@@ -9,17 +9,22 @@ import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import { toast } from 'react-toastify';
+import { setDefaultOptions } from 'date-fns/esm';
+import Loading from '../../utils/LoadingScreen'
 export default function AllSocieties() {
   // const allSocieties = useSelector(state => state.AllSocieties)
   const [allSocieties, setAllSocieties] = useState([])
   const [totalPages, setTotalPages] = useState(0)
   const [show, setShow] = useState(false);
   const [editMode, setEditMode] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const handleClose = () => setShow(false);
   const getAllSocieties = (page) => {
+    setIsLoading(true)
     getAllSocietiesApi(page ? page : 1).then((response) => {
       setAllSocieties(response?.data?.result)
       setTotalPages(response?.data?.pagination?.pages)
+      setIsLoading(false)
     })
   }
 
@@ -35,6 +40,7 @@ export default function AllSocieties() {
     photo: []
   });
   const onSubmit = (values, props) => {
+    setIsLoading(true)
     if (editMode) {
       editSocietyApi(initialValues._id, FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
@@ -42,6 +48,7 @@ export default function AllSocieties() {
         props.resetForm();
         getAllSocieties()
         setEditMode(false);
+        setIsLoading(false)
         setInitialValues({
           name: '',
           ownerName: '',
@@ -51,25 +58,31 @@ export default function AllSocieties() {
         })
       }).catch((error) => {
         toast.error(error?.data?.message);
+        setIsLoading(false)
 
       })
     } else {
       addNewSocietyApi(FormDataFunc(values)).then((response) => {
+        setIsLoading(false)
         toast.success(response?.data?.message);
         handleClose();
         props.resetForm();
         getAllSocieties()
       }).catch((error) => {
+        setIsLoading(false)
         toast.error(error?.data?.message);
       })
     }
 
   };
   const deleteSociety = (id) => {
+    setIsLoading(true)
     deleteSocietyApi(id).then((response) => {
+      setIsLoading(false)
       toast.success(response?.data?.message);
       getAllSocieties()
     }).catch((error) => {
+      setIsLoading(false)
       toast.error(error?.data?.message);
     })
   }
@@ -265,6 +278,7 @@ export default function AllSocieties() {
           }
         </div>
       </div>
+      <Loading isLoading={isLoading}/>
     </>
   )
 }

@@ -12,6 +12,8 @@ import Modal from 'react-bootstrap/Modal';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Pagination } from '@mui/material';
+import Loading from '../../utils/LoadingScreen'
+
 
 export default function UserProperties() {
   const [show, setShow] = useState(false);
@@ -26,30 +28,37 @@ export default function UserProperties() {
   const { SuperAdmin, AgentRole, UserDetails } = Hooks();
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false)
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
   const phase = new URLSearchParams(search).get('phase');
   const block = new URLSearchParams(search).get('block');
   const getAllProperties = (page) => {
     if (society && phase && block !== null) {
+      setIsLoading(true)
       getPropertyBySocietyPhaseAndBlockIdApi(society, phase, block, page)
         .then((response) => {
           setAllProperties(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
           setCurrentPage(response?.data?.pagination?.page);
+          setIsLoading(false)
         })
         .catch((error) => {
+          setIsLoading(false)
           toast.error(error?.data?.message);
         });
     } else {
+      setIsLoading(true)
       const query = `page=${page}`;
       getAllPropertiesApi(query)
         .then((response) => {
           setAllProperties(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
           setCurrentPage(response?.data?.pagination?.page);
+          setIsLoading(false)
         })
         .catch((error) => {
+          setIsLoading(false)
           toast.error(error?.data?.message);
         });
     }
@@ -66,12 +75,15 @@ export default function UserProperties() {
   };
 
   const deleteProperty = (id) => {
+    setIsLoading(true)
     deletePropertyApi(id)
       .then((response) => {
+        setIsLoading(false)
         toast.success(response?.data?.message);
         getAllProperties(currentPage);
       })
       .catch((error) => {
+        setIsLoading(false)
         toast.error(error?.data?.message);
       });
   };
@@ -196,6 +208,8 @@ export default function UserProperties() {
           </div>
         </div>
       </div>
+      <Loading isLoading={isLoading}/>
+
     </>
   );
 }

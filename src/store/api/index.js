@@ -50,7 +50,7 @@ export const updateUserApi = async (id, Data) => {
 
 // Society Api
 export const addNewSocietyApi = async (Data) => {
-  const res = await api.post(`/society/create`, Data);
+  const res = await api.post(`/society/create`, Data, config);
   return res;
 };
 

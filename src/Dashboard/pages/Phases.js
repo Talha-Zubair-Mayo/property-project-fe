@@ -10,6 +10,8 @@ import Modal from 'react-bootstrap/Modal';
 import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Pagination } from '@mui/material';
+import Loading from '../../utils/LoadingScreen'
+
 export default function AllPhases() {
   const allSocieties = useSelector(state => state.AllSocieties);
   const [show, setShow] = useState(false);
@@ -21,26 +23,33 @@ export default function AllPhases() {
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
   const [AllPhases, setAllPhases] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const getAllPhases = (page) => {
     if (society !== null) {
+      setIsLoading(true)
       getPhaseBySocietyidApi(society, page)
         .then((response) => {
+          setIsLoading(false)
           setAllPhases(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
           setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
+          setIsLoading(false)
           toast.error(error?.data?.message);
         });
     } else {
+      setIsLoading(true)
       getAllPhasesApi(page)
         .then((response) => {
+          setIsLoading(false)
           setAllPhases(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
           setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
+          setIsLoading(false)
           toast.error(error?.data?.message);
         });
     }
@@ -59,7 +68,9 @@ export default function AllPhases() {
   });
   const onSubmit = (values, props) => {
     if (editMode) {
+      setIsLoading(true)
       editPhaseApi(initialValues._id, FormDataFunc(values)).then((response) => {
+        setIsLoading(false)
         handleClose();
         props.resetForm();
         getAllPhases(currentPage)
@@ -73,25 +84,32 @@ export default function AllPhases() {
         })
         toast.success(response?.data?.message);
       }).catch((error) => {
+        setIsLoading(false)
         toast.error(error?.data?.message);
       })
-    } else {
+    } else {  
+      setIsLoading(true)
       addNewPhaseApi(FormDataFunc(values)).then((response) => {
+        setIsLoading(false)
         toast.success(response?.data?.message);
         getAllPhases(currentPage)
         props.resetForm();
         handleClose();
       }).catch((error) => {
+        setIsLoading(false)
         toast.error(error?.data?.message);
       })
     }
 
   };
   const deletePhase = (id) => {
+    setIsLoading(true)
     deletePhaseApi(id).then((response) => {
+      setIsLoading(false)
       getAllPhases(currentPage)
       toast.success(response?.data?.message);
     }).catch((error) => {
+      setIsLoading(false)
       toast.error(error?.data?.message);
     })
   }
@@ -288,6 +306,7 @@ export default function AllPhases() {
           </div>
         </div>
       </div>
+      <Loading isLoading={isLoading}/>
     </>
   )
 }

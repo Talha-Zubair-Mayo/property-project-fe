@@ -1,109 +1,120 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import Hooks from '../../hooks';
 import { getAllAppointmentsApi } from '../../store/api';
-import moment from "moment"
+import moment from 'moment';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import Loading from '../../utils/LoadingScreen';
+
 export default function Appointments() {
-    const { AgentRole, UserDetails } = Hooks();
-    const { id } = useParams();
-    const [AllAppointments, setAllAppointments] = useState([]);
+  const { AgentRole, UserDetails } = Hooks();
+  const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams();
+  const [AllAppointments, setAllAppointments] = useState([]);
 
-    const getAllAppointments = () => {
-        if (AgentRole() && UserDetails().id === id) {
-            getAllAppointmentsApi(`appointedTo=${id}`)
-                .then((appointment) => {
-                    setAllAppointments(appointment?.data?.result);
-                })
-                .catch((error) => { });
-        } else {
-            getAllAppointmentsApi(`createdBy=${id}`)
-                .then((appointment) => {
-                    setAllAppointments(appointment?.data?.result);
-                })
-                .catch((error) => { });
-        }
+  const getAllAppointments = () => {
+    if (AgentRole() && UserDetails().id === id) {
+      setIsLoading(true);
+      getAllAppointmentsApi(`appointedTo=${id}`)
+        .then((appointment) => {
+          setAllAppointments(appointment?.data?.result);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(true);
+      getAllAppointmentsApi(`createdBy=${id}`)
+        .then((appointment) => {
+          setIsLoading(false);
+          setAllAppointments(appointment?.data?.result);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+        });
     }
-    useEffect(() => {
-        getAllAppointments();
-    }, []);
+  };
+  useEffect(() => {
+    getAllAppointments();
+  }, []);
 
-    return (
-        <>
-            <div className="col-lg-9 col-md-12 py-3 col-xs-12 pl-0 user-dash2">
+  return (
+    <>
+      <div className="col-lg-9 col-md-12 py-3 col-xs-12 pl-0 user-dash2">
+        <div className="my-properties">
+          <table className="table-responsive">
+            <thead>
+              <tr>
+                <th>Appointment Date</th>
+                <th>Date Added</th>
+                <th>Appoited To</th>
+                <th>Added by</th>
+                <th>Message</th>
 
-                <div className="my-properties">
-                    <table className="table-responsive">
-                        <thead>
-                            
-                            <tr>
-                                <th>Appointment Date</th>
-                                <th>Date Added</th>
-                                <th>Appoited To</th>
-                                <th>Added by</th>
-                                <th>Message</th>
+                {AgentRole() && <th>Actions</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {AllAppointments?.map((item, key) => {
+                return (
+                  <tr>
+                    <td>{moment(item?.meetingTime).format('llll')}</td>
+                    <td>{moment(item?.createdAt).format('llll')}</td>
 
-                                {AgentRole() && (<th>Actions</th>)}
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <td>{`${item?.appointedTo?.firstName}  ${item?.appointedTo?.lastName}`}</td>
 
-                            {AllAppointments?.map((item, key) => {
-                                return (
-                                    <tr>
-                                        <td>{moment(item?.meetingTime).format('llll')}</td>
-                                        <td>{moment(item?.createdAt).format('llll')}</td>
+                    <td>{`${item?.createdBy.firstName}  ${item?.createdBy.lastName}`}</td>
+                    <td>{item.message}</td>
 
-                                        <td>{`${item?.appointedTo?.firstName}  ${item?.appointedTo?.lastName}`}</td>
-
-                                        <td>{`${item?.createdBy.firstName}  ${item?.createdBy.lastName}`}</td>
-                                        <td>{item.message}</td>
-
-                                        {AgentRole() && (<td className="actions">
-                                            <button onClick={() => editModeFunc(item)} className="edit">
-                                                <i className="fa fa-check" />
-                                            </button>
-                                            <button onClick={() => deletePhase(item?._id)} className="delete" >
-                                                <i className="fa fa-times" />
-                                            </button>
-                                        </td>)}
-                                    </tr>)
-                            })}
-
-                        </tbody>  
-                    </table>
-                    <div className="pagination-container">
-                        <nav>
-                            <ul className="pagination">
-                                <li className="page-item">
-                                    <a className="btn btn-common" href="#">
-                                        <i className="lni-chevron-left" /> Previous{' '}
-                                    </a>
-                                </li>
-                                <li className="page-item">
-                                    <a className="page-link" href="#">
-                                        1
-                                    </a>
-                                </li>
-                                <li className="page-item">
-                                    <a className="page-link" href="#">
-                                        2
-                                    </a>
-                                </li>
-                                <li className="page-item">
-                                    <a className="page-link" href="#">
-                                        3
-                                    </a>
-                                </li>
-                                <li className="page-item">
-                                    <a className="btn btn-common" href="#">
-                                        Next <i className="lni-chevron-right" />
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+                    {AgentRole() && (
+                      <td className="actions">
+                        <button onClick={() => editModeFunc(item)} className="edit">
+                          <i className="fa fa-check" />
+                        </button>
+                        <button onClick={() => deletePhase(item?._id)} className="delete">
+                          <i className="fa fa-times" />
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div className="pagination-container">
+            <nav>
+              <ul className="pagination">
+                <li className="page-item">
+                  <a className="btn btn-common" href="#">
+                    <i className="lni-chevron-left" /> Previous{' '}
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    1
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    2
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    3
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="btn btn-common" href="#">
+                    Next <i className="lni-chevron-right" />
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <Loading isLoading={isLoading} />
+    </>
+  );
 }

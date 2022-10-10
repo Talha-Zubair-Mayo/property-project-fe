@@ -10,6 +10,8 @@ import Modal from 'react-bootstrap/Modal';
 import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Pagination from '@mui/material/Pagination';
+import Loading from '../../utils/LoadingScreen'
+
 export default function AllBlocks() {
   const allSocieties = useSelector(state => state.AllSocieties);
   // const AllBlocks = useSelector(state => state.AllBlocks);
@@ -19,6 +21,7 @@ export default function AllBlocks() {
   const handleClose = () => setShow(false);
   const [totalPages, setTotalPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch();
   const search = useLocation().search;
   const society = new URLSearchParams(search).get('society');
@@ -27,24 +30,30 @@ export default function AllBlocks() {
 
   const getAllBlocks = (page) => {
     if (society !== null && phase !== null) {
+      setIsLoading(true)
       getBlockBySocietyAndPhaseIdApi(society, phase, page)
         .then((response) => {
+          setIsLoading(false)
           setAllBlocks(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
           setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
+          setIsLoading(false)
           toast.error(error?.data?.message);
 
         });
     } else {
+      setIsLoading(true)
       getAllBlocksApi(page)
         .then((response) => {
+          setIsLoading(false)
           setAllBlocks(response?.data?.result);
           setTotalPages(response?.data?.pagination?.pages);
           setCurrentPage(response?.data?.pagination?.page)
         })
         .catch((error) => {
+          setIsLoading(false)
           toast.error(error?.data?.message);
 
         });
@@ -75,6 +84,7 @@ export default function AllBlocks() {
   }
   const onSubmit = (values, props) => {
     if (editMode) {
+      setIsLoading(true)
       editBlockApi(initialValues._id, FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
         handleClose();
@@ -90,16 +100,19 @@ export default function AllBlocks() {
 
         })
       }).catch((error) => {
+        setIsLoading(false)
         toast.error(error?.data?.message);
 
       })
     } else {
+      setIsLoading(true)
       addNewBlockApi(FormDataFunc(values)).then((response) => {
         toast.success(response?.data?.message);
         getAllBlocks(currentPage)
         props.resetForm();
         handleClose();
       }).catch((error) => {
+        setIsLoading(false)
         toast.error(error?.data?.message);
 
       })
@@ -107,10 +120,13 @@ export default function AllBlocks() {
 
   };
   const deletePhase = (id) => {
+    setIsLoading(true)
     deleteBlockApi(id).then((response) => {
+      setIsLoading(false)
       getAllBlocks(currentPage)
       toast.success(response?.data?.message);
     }).catch((error) => {
+      setIsLoading(false)
       toast.error(error?.data?.message);
 
     })
@@ -135,10 +151,7 @@ export default function AllBlocks() {
   const handlePageChange = (e, p) => {
     getAllBlocks(p)
     setCurrentPage(p)
-
   }
-
-
   return (
     <>
       <div className="col-lg-9 col-md-12 py-3 col-xs-12 pl-0 user-dash2">
@@ -199,7 +212,7 @@ export default function AllBlocks() {
                           }} name="society">
                             <option >Select Society</option>
                             {allSocieties?.data?.map((item, key) => {
-                              return <option key={key} value={item._id}>{item.name}</option>
+                              return <option key={key} value={item?._id}>{item?.name}</option>
                             })}
                           </Field>
                           <ErrorMessage component="div" name="society" className="invalid-feedback" />
@@ -210,7 +223,7 @@ export default function AllBlocks() {
                           <Field as="select" className='form-control' name="phase">
                             <option >Select Phase</option>
                             {phasesBySociety?.map((item, key) => {
-                              return <option key={key} value={item._id}>{item.name}</option>
+                              return <option key={key} value={item?._id}>{item?.name}</option>
                             })}
                           </Field>
                           <ErrorMessage component="div" name="phase" className="invalid-feedback" />
@@ -283,7 +296,7 @@ export default function AllBlocks() {
                     <Link to={`/dashboard/properties?society=${item?.society._id}&phase=${item?.phase?._id}&block=${item?._id}`}>
                       <img
                         alt="my-properties-3"
-                        src={process.env.REACT_APP_IMAGE_URL + item.photo}
+                        src={process.env.REACT_APP_IMAGE_URL + item?.photo}
                         className="img-fluid"
                       />
                     </Link>
@@ -292,24 +305,24 @@ export default function AllBlocks() {
                     <div className="inner">
                       <Link to={`/dashboard/properties?society=${item?.society._id}&phase=${item?.phase?._id}&block=${item?._id}`}> <h2>{item?.name}</h2></Link>
                       <figure>
-                        <i className="lni-map-marker" />{item.address}
+                        <i className="lni-map-marker" />{item?.address}
                       </figure>
 
                     </div>
                   </td>
-                  <td>{moment(item.createdAt).format('llll')}</td>
-                  <td>{item.society.name}</td>
-                  <td>{item.phase.name}</td>
-                  <td>{item.ownerName}</td>
+                  <td>{moment(item?.createdAt).format('llll')}</td>
+                  <td>{item?.society?.name}</td>
+                  <td>{item?.phase?.name}</td>
+                  <td>{item?.ownerName}</td>
 
-                  <td>{`${item.createdBy.firstName}  ${item.createdBy.lastName}`}</td>
+                  <td>{`${item?.createdBy?.firstName}  ${item?.createdBy?.lastName}`}</td>
 
                   {SuperAdmin() && (<td className="actions">
                     <button onClick={() => editModeFunc(item)} className="edit">
                       <i className="fa fa-pencil-alt" />
 
                     </button>
-                    <button onClick={() => deletePhase(item._id)} className="delete" >
+                    <button onClick={() => deletePhase(item?._id)} className="delete" >
                       <i className="far fa-trash-alt" />
                     </button>
                   </td>)}
@@ -331,6 +344,7 @@ export default function AllBlocks() {
           }
         </div>
       </div>
+      <Loading isLoading={isLoading}/>
     </>
   )
 }

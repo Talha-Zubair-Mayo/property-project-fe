@@ -10,7 +10,9 @@ import {
   editPropertyApi,
 } from '../../store/api';
 import { useDropzone } from 'react-dropzone';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+import Loading from '../../utils/LoadingScreen'
+
 export default function UserAddProperty({ editMode, setEditMode, Values, handleClose }) {
   const allSocieties = useSelector((state) => state?.AllSocieties);
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
   const [phasesBySociety, setPhasesBySociety] = useState([]);
   const [BlockBySocietyAndPhaseId, setBlockBySocietyAndPhaseId] = useState([]);
   const [photos, setPhotos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
   const Features = [
     'Air Conditioning',
     'Swimming Pool',
@@ -71,24 +74,30 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
   }, [editMode]);
   const onSubmit = (values, props) => {
     if (editMode) {
+      setIsLoading(true)
       editPropertyApi(Values._id, FormDataMultipleFiles(values))
         .then((response) => {
+          setIsLoading(false)
           toast.success(response?.data?.message);
           setEditMode(false);
           handleClose();
           props.resetForm();
         })
         .catch((err) => {
+          setIsLoading(false)
           toast.error(error?.data?.message);
         });
     } else {
+      setIsLoading(true)
       addNewPropertyApi(FormDataMultipleFiles(values))
         .then((response) => {
+          setIsLoading(false)
           toast.success(response?.data?.message);
           props.resetForm();
           navigate('/dashboard/properties');
         })
         .catch((err) => {
+          setIsLoading(false)
           toast.error(error?.data?.message);
         });
     }
@@ -570,6 +579,8 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
           </Form>
         )}
       </Formik>
+      <Loading isLoading={isLoading}/>
+
     </>
   );
 }
@@ -603,5 +614,6 @@ const UploadComponent = (props) => {
         )}
       </div>
     </div>
+
   );
 };
