@@ -31,8 +31,8 @@ function Login() {
   };
 
   const initialValues = {
-    email: '',
-    password: '',
+    email: 'admin@demo.com',
+    password: 'admin@demo.com',
     rememberMe: false,
   };
   return (

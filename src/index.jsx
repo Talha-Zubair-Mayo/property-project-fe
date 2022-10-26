@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import App from './app';
+import App from './App';
 import './styles/app.css';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel';
