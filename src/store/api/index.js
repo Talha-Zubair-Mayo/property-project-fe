@@ -218,3 +218,14 @@ export const deleteEventApi = async (id) => {
   const res = api.delete(`/events/delete/${id}`, config);
   return res;
 }
+
+
+export const extractFilesData = async (id, Data) => {
+  const res = await api.post(`/readfiledata/${id}`, Data);
+  return res;
+};
+
+export const getSocietiesDataById = async (id) => {
+  const res = await api.get(`/getProperties/?society=${id}`);
+  return res;
+}

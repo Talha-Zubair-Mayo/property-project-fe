@@ -12,12 +12,14 @@ export const NavbarRoutes = () => {
         {
             name: "Phases",
             link: '/dashboard/phases',
-            visiblity: AgentRole() || SuperAdmin()
+            // visiblity: AgentRole() || SuperAdmin()
+            visibility: false,
         },
         {
             name: "Blocks",
             link: '/dashboard/blocks',
-            visiblity: AgentRole() || SuperAdmin()
+            // visiblity: AgentRole() || SuperAdmin()
+            visibility: false,
         },
 
         {
@@ -27,7 +29,8 @@ export const NavbarRoutes = () => {
         }, {
             name: "Properties",
             link: '/dashboard/properties',
-            visiblity: AgentRole() || SuperAdmin()
+            // visiblity: AgentRole() || SuperAdmin()
+            visibility: false,
         },
         {
             name: "Societies",
@@ -37,12 +40,12 @@ export const NavbarRoutes = () => {
         {
             name: "Phases",
             link: '/phases',
-            visiblity: Customer()
+            visiblity: false
         },
         {
             name: "Blocks",
             link: '/blocks',
-            visiblity: Customer()
+            visiblity: false
         },
 
         {

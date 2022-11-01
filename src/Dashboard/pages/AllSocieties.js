@@ -3,7 +3,6 @@ import Hooks from '../../hooks';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { FormDataFunc, SocietiesValidationSchema } from '../../utils';
 import { addNewSocietyApi, deleteSocietyApi, editSocietyApi, getAllSocietiesApi } from '../../store/api';
-import { useDispatch, useSelector } from 'react-redux';
 import moment from "moment"
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
@@ -234,34 +233,34 @@ export default function AllSocieties() {
                 {allSocieties?.map((item, key) => {
                   return (<tr>
                     <td className="image myelist">
-                      <Link to={`/dashboard/phases?society=${item?._id}`}>
+                      <Link to={`/dashboard/society/${item?._id}`}>
                         <img
                           alt="my-properties-3"
-                          src={process.env.REACT_APP_IMAGE_URL + item.photo}
+                          src={process.env.REACT_APP_IMAGE_URL + item?.photo}
                           className="img-fluid"
                         />
                       </Link>
                     </td>
                     <td>
                       <div className="inner">
-                        <Link to={`/dashboard/phases?society=${item?._id}`}> <h2>{item?.name}</h2></Link>
+                        <Link to={`/dashboard/society/${item?._id}`}> <h2>{item?.name}</h2></Link>
                         <figure>
-                          <i className="lni-map-marker" /> {item.address}
+                          <i className="lni-map-marker" /> {item?.address}
                         </figure>
 
                       </div>
                     </td>
-                    <td>{moment(item.createdAt).format('llll')}</td>
-                    <td>{item.ownerName}</td>
-                    <td>{item.managerName}</td>
-                    <td>{`${item.createdBy.firstName}  ${item.createdBy.lastName}`}</td>
+                    <td>{moment(item?.createdAt).format('llll')}</td>
+                    <td>{item?.ownerName}</td>
+                    <td>{item?.managerName}</td>
+                    <td>{`${item?.createdBy?.firstName}  ${item?.createdBy?.lastName}`}</td>
 
                     {SuperAdmin() && (<td className="actions">
                       <button onClick={() => editModeFunc(item)} className="edit">
                         <i className="fa fa-pencil-alt" />
 
                       </button>
-                      <button onClick={() => deleteSociety(item._id)} className="delete" >
+                      <button onClick={() => deleteSociety(item?._id)} className="delete" >
                         <i className="far fa-trash-alt" />
                       </button>
                     </td>)}

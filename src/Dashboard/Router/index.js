@@ -16,22 +16,24 @@ import { AdminRoutes, ProtectedRoutes, AuthenticatedRoutes } from '../../utils/P
 import Appointments from '../pages/Appointments';
 import EventScheduler from '../EventScheduler';
 import NotFound from '../../components/NotFound';
+import SocietyDetails from '../pages/SocietyDetails';
 const UserRouter = () => {
     return (
         <Routes>
-            {/* <Route exact path="/dashboard" element={<ProtectedRoutes component={Dashboard} />} /> */}
-            <Route exact path="/dashboard/profile" element={<AuthenticatedRoutes component={UserProfile} />} />
-            <Route exact path="/dashboard/properties" element={<ProtectedRoutes component={UserProperties} />} />
-            {/* <Route exact path="/dashboard/favproperties" element={<AuthenticatedRoutes component={UserFavoriteProperties} />} /> */}
-            <Route exact path="/dashboard/addproperty" element={<ProtectedRoutes component={UserAddProperty} />} />
-            <Route exact path="'/dashboard/paymentmethod" element={<ProtectedRoutes component={UserPaymentMethod} />} />
-            <Route exact path="/dashboard/invoice" element={<ProtectedRoutes component={UserInvoice} />} />
-            <Route exact path="/dashboard/societies" element={<ProtectedRoutes component={AllSocieties} />} />
-            <Route exact path="/dashboard/blocks" element={<ProtectedRoutes component={AllBlocks} />} />
-            <Route exact path="/dashboard/phases" element={<ProtectedRoutes component={AllPhases} />} />
-            <Route exact path="/dashboard/appointment/:id" element={<AuthenticatedRoutes component={Appointments} />} />
-            <Route exact path="/dashboard/events/:id" element={<AuthenticatedRoutes component={EventScheduler} />} />
-            <Route exact path="/dashboard/changepassword" element={<AuthenticatedRoutes component={UserChangePassword} />} />
+            {/* <Route  path="/dashboard" element={<ProtectedRoutes component={Dashboard} />} /> */}
+            <Route path="/dashboard/profile" element={<AuthenticatedRoutes component={UserProfile} />} />
+            <Route path="/dashboard/properties" element={<ProtectedRoutes component={UserProperties} />} />
+            {/* <Route  path="/dashboard/favproperties" element={<AuthenticatedRoutes component={UserFavoriteProperties} />} /> */}
+            {/* <Route path="/dashboard/addproperty" element={<ProtectedRoutes component={UserAddProperty} />} /> */}
+            <Route path="'/dashboard/paymentmethod" element={<ProtectedRoutes component={UserPaymentMethod} />} />
+            <Route path="/dashboard/invoice" element={<ProtectedRoutes component={UserInvoice} />} />
+            <Route path="/dashboard/societies" element={<ProtectedRoutes component={AllSocieties} />} />
+            <Route path="/dashboard/society/:id" element={<ProtectedRoutes component={SocietyDetails} />} />
+            {/* <Route  path="/dashboard/blocks" element={<ProtectedRoutes component={AllBlocks} />} /> */}
+            {/* <Route  path="/dashboard/phases" element={<ProtectedRoutes component={AllPhases} />} /> */}
+            <Route path="/dashboard/appointment/:id" element={<AuthenticatedRoutes component={Appointments} />} />
+            <Route path="/dashboard/events/:id" element={<AuthenticatedRoutes component={EventScheduler} />} />
+            <Route path="/dashboard/changepassword" element={<AuthenticatedRoutes component={UserChangePassword} />} />
             <Route path="/dashboard/notfound" element={<NotFound />} />
             <Route path="*" element={<Navigate replace to="/dashboard/notfound" />} />
 

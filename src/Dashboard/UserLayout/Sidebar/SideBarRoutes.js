@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Hooks from '../../../hooks';
 import React from 'react'
 import { useParams } from 'react-router-dom';
@@ -30,25 +31,25 @@ const SideBarRoutes = () => {
             name: "Phases",
             link: '/dashboard/phases',
             icon: 'fa fa-user',
-            visiblity: AgentRole() || SuperAdmin()
+            visiblity: false
         }
         , {
             name: "Blocks",
             link: '/dashboard/blocks',
             icon: 'fa fa-user',
-            visiblity: AgentRole() || SuperAdmin()
+            visiblity: false
         }
         , {
             name: "Add Property",
             link: '/dashboard/addproperty',
             icon: 'fa fa-list',
-            visiblity: AgentRole() || SuperAdmin()
+            visiblity: false
         }
         , {
             name: "My Properties",
             link: '/dashboard/properties',
             icon: 'fa fa-list',
-            visiblity: AgentRole() || SuperAdmin()
+            visiblity: false
         }, {
             name: " Favorited Properties",
             link: '/dashboard/favproperties',
@@ -81,7 +82,6 @@ const SideBarRoutes = () => {
         }
 
     ]
-
     return Routes
 }
 
