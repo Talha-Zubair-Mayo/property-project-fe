@@ -18,7 +18,10 @@ const SocietyDetails = () => {
     const { SuperAdmin } = Hooks();
     const [isLoading, setIsLoading] = useState(false);
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(uploading ? uploading : false);
+    const [errors, setErrors] = useState([])
+    const handleClose = () => {
+        setShow(uploading ? uploading : false)
+    };
     const { id } = useParams();
     const [uploading, setUploading] = useState(false)
     const [allSocietiesData, setAllSocietiesData] = useState([]);
@@ -27,7 +30,7 @@ const SocietyDetails = () => {
             setAllSocietiesData(res?.data?.result)
             console.log(res)
         }).catch(err => {
-            console.log(error)
+            console.log(err)
         })
     }
     useEffect(() => {
@@ -61,8 +64,9 @@ const SocietyDetails = () => {
             setUploading(false)
             setShow(false);
         }).catch((err) => {
+            console.log(err)
             setUploading(false)
-            toast.error("Failed", err?.response?.message)
+            toast.error("Failed", err?.response?.data?.message)
         })
     }
 
