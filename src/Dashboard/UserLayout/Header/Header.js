@@ -92,7 +92,7 @@ export default function Header() {
                     if (item.visiblity) {
                       return (
                         <li>
-                          <a href={item.link}>{item.name}</a>
+                          <Link to={item.link}>{item.name}</Link>
                         </li>
                       );
                     }

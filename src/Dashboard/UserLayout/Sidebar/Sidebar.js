@@ -14,13 +14,13 @@ export default function Sidebar() {
     <>
       <div className="user-profile-box mb-0">
         <div className="sidebar-header">
-          <Link to={SuperAdmin() || AgentRole() ? `/dashboard/profile` : '/'}>
+          <Link to={SuperAdmin() || AgentRole() ? `/profile` : '/'}>
             <img src={process.env.PUBLIC_URL + "/images/logo-blue.svg"} alt="header-logo2.png" />
 
           </Link>
         </div>
 
-        
+
         <div className="header clearfix">
           <img src={process.env.REACT_APP_IMAGE_URL + userinfo?.photo} alt="avatar"
             className="img-fluid profile-img" />

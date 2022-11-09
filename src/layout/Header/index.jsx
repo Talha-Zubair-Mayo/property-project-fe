@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
-import Hooks from '../../hooks';
-import { UserDropdownRoutes, NavbarRoutes } from './HeaderRoutes';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, NavLink } from "react-router-dom";
+import Hooks from "../../hooks";
+import { UserDropdownRoutes, NavbarRoutes } from "./HeaderRoutes";
 
 export default function Header() {
   const userinfo = useSelector((state) => state.UserLogin.data.user);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { Logout, AgentRole, IsUserLoggedIn, SuperAdmin, ActivatedRoutes } = Hooks();
+  const { Logout, AgentRole, IsUserLoggedIn, SuperAdmin, ActivatedRoutes } =
+    Hooks();
   const ToggleProfileDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -21,7 +22,10 @@ export default function Header() {
             <div className="left-side">
               <div id="logo">
                 <Link to="/">
-                  <img src={process.env.PUBLIC_URL + 'images/logo.svg'} alt="" />
+                  <img
+                    src={process.env.PUBLIC_URL + "images/logo.svg"}
+                    alt=""
+                  />
                 </Link>
               </div>
               <div className="mmenu-trigger">
@@ -39,8 +43,9 @@ export default function Header() {
                         <li>
                           <NavLink
                             to={item.link}
-                            className={({ isActive }) => (isActive ? 'current' : undefined)}
-                          >
+                            className={({ isActive }) =>
+                              isActive ? "current" : undefined
+                            }>
                             {item.name}
                           </NavLink>
                         </li>
@@ -59,8 +64,7 @@ export default function Header() {
                   <li className="d-none d-xl-none d-block d-lg-block mt-5 pb-4 ml-5 border-bottom-0">
                     <a
                       href="add-property.html"
-                      className="button border btn-lg btn-block text-center"
-                    >
+                      className="button border btn-lg btn-block text-center">
                       Add Listing
                       <i className="fas fa-laptop-house ml-2" />
                     </a>
@@ -87,13 +91,17 @@ export default function Header() {
               <div
                 className={
                   showDropdown
-                    ? 'header-user-menu user-menu  active'
-                    : 'header-user-menu user-menu '
-                }
-              >
-                <div onClick={() => ToggleProfileDropdown()} className="header-user-name">
+                    ? "header-user-menu user-menu  active"
+                    : "header-user-menu user-menu "
+                }>
+                <div
+                  onClick={() => ToggleProfileDropdown()}
+                  className="header-user-name">
                   <span>
-                    <img src={process.env.REACT_APP_IMAGE_URL + userinfo?.photo} alt="" />
+                    <img
+                      src={process.env.REACT_APP_IMAGE_URL + userinfo?.photo}
+                      alt=""
+                    />
                   </span>
                   Hi, {userinfo?.firstName}!
                 </div>
@@ -102,7 +110,7 @@ export default function Header() {
                     if (item.visiblity) {
                       return (
                         <li>
-                          <a href={item.link}>{item.name}</a>
+                          <Link to={item.link}>{item.name}</Link>
                         </li>
                       );
                     }

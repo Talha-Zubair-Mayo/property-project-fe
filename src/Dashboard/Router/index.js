@@ -11,7 +11,7 @@ import UserChangePassword from '../pages/UserChangePassword';
 import AllSocieties from "../pages/AllSocieties";
 import AllBlocks from '../pages/Blocks';
 import AllPhases from '../pages/Phases';
-
+import WhatsAppPage from "../pages/WhatsAppPage"
 import { AdminRoutes, ProtectedRoutes, AuthenticatedRoutes } from '../../utils/ProtectedRoutes';
 import Appointments from '../pages/Appointments';
 import EventScheduler from '../EventScheduler';
@@ -35,6 +35,9 @@ const UserRouter = () => {
             <Route path="/dashboard/events/:id" element={<AuthenticatedRoutes component={EventScheduler} />} />
             <Route path="/dashboard/changepassword" element={<AuthenticatedRoutes component={UserChangePassword} />} />
             <Route path="/dashboard/notfound" element={<NotFound />} />
+
+            <Route path="/dashboard/whatsapp" element={<WhatsAppPage />} />
+
             <Route path="*" element={<Navigate replace to="/dashboard/notfound" />} />
 
         </Routes>

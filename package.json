@@ -44,6 +44,7 @@
     "react-toastify": "^9.0.8",
     "react-typed": "^1.2.0",
     "react-use": "^17.3.2",
+    "react-voice-recorder": "^2.1.2",
     "redux": "^4.2.0",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",

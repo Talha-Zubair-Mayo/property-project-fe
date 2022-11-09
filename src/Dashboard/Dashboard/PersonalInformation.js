@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { profileValidationSchema } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import Loading from '../../utils/LoadingScreen';
 
 export default function PersonalInformation() {
-  const userInfo = useSelector((state) => state.UserLogin.data.user);
+  const userInfo = useSelector((state) => state?.UserLogin?.data?.user);
   const [isLoading, setIsloading] = useState(false)
   const dispatch = useDispatch();
   const onSubmit = (values, props) => {
@@ -24,15 +24,33 @@ export default function PersonalInformation() {
         setIsloading(false);
       });
   };
+  console.log(userInfo)
+  const [initialValues, setInitialValues] = useState({
+    // firstName: userInfo?.firstName ? userInfo?.firstName : '',
+    // lastName: userInfo?.lastName ? userInfo?.lastName : '',
+    // phone: userInfo?.phone ? userInfo?.phone : '',
+    // company: userInfo?.company ? userInfo?.company : '',
+    // address: userInfo?.address ? userInfo?.address : '',
+    // about: userInfo?.about ? userInfo?.about : ''
+  });
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      setInitialValues(
+        {
+          firstName: userInfo?.firstName ? userInfo?.firstName : '',
+          lastName: userInfo?.lastName ? userInfo?.lastName : '',
+          phone: userInfo?.phone ? userInfo?.phone : '',
+          company: userInfo?.company ? userInfo?.company : '',
+          address: userInfo?.address ? userInfo?.address : '',
+          about: userInfo?.about ? userInfo?.about : ''
+        }
 
-  const initialValues = {
-    firstName: userInfo?.firstName ? userInfo?.firstName : '',
-    lastName: userInfo?.lastName ? userInfo?.lastName : '',
-    phone: userInfo?.phone ? userInfo?.phone : '',
-    company: userInfo?.company ? userInfo?.company : '',
-    address: userInfo?.address ? userInfo?.address : '',
-    about: userInfo?.about ? userInfo?.about : ''
-  };
+
+      )
+    }
+
+  }, [userInfo])
+
 
   return (
     <>
@@ -40,7 +58,14 @@ export default function PersonalInformation() {
         <h4 className="heading pt-0">Personal Information</h4>
         <div className="section-inforamation">
           <Formik
-            initialValues={initialValues}
+            initialValues={{
+              firstName: userInfo?.firstName,
+              lastName: userInfo?.lastName,
+              phone: userInfo?.phone,
+              company: userInfo?.company,
+              address: userInfo?.address,
+              about: userInfo?.about
+            }}
             validationSchema={profileValidationSchema}
             onSubmit={onSubmit}
           >

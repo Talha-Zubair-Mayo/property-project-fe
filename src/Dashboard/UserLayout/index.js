@@ -11,7 +11,7 @@ const UserLayout = ({ children }) => {
                 <Header />
                 <section className="user-page section-padding">
                     <div className="container-fluid">
-                        <div className="row">
+                        <div className="row position-relative">
                             <div className="col-lg-3 col-md-12 col-xs-12 pl-0 pr-0 user-dash">
                                 <Sidebar />
                             </div>

@@ -225,7 +225,40 @@ export const extractFilesData = async (id, Data) => {
   return res;
 };
 
-export const getSocietiesDataById = async (id) => {
-  const res = await api.get(`/getProperties/?society=${id}`);
+export const getSocietiesDataById = async (id, page) => {
+  const res = await api.get(`/getProperties/?society=${id}&page=${page}`);
   return res;
 }
+
+// WhatsApp Api 
+
+export const GetMediaFile = async (Data) => {
+  const res = await api.get("/loadfile", Data);
+  return res;
+};
+
+export const GetLastMessage = async (Data) => {
+  const res = await api.get("/last_message", Data);
+  return res;
+};
+//receiver='Any Receiver Number', text='any message'
+export const SendTextMessage = async (Data) => {
+  const res = await api.post("/send_text_message", Data);
+  return res;
+};
+
+export const SendMultimediaMessage = async (Data) => {
+  console.log(Data)
+  const res = await api.post("/send_multimedia_message", Data, {
+    headers: {
+      'ContentType': 'multipart/form-data'
+    }
+  });
+  return res;
+};
+
+export const GetAllMessagesByNumber = async (Data) => {
+  const res = await api.get("/loadAllMesssages", Data);
+  return res;
+};
+

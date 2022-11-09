@@ -24,6 +24,7 @@ export default function AllPhases() {
   const society = new URLSearchParams(search).get('society');
   const [AllPhases, setAllPhases] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+ 
 
   const getAllPhases = (page) => {
     if (society !== null) {
