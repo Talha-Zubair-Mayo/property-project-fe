@@ -257,8 +257,13 @@ export const SendMultimediaMessage = async (Data) => {
   return res;
 };
 
-export const GetAllMessagesByNumber = async (Data) => {
-  const res = await api.get("/loadAllMesssages", Data);
+export const GetAllMessagesByNumber = async (phoneNumber) => {
+  console.log(phoneNumber)
+  const res = await api.get(`/loadmessagebyuser/${phoneNumber}`);
   return res;
 };
 
+export const getAllWhatsAppProfilesApi = async () => {
+  const res = await api.get("/getwhatsappuserlist");
+  return res;
+}

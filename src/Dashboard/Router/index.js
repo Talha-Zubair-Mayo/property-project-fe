@@ -17,6 +17,7 @@ import Appointments from '../pages/Appointments';
 import EventScheduler from '../EventScheduler';
 import NotFound from '../../components/NotFound';
 import SocietyDetails from '../pages/SocietyDetails';
+import Chat from '../pages/Chat';
 const UserRouter = () => {
     return (
         <Routes>
@@ -32,6 +33,7 @@ const UserRouter = () => {
             {/* <Route  path="/dashboard/blocks" element={<ProtectedRoutes component={AllBlocks} />} /> */}
             {/* <Route  path="/dashboard/phases" element={<ProtectedRoutes component={AllPhases} />} /> */}
             <Route path="/dashboard/appointment/:id" element={<AuthenticatedRoutes component={Appointments} />} />
+            <Route path="/dashboard/chat" element={<AuthenticatedRoutes component={Chat} />} />
             <Route path="/dashboard/events/:id" element={<AuthenticatedRoutes component={EventScheduler} />} />
             <Route path="/dashboard/changepassword" element={<AuthenticatedRoutes component={UserChangePassword} />} />
             <Route path="/dashboard/notfound" element={<NotFound />} />

@@ -56,110 +56,111 @@ const Chatpopup = () => {
     console.log(scroll);
     chatContainer?.current?.scrollTo(0, scroll);
   };
+  const getMessages = () => {
+    WA_API.GetAllMessagesByNumber("923154074657").then((resp) => {
+      var data = [];
+      resp.data.forEach((element) => {
+        //In case the messages are in text formate
+        if (element?.message?.body?.messages[0]?.type === "text") {
+          if (element.message.way === "send") {
+            data.push({
+              tWay: "send",
+              msg: element?.message?.body?.messages[0]?.text.body,
+              type: "text",
+            });
+          } else {
+            data.push({
+              cName: element?.message?.body?.messages[0]?.from,
+              tWay: "receive",
+              msg: element?.message?.body?.messages[0]?.text.body,
+              type: "text",
+            });
+          }
+        } else if (element?.message?.body?.messages[0]?.type === "image") {
+          if (element.message.way === "send") {
+            data.push({
+              tWay: "send",
+              msg: "",
+              type: "image",
+              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=image&way=sent`,
+            });
+          } else {
+            data.push({
+              cName: element?.message?.body?.messages[0]?.from,
+              tWay: "receive",
+              msg: "",
+              type: "image",
+              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=image&way=received`,
+            });
+          }
+        } else if (element?.message?.body?.messages[0]?.type === "document") {
+          if (element.message.way === "send") {
+            data.push({
+              tWay: "send",
+              msg: "",
+              type: "document",
+              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=document&way=sent`,
+            });
+          } else {
+            data.push({
+              cName: element?.message?.body?.messages[0]?.from,
+              tWay: "receive",
+              msg: "",
+              type: "document",
+              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=document&way=received`,
+            });
+          }
+        } else if (element?.message?.body?.messages[0]?.type === "video") {
+          if (element.message.way === "send") {
+            data.push({
+              tWay: "send",
+              msg: "",
+              type: "video",
+              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=video&way=sent`,
+            });
+          } else {
+            data.push({
+              cName: element?.message?.body?.messages[0]?.from,
+              tWay: "receive",
+              msg: "",
+              type: "video",
+              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=video&way=received`,
+            });
+          }
+        } else if (element?.message?.body?.messages[0]?.type === "audio") {
+          if (element.message.way === "send") {
+            data.push({
+              tWay: "send",
+              msg: "",
+              type: "audio",
+              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=audio&way=sent`,
+            });
+          } else {
+            data.push({
+              cName: element?.message?.body?.messages[0]?.from,
+              tWay: "receive",
+              msg: "",
+              type: "audio",
+              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=audio&way=received`,
+            });
+          }
+        }
+      });
+
+      // @ts-ignore
+      setMessageArray((old) => {
+        if (old.length < data.length) {
+          if (data[0].tWay !== "send") message?.info("New Message Received", 3);
+          scrollToBottom();
+          localStorage.setItem("isUpdated", "true");
+          return data.sort().reverse();
+        } else return old;
+      });
+    });
+  };
   useEffect(() => {
     var interval = setInterval(() => {
-      var msgs = WA_API.GetAllMessagesByNumber();
-      msgs.then((resp) => {
-        var data = [];
-        resp.data.forEach((element) => {
-          //In case the messages are in text formate
-          if (element?.message?.body?.messages[0]?.type === "text") {
-            if (element.message.way === "send") {
-              data.push({
-                tWay: "send",
-                msg: element?.message?.body?.messages[0]?.text.body,
-                type: "text",
-              });
-            } else {
-              data.push({
-                cName: element?.message?.body?.messages[0]?.from,
-                tWay: "receive",
-                msg: element?.message?.body?.messages[0]?.text.body,
-                type: "text",
-              });
-            }
-          } else if (element?.message?.body?.messages[0]?.type === "image") {
-            if (element.message.way === "send") {
-              data.push({
-                tWay: "send",
-                msg: "",
-                type: "image",
-                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=image&way=sent`,
-              });
-            } else {
-              data.push({
-                cName: element?.message?.body?.messages[0]?.from,
-                tWay: "receive",
-                msg: "",
-                type: "image",
-                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=image&way=received`,
-              });
-            }
-          } else if (element?.message?.body?.messages[0]?.type === "document") {
-            if (element.message.way === "send") {
-              data.push({
-                tWay: "send",
-                msg: "",
-                type: "document",
-                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=document&way=sent`,
-              });
-            } else {
-              data.push({
-                cName: element?.message?.body?.messages[0]?.from,
-                tWay: "receive",
-                msg: "",
-                type: "document",
-                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=document&way=received`,
-              });
-            }
-          } else if (element?.message?.body?.messages[0]?.type === "video") {
-            if (element.message.way === "send") {
-              data.push({
-                tWay: "send",
-                msg: "",
-                type: "video",
-                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=video&way=sent`,
-              });
-            } else {
-              data.push({
-                cName: element?.message?.body?.messages[0]?.from,
-                tWay: "receive",
-                msg: "",
-                type: "video",
-                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=video&way=received`,
-              });
-            }
-          } else if (element?.message?.body?.messages[0]?.type === "audio") {
-            if (element.message.way === "send") {
-              data.push({
-                tWay: "send",
-                msg: "",
-                type: "audio",
-                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=audio&way=sent`,
-              });
-            } else {
-              data.push({
-                cName: element?.message?.body?.messages[0]?.from,
-                tWay: "receive",
-                msg: "",
-                type: "audio",
-                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=audio&way=received`,
-              });
-            }
-          }
-        });
-
-        // @ts-ignore
-        setMessageArray((old) => {
-          if (old.length < data.length) {
-            if (data[0].tWay !== "send")
-              message?.info("New Message Received", 3);
-            scrollToBottom();
-            localStorage.setItem("isUpdated", "true");
-            return data.sort().reverse();
-          } else return old;
-        });
-      });
+      getMessages();
     }, 3000);
 
     return () => {
@@ -233,15 +234,10 @@ const Chatpopup = () => {
             <div className="modal-content position-relative">
               <div className="modal-header custom-m-header">
                 <div className="d-flex align-items-center">
-                  {/* <img
-                    src="https://media.istockphoto.com/id/1332100919/vector/man-icon-black-icon-person-symbol.jpg?s=612x612&w=0&k=20&c=AVVJkvxQQCuBhawHrUhDRTCeNQ3Jgt0K1tXjJsFy1eg="
-                    alt=""
-                    className="m-header-img"
-                  /> */}
                   <h5
                     className="modal-title ml-2 text-white"
                     id="exampleModalLabel">
-                    Raza Awan
+                    Ta
                   </h5>
                 </div>
 

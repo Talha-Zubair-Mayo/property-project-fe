@@ -1,63 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { FormDataMultipleFiles, PropertySchema } from '../../utils';
-import { getAllSocietiesAction } from '../../store/actions';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { FormDataMultipleFiles, PropertySchema } from "../../utils";
+import { getAllSocietiesAction } from "../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getBlockBySocietyAndPhaseIdApi,
   getPhaseBySocietyidApi,
   addNewPropertyApi,
   editPropertyApi,
-} from '../../store/api';
-import { useDropzone } from 'react-dropzone';
-import { useNavigate } from 'react-router-dom'
-import Loading from '../../utils/LoadingScreen'
+} from "../../store/api";
+import { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
+import Loading from "../../utils/LoadingScreen";
 
-export default function UserAddProperty({ editMode, setEditMode, Values, handleClose }) {
+export default function UserAddProperty({
+  editMode,
+  setEditMode,
+  Values,
+  handleClose,
+}) {
   const allSocieties = useSelector((state) => state?.AllSocieties);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [phasesBySociety, setPhasesBySociety] = useState([]);
   const [BlockBySocietyAndPhaseId, setBlockBySocietyAndPhaseId] = useState([]);
   const [photos, setPhotos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const Features = [
-    'Air Conditioning',
-    'Swimming Pool',
-    'Central Heating',
-    'Laundry Room',
-    'Gym',
-    'Cinema',
-    'Alarm',
-    'Window Covering',
-    'Refrigerator',
-    'TV Cable & WIFI',
+    "Air Conditioning",
+    "Swimming Pool",
+    "Central Heating",
+    "Laundry Room",
+    "Gym",
+    "Cinema",
+    "Alarm",
+    "Window Covering",
+    "Refrigerator",
+    "TV Cable & WIFI",
   ];
 
   let initialValues = {
-    title: Values?.title ? Values.title : '',
-    description: Values?.description ? Values.description : '',
-    status: Values?.status ? Values.status : '',
-    type: Values?.type ? Values.type : '',
+    title: Values?.title ? Values.title : "",
+    description: Values?.description ? Values.description : "",
+    status: Values?.status ? Values.status : "",
+    type: Values?.type ? Values.type : "",
     rooms: Values?.rooms ? Values.rooms : 0,
     price: Values?.price ? Values.price : 0,
     area: Values?.area ? Values.area : 0,
-    address: Values?.address ? Values.address : '',
-    city: Values?.city ? Values.city : '',
-    state: Values?.state ? Values.state : '',
-    country: Values?.country ? Values.country : '',
-    latitude: Values?.latitude ? Values.latitude : '',
-    longitude: Values?.longitude ? Values.longitude : '',
-    age: Values?.age ? Values.age : '',
+    address: Values?.address ? Values.address : "",
+    city: Values?.city ? Values.city : "",
+    state: Values?.state ? Values.state : "",
+    country: Values?.country ? Values.country : "",
+    latitude: Values?.latitude ? Values.latitude : "",
+    longitude: Values?.longitude ? Values.longitude : "",
+    age: Values?.age ? Values.age : "",
     bathrooms: Values?.bathrooms ? Values.bathrooms : 0,
-    condition: Values?.condition ? Values.condition : '',
-    ctInfoName: Values?.ctInfoName ? Values.ctInfoName : '',
-    ctInfoUsername: Values?.ctInfoUsername ? Values.ctInfoUsername : '',
-    ctInfoEmail: Values?.ctInfoEmail ? Values.ctInfoEmail : '',
-    ctInfoPhone: Values?.ctInfoPhone ? Values.ctInfoPhone : '',
-    society: Values?.society ? Values.society?._id : '',
-    phase: Values?.phase ? Values.phase?._id : '',
-    block: Values?.block ? Values.block?._id : '',
+    condition: Values?.condition ? Values.condition : "",
+    ctInfoName: Values?.ctInfoName ? Values.ctInfoName : "",
+    ctInfoUsername: Values?.ctInfoUsername ? Values.ctInfoUsername : "",
+    ctInfoEmail: Values?.ctInfoEmail ? Values.ctInfoEmail : "",
+    ctInfoPhone: Values?.ctInfoPhone ? Values.ctInfoPhone : "",
+    society: Values?.society ? Values.society?._id : "",
+    phase: Values?.phase ? Values.phase?._id : "",
+    block: Values?.block ? Values.block?._id : "",
     features: Values?.features ? Values.features : [],
     photo: [],
   };
@@ -67,37 +72,40 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
       getPhaseBySocietyidApi(Values?.society?._id).then((res) => {
         setPhasesBySociety(res.data.result);
       });
-      getBlockBySocietyAndPhaseIdApi(Values?.society?._id, Values.phase?._id).then((res) => {
+      getBlockBySocietyAndPhaseIdApi(
+        Values?.society?._id,
+        Values.phase?._id
+      ).then((res) => {
         setBlockBySocietyAndPhaseId(res.data.result);
       });
     }
   }, [editMode]);
   const onSubmit = (values, props) => {
     if (editMode) {
-      setIsLoading(true)
+      setIsLoading(true);
       editPropertyApi(Values._id, FormDataMultipleFiles(values))
         .then((response) => {
-          setIsLoading(false)
+          setIsLoading(false);
           toast.success(response?.data?.message);
           setEditMode(false);
           handleClose();
           props.resetForm();
         })
         .catch((err) => {
-          setIsLoading(false)
+          setIsLoading(false);
           toast.error(error?.data?.message);
         });
     } else {
-      setIsLoading(true)
+      setIsLoading(true);
       addNewPropertyApi(FormDataMultipleFiles(values))
         .then((response) => {
-          setIsLoading(false)
+          setIsLoading(false);
           toast.success(response?.data?.message);
           props.resetForm();
-          navigate('/dashboard/properties');
+          navigate("/dashboard/properties");
         })
         .catch((err) => {
-          setIsLoading(false)
+          setIsLoading(false);
           toast.error(error?.data?.message);
         });
     }
@@ -105,7 +113,7 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
   const SelectSociety = (value) => {
     setPhasesBySociety([]);
     setBlockBySocietyAndPhaseId([]);
-    if (value !== 'Select Society') {
+    if (value !== "Select Society") {
       getPhaseBySocietyidApi(value).then((res) => {
         setPhasesBySociety(res.data.result);
       });
@@ -113,7 +121,7 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
   };
 
   const SelectPhase = (society, value) => {
-    if (value !== 'Select Phase') {
+    if (value !== "Select Phase") {
       getBlockBySocietyAndPhaseIdApi(society, value).then((res) => {
         setBlockBySocietyAndPhaseId(res.data.result);
       });
@@ -122,13 +130,15 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
 
   return (
     <>
-      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={PropertySchema}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validationSchema={PropertySchema}>
         {({ touched, errors, isSubmitting, values, setFieldValue }) => (
           <Form
             className={`${
-              editMode ? 'col-lg-12' : 'col-lg-9'
-            } col-md-12 mb-2 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2`}
-          >
+              editMode ? "col-lg-12" : "col-lg-9"
+            } col-md-12 mb-2 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2`}>
             <div className="single-add-property">
               <h3>Property description and price</h3>
               <div className="property-form-group">
@@ -142,7 +152,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         id="title"
                         placeholder="Enter your property title"
                       />
-                      <ErrorMessage component="div" name="title" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="title"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -156,14 +170,18 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         name="description"
                         placeholder="Describe about your property"
                       />
-                      <ErrorMessage component="div" name="description" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="description"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-lg-4 col-md-12 mb-2">
                     <div className="form-group categories">
-                      <Field as="select" name="status" class="form-control">
+                      <Field as="select" name="status" className="form-control">
                         <option className="option">Select Status</option>
                         <option className="option" value="rent">
                           Rent
@@ -172,12 +190,16 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           Sale
                         </option>
                       </Field>
-                      <ErrorMessage component="div" name="status" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="status"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-4 col-md-12 mb-2">
                     <div className="form-group categories">
-                      <Field as="select" name="type" class="form-control">
+                      <Field as="select" name="type" className="form-control">
                         <option className="option" value="">
                           Select Type
                         </option>
@@ -197,7 +219,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           garage
                         </option>
                       </Field>
-                      <ErrorMessage component="div" name="type" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="type"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-4 col-md-12 mb-2">
@@ -205,11 +231,10 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                       <Field
                         as="select"
                         onChange={(e) => {
-                          setFieldValue('rooms', parseInt(e.target.value));
+                          setFieldValue("rooms", parseInt(e.target.value));
                         }}
                         name="rooms"
-                        class="form-control"
-                      >
+                        className="form-control">
                         <option className="option" value={1}>
                           1
                         </option>
@@ -226,7 +251,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           5
                         </option>
                       </Field>
-                      <ErrorMessage component="div" name="rooms" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="rooms"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -234,16 +263,34 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                   <div className="col-lg-6 col-md-12 mb-2">
                     <div className="no-mb">
                       <label htmlFor="price">Price</label>
-                      <Field type="number" name="price" placeholder="USD" id="price" />
+                      <Field
+                        type="number"
+                        name="price"
+                        placeholder="USD"
+                        id="price"
+                      />
                     </div>
-                    <ErrorMessage component="div" name="price" className="text-danger" />
+                    <ErrorMessage
+                      component="div"
+                      name="price"
+                      className="text-danger"
+                    />
                   </div>
                   <div className="col-lg-6 col-md-12 mb-2">
                     <div className="no-mb last">
                       <label htmlFor="area">Area</label>
-                      <Field type="Number" name="area" placeholder="Sqft" id="area" />
+                      <Field
+                        type="Number"
+                        name="area"
+                        placeholder="Sqft"
+                        id="area"
+                      />
                     </div>
-                    <ErrorMessage component="div" name="area" className="text-danger" />
+                    <ErrorMessage
+                      component="div"
+                      name="area"
+                      className="text-danger"
+                    />
                   </div>
                 </div>
               </div>
@@ -274,10 +321,9 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         className="form-control"
                         onChange={(e) => {
                           SelectSociety(e.target.value);
-                          setFieldValue('society', e.target.value);
+                          setFieldValue("society", e.target.value);
                         }}
-                        name="society"
-                      >
+                        name="society">
                         <option>Select Society</option>
 
                         {allSocieties?.data?.map((item, key) => {
@@ -288,7 +334,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           );
                         })}
                       </Field>
-                      <ErrorMessage component="div" name="society" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="society"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12 mb-2">
@@ -299,10 +349,9 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         className="form-control"
                         onChange={(e) => {
                           SelectPhase(values.society, e.target.value);
-                          setFieldValue('phase', e.target.value);
+                          setFieldValue("phase", e.target.value);
                         }}
-                        name="phase"
-                      >
+                        name="phase">
                         <option>Select Phase</option>
                         {phasesBySociety?.map((item, key) => {
                           return (
@@ -312,7 +361,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           );
                         })}
                       </Field>
-                      <ErrorMessage component="div" name="phase" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="phase"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -320,7 +373,7 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                   <div className="col-lg-6 col-md-12 mb-2">
                     <div className="selectBoxes">
                       <label htmlFor="address">Block</label>
-                      <Field as="select" name="block" class="form-control">
+                      <Field as="select" name="block" className="form-control">
                         <option className="option">Select Block</option>
                         {BlockBySocietyAndPhaseId?.map((item, key) => {
                           return (
@@ -330,7 +383,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           );
                         })}
                       </Field>
-                      <ErrorMessage component="div" name="block" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="block"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12 mb-2">
@@ -342,7 +399,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         placeholder="Enter Your Address"
                         id="address"
                       />
-                      <ErrorMessage component="div" name="address" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="address"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -350,15 +411,33 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                   <div className="col-lg-6 col-md-12 mb-2">
                     <div>
                       <label htmlFor="city">City</label>
-                      <Field type="text" name="city" placeholder="Enter Your City" id="city" />
-                      <ErrorMessage component="div" name="city" className="text-danger" />
+                      <Field
+                        type="text"
+                        name="city"
+                        placeholder="Enter Your City"
+                        id="city"
+                      />
+                      <ErrorMessage
+                        component="div"
+                        name="city"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12 mb-2">
                     <div>
                       <label htmlFor="state">State</label>
-                      <Field type="text" name="state" placeholder="Enter Your State" id="state" />
-                      <ErrorMessage component="div" name="state" className="text-danger" />
+                      <Field
+                        type="text"
+                        name="state"
+                        placeholder="Enter Your State"
+                        id="state"
+                      />
+                      <ErrorMessage
+                        component="div"
+                        name="state"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -372,7 +451,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         placeholder="Enter Your Country"
                         id="country"
                       />
-                      <ErrorMessage component="div" name="country" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="country"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12 mb-2">
@@ -384,7 +467,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         placeholder="Google Maps latitude"
                         id="latitude"
                       />
-                      <ErrorMessage component="div" name="latitude" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="latitude"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -398,7 +485,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         placeholder="Google Maps longitude"
                         id="longitude"
                       />
-                      <ErrorMessage component="div" name="longitude" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="longitude"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -410,7 +501,7 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                 <div className="row align-content-center">
                   <div className="col-lg-4 col-md-12 mb-2">
                     <div className="form-group categories">
-                      <Field as="select" name="age" class="form-control">
+                      <Field as="select" name="age" className="form-control">
                         <option className="option">Select Age</option>
                         <option className="option" value="0-1">
                           0-1 years
@@ -434,7 +525,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           50+ years
                         </option>
                       </Field>
-                      <ErrorMessage component="div" name="age" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="age"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-4 col-md-12 mb-2 ">
@@ -442,11 +537,10 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                       <Field
                         as="select"
                         onChange={(e) => {
-                          setFieldValue('bathrooms', parseInt(e.target.value));
+                          setFieldValue("bathrooms", parseInt(e.target.value));
                         }}
                         name="bathrooms"
-                        class="form-control"
-                      >
+                        className="form-control">
                         <option className="option" value={1}>
                           1
                         </option>
@@ -463,12 +557,19 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           5
                         </option>
                       </Field>
-                      <ErrorMessage component="div" name="bathrooms" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="bathrooms"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-4 col-md-12 mb-2 dropdown faq-drop">
                     <div className="form-group categories">
-                      <Field as="select" name="condition" class="form-control">
+                      <Field
+                        as="select"
+                        name="condition"
+                        className="form-control">
                         <option className="option">Select Condition</option>
                         <option className="option" value="furnished">
                           Furnished
@@ -477,7 +578,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                           Unfurnished
                         </option>
                       </Field>
-                      <ErrorMessage component="div" name="condition" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="condition"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -523,7 +628,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         id="con-name"
                         name="ctInfoName"
                       />
-                      <ErrorMessage component="div" name="ctInfoName" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="ctInfoName"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12 mb-2">
@@ -535,7 +644,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         id="con-user"
                         name="ctInfoUsername"
                       />
-                      <ErrorMessage component="div" name="ctInfoUsername" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="ctInfoUsername"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -549,7 +662,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         id="con-email"
                         name="ctInfoEmail"
                       />
-                      <ErrorMessage component="div" name="ctInfoEmail" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="ctInfoEmail"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12 mb-2">
@@ -561,7 +678,11 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
                         id="con-phn"
                         name="ctInfoPhone"
                       />
-                      <ErrorMessage component="div" name="ctInfoPhone" className="text-danger" />
+                      <ErrorMessage
+                        component="div"
+                        name="ctInfoPhone"
+                        className="text-danger"
+                      />
                     </div>
                   </div>
                 </div>
@@ -579,8 +700,7 @@ export default function UserAddProperty({ editMode, setEditMode, Values, handleC
           </Form>
         )}
       </Formik>
-      <Loading isLoading={isLoading}/>
-
+      <Loading isLoading={isLoading} />
     </>
   );
 }
@@ -589,11 +709,11 @@ const UploadComponent = (props) => {
   const { setFieldValue, photos, setPhotos } = props;
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: 'image/*',
+    accept: "image/*",
     onDrop: (acceptedFiles) => {
-      setFieldValue('photo', []);
+      setFieldValue("photo", []);
       setPhotos([]);
-      setFieldValue('photo', acceptedFiles);
+      setFieldValue("photo", acceptedFiles);
       setPhotos(
         acceptedFiles.map((file) => {
           return URL.createObjectURL(file);
@@ -603,7 +723,7 @@ const UploadComponent = (props) => {
   });
   return (
     <div>
-      <div {...getRootProps({ className: 'dropzone' })}>
+      <div {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
         {photos?.length > 0 ? (
           photos?.map((item, key) => {
@@ -614,6 +734,5 @@ const UploadComponent = (props) => {
         )}
       </div>
     </div>
-
   );
 };

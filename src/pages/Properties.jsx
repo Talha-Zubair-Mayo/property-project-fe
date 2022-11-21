@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import PropertiesGridView from '../components/Properties/PropertiesGridView';
-import SearchForm from '../components/Home/SearchForm';
-import PropertiesListview from '../components/Properties/PropertiesListView';
+import React, { useState, useEffect } from "react";
+import PropertiesGridView from "../components/Properties/PropertiesGridView";
+import SearchForm from "../components/Home/SearchForm";
+import PropertiesListview from "../components/Properties/PropertiesListView";
 import {
   getPropertyBySocietyPhaseAndBlockIdApi,
   getAllPropertiesApi,
   getPropertiesByUserIdApi,
-} from '../store/api';
-import { useLocation } from 'react-router-dom';
-import Loading from '../utils/LoadingScreen';
-import RecordNotFound from '../components/RecordNotFound';
+} from "../store/api";
+import { useLocation } from "react-router-dom";
+import Loading from "../utils/LoadingScreen";
+import RecordNotFound from "../components/RecordNotFound";
 export default function PropertiesGrid() {
   const [Gridview, setGridView] = useState(true);
   const [toggleAdvancedFeatures, setToggleAdvancedFeatures] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const ToggleView = (view) => {
-    if (view === 'Grid') {
+    if (view === "Grid") {
       setGridView(true);
     } else {
       setGridView(false);
@@ -24,10 +24,10 @@ export default function PropertiesGrid() {
   };
 
   const search = useLocation().search;
-  const society = new URLSearchParams(search).get('society');
-  const phase = new URLSearchParams(search).get('phase');
-  const block = new URLSearchParams(search).get('block');
-  const agent = new URLSearchParams(search).get('agent');
+  const society = new URLSearchParams(search).get("society");
+  const phase = new URLSearchParams(search).get("phase");
+  const block = new URLSearchParams(search).get("block");
+  const agent = new URLSearchParams(search).get("agent");
   const [AllProperties, setAllProperties] = useState([]);
   useEffect(() => {
     if (society && phase && block !== null) {
@@ -68,14 +68,16 @@ export default function PropertiesGrid() {
       <div className="inner-pages homepage-4 agents list hp-6   full hd-white">
         <section className="properties-list full featured portfolio blog  p-5">
           <div className="container-fluid ">
-            <div class="row">
-              <div class="col-lg-8 col-md-12 blog-pots">
+            <div className="row">
+              <div className="col-lg-8 col-md-12 blog-pots">
                 <section className="headings-2 pt-0">
                   <div className="pro-wrapper">
                     <div className="detail-wrapper-body">
                       <div className="listing-title-bar">
                         <div className="text-heading text-left">
-                          <p className="font-weight-bold mb-0 mt-3">{AllProperties.length} found</p>
+                          <p className="font-weight-bold mb-0 mt-3">
+                            {AllProperties.length} found
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -83,8 +85,7 @@ export default function PropertiesGrid() {
                       <div className="input-group border rounded input-group-lg w-auto mr-4">
                         <label
                           className="input-group-text bg-transparent border-0 text-uppercase letter-spacing-093 pr-1 pl-3"
-                          htmlFor="inputGroupSelect01"
-                        >
+                          htmlFor="inputGroupSelect01">
                           <i className="fas fa-align-left fs-16 pr-2" />
                           Sortby:
                         </label>
@@ -92,9 +93,12 @@ export default function PropertiesGrid() {
                           className="form-control border-0 bg-transparent shadow-none p-0 selectpicker sortby"
                           data-style="bg-transparent border-0 font-weight-600 btn-lg pl-0 pr-3"
                           id="inputGroupSelect01"
-                          name="sortby"
-                        >
-                          <option selected="">Top Selling</option>
+                          name="sortby">
+                          <option
+                            // @ts-ignore
+                            selected="">
+                            Top Selling
+                          </option>
                           <option value={1}>Most Viewed</option>
                           <option value={2}>Price(low to high)</option>
                           <option value={3}>Price(high to low)</option>
@@ -102,23 +106,21 @@ export default function PropertiesGrid() {
                       </div>
                       <div className="sorting-options">
                         <a
-                          onClick={() => ToggleView('List')}
+                          onClick={() => ToggleView("List")}
                           className={
                             Gridview === true
-                              ? 'cursor-pointer change-view-btn lde'
-                              : 'cursor-pointer change-view-btn active-view-btn'
-                          }
-                        >
+                              ? "cursor-pointer change-view-btn lde"
+                              : "cursor-pointer change-view-btn active-view-btn"
+                          }>
                           <i className="fa fa-th-list" />
                         </a>
                         <a
-                          onClick={() => ToggleView('Grid')}
+                          onClick={() => ToggleView("Grid")}
                           className={
                             Gridview === false
-                              ? 'cursor-pointer change-view-btn lde'
-                              : 'cursor-pointer change-view-btn active-view-btn'
-                          }
-                        >
+                              ? "cursor-pointer change-view-btn lde"
+                              : "cursor-pointer change-view-btn active-view-btn"
+                          }>
                           <i className="fa fa-th-large" />
                         </a>
                       </div>
@@ -152,14 +154,20 @@ export default function PropertiesGrid() {
                         <div className="form-group looking">
                           <div className="first-select wide">
                             <div className="main-search-input-item">
-                              <input type="text" placeholder="Enter Keyword..." defaultValue="" />
+                              <input
+                                type="text"
+                                placeholder="Enter Keyword..."
+                                defaultValue=""
+                              />
                             </div>
                           </div>
                         </div>
                         {/*/ End Form Lookin for */}
                         {/* Form Location */}
                         <div className="form-group location">
-                          <div className="nice-select form-control wide" tabIndex={0}>
+                          <div
+                            className="nice-select form-control wide"
+                            tabIndex={0}>
                             <span className="current">
                               <i className="fa fa-map-marker" />
                               Location
@@ -192,7 +200,9 @@ export default function PropertiesGrid() {
                         {/*/ End Form Location */}
                         {/* Form Categories */}
                         <div className="form-group categories">
-                          <div className="nice-select form-control wide" tabIndex={0}>
+                          <div
+                            className="nice-select form-control wide"
+                            tabIndex={0}>
                             <span className="current">
                               <i className="fa fa-home" aria-hidden="true" />
                               Property Type
@@ -222,7 +232,9 @@ export default function PropertiesGrid() {
                         {/*/ End Form Categories */}
                         {/* Form Property Status */}
                         <div className="form-group categories">
-                          <div className="nice-select form-control wide" tabIndex={0}>
+                          <div
+                            className="nice-select form-control wide"
+                            tabIndex={0}>
                             <span className="current">
                               <i className="fa fa-home" />
                               Property Status
@@ -240,9 +252,12 @@ export default function PropertiesGrid() {
                         {/*/ End Form Property Status */}
                         {/* Form Bedrooms */}
                         <div className="form-group beds">
-                          <div className="nice-select form-control wide" tabIndex={0}>
+                          <div
+                            className="nice-select form-control wide"
+                            tabIndex={0}>
                             <span className="current">
-                              <i className="fa fa-bed" aria-hidden="true" /> Bedrooms
+                              <i className="fa fa-bed" aria-hidden="true" />{" "}
+                              Bedrooms
                             </span>
                             <ul className="list">
                               <li data-value={1} className="option selected">
@@ -281,9 +296,12 @@ export default function PropertiesGrid() {
                         {/*/ End Form Bedrooms */}
                         {/* Form Bathrooms */}
                         <div className="form-group bath">
-                          <div className="nice-select form-control wide" tabIndex={0}>
+                          <div
+                            className="nice-select form-control wide"
+                            tabIndex={0}>
                             <span className="current">
-                              <i className="fa fa-bath" aria-hidden="true" /> Bathrooms
+                              <i className="fa fa-bath" aria-hidden="true" />{" "}
+                              Bathrooms
                             </span>
                             <ul className="list">
                               <li data-value={1} className="option selected">
@@ -328,20 +346,32 @@ export default function PropertiesGrid() {
                       {/* Area Range */}
                       <div className="range-slider">
                         <label>Area Size</label>
-                        <div id="area-range" data-min={0} data-max={1300} data-unit="sq ft" />
+                        <div
+                          id="area-range"
+                          data-min={0}
+                          data-max={1300}
+                          data-unit="sq ft"
+                        />
                         <div className="clearfix" />
                       </div>
                       <br />
                       {/* Price Range */}
                       <div className="range-slider">
                         <label>Price Range</label>
-                        <div id="price-range" data-min={0} data-max={600000} data-unit="$" />
+                        <div
+                          id="price-range"
+                          data-min={0}
+                          data-max={600000}
+                          data-unit="$"
+                        />
                         <div className="clearfix" />
                       </div>
                     </div>
                     {/* More Search Options */}
                     <a
-                      onClick={() => setToggleAdvancedFeatures(!toggleAdvancedFeatures)}
+                      onClick={() =>
+                        setToggleAdvancedFeatures(!toggleAdvancedFeatures)
+                      }
                       type="button"
                       className="more-search-options-trigger margin-bottom-10 margin-top-30"
                       data-open-title="Advanced Features"
@@ -349,8 +379,9 @@ export default function PropertiesGrid() {
                     />
                     <div
                       className="more-search-options relative  active"
-                      style={{ display: toggleAdvancedFeatures ? 'block' : 'none' }}
-                    >
+                      style={{
+                        display: toggleAdvancedFeatures ? "block" : "none",
+                      }}>
                       {/* Checkboxes */}
                       <div className="checkboxes one-in-row margin-bottom-10">
                         <input id="check-2" type="checkbox" name="check" />
@@ -386,7 +417,9 @@ export default function PropertiesGrid() {
                     {/* More Search Options / End */}
                     <div className="col-lg-12 no-pds">
                       <div className="at-col-default-mar">
-                        <button className="btn btn-default hvr-bounce-to-right" type="submit">
+                        <button
+                          className="btn btn-default hvr-bounce-to-right"
+                          type="submit">
                           Search
                         </button>
                       </div>

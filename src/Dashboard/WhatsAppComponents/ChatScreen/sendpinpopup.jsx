@@ -1,5 +1,5 @@
 import React from "react";
-const SendPinPopup = ({ MediaUpload }) => {
+const SendPinPopup = ({ MediaUpload, phoneNumber }) => {
   return (
     <div className=" pr-3" id="selectfile">
       <div className="dropdown">
@@ -18,14 +18,14 @@ const SendPinPopup = ({ MediaUpload }) => {
             <div className="d-flex flex-row align-items-center justify-content-between">
               <label
                 className="d-flex flex-column align-items-center cr-p"
-                onClick={() => MediaUpload("image")}>
+                onClick={() => MediaUpload("image", phoneNumber)}>
                 <div className="attach-item attach-item3">
                   <i className="fa-solid fa-image"></i>
                 </div>
                 <p className="pt-1">Image</p>
               </label>
               <label
-                onClick={() => MediaUpload("document")}
+                onClick={() => MediaUpload("document", phoneNumber)}
                 className="d-flex flex-column align-items-center cr-p">
                 <div className="attach-item attach-item1 ">
                   <i className="fa-solid fa-file"></i>
@@ -34,7 +34,7 @@ const SendPinPopup = ({ MediaUpload }) => {
               </label>
 
               <label
-                onClick={() => MediaUpload("audio")}
+                onClick={() => MediaUpload("audio", phoneNumber)}
                 className="d-flex flex-column align-items-center cr-p">
                 <div className="attach-item attach-item2">
                   <i className="fa-solid fa-headphones"></i>
@@ -43,7 +43,7 @@ const SendPinPopup = ({ MediaUpload }) => {
               </label>
 
               <label
-                onClick={() => MediaUpload("video")}
+                onClick={() => MediaUpload("video", phoneNumber)}
                 className="d-flex flex-column align-items-center cr-p">
                 <div className="attach-item attach-item3">
                   <i className="fa-solid fa-video"></i>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import { Recorder } from "react-voice-recorder";
-import "react-voice-recorder/dist/index.css";
+// import { Recorder } from "react-voice-recorder";
+// import "react-voice-recorder/dist/index.css";
 import { SendMultimediaMessage } from "../../../store/api";
 
 const MessageRecorder = () => {
