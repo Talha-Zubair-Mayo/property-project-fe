@@ -1,17 +1,28 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Modal from "react-bootstrap/Modal";
+
 import SendPinPopup from "./sendpinpopup";
 import Video from "./Video";
 import Audio from "./audio";
 import * as WA_API from "../../../store/api";
-import { Skeleton, message, Modal } from "antd";
+import { Skeleton, message } from "antd";
 import MessageRecorder from "../Tools/VoiceRocorder";
 import TextMessage from "./textMessage";
 import ImgMessage from "./ImgMessage";
 import DocMessage from "./DocumentMessage";
+import RecentChats from "./chatbox/recentChats";
 const Chatpopup = () => {
   const [msg, setMsg] = useState("");
   const [messageArray, setMessageArray] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [recentChatPopup, setRecentChatPopup] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    setRecentChatPopup(true);
+  };
+  const handleShow = () => setShow(true);
 
   const MediaUpload = useCallback((type) => {
     const inputFile = document.createElement("input");
@@ -56,111 +67,110 @@ const Chatpopup = () => {
     console.log(scroll);
     chatContainer?.current?.scrollTo(0, scroll);
   };
-  const getMessages = () => {
-    WA_API.GetAllMessagesByNumber("923154074657").then((resp) => {
-      var data = [];
-      resp.data.forEach((element) => {
-        //In case the messages are in text formate
-        if (element?.message?.body?.messages[0]?.type === "text") {
-          if (element.message.way === "send") {
-            data.push({
-              tWay: "send",
-              msg: element?.message?.body?.messages[0]?.text.body,
-              type: "text",
-            });
-          } else {
-            data.push({
-              cName: element?.message?.body?.messages[0]?.from,
-              tWay: "receive",
-              msg: element?.message?.body?.messages[0]?.text.body,
-              type: "text",
-            });
-          }
-        } else if (element?.message?.body?.messages[0]?.type === "image") {
-          if (element.message.way === "send") {
-            data.push({
-              tWay: "send",
-              msg: "",
-              type: "image",
-              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=image&way=sent`,
-            });
-          } else {
-            data.push({
-              cName: element?.message?.body?.messages[0]?.from,
-              tWay: "receive",
-              msg: "",
-              type: "image",
-              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=image&way=received`,
-            });
-          }
-        } else if (element?.message?.body?.messages[0]?.type === "document") {
-          if (element.message.way === "send") {
-            data.push({
-              tWay: "send",
-              msg: "",
-              type: "document",
-              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=document&way=sent`,
-            });
-          } else {
-            data.push({
-              cName: element?.message?.body?.messages[0]?.from,
-              tWay: "receive",
-              msg: "",
-              type: "document",
-              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=document&way=received`,
-            });
-          }
-        } else if (element?.message?.body?.messages[0]?.type === "video") {
-          if (element.message.way === "send") {
-            data.push({
-              tWay: "send",
-              msg: "",
-              type: "video",
-              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=video&way=sent`,
-            });
-          } else {
-            data.push({
-              cName: element?.message?.body?.messages[0]?.from,
-              tWay: "receive",
-              msg: "",
-              type: "video",
-              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=video&way=received`,
-            });
-          }
-        } else if (element?.message?.body?.messages[0]?.type === "audio") {
-          if (element.message.way === "send") {
-            data.push({
-              tWay: "send",
-              msg: "",
-              type: "audio",
-              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=audio&way=sent`,
-            });
-          } else {
-            data.push({
-              cName: element?.message?.body?.messages[0]?.from,
-              tWay: "receive",
-              msg: "",
-              type: "audio",
-              link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=audio&way=received`,
-            });
-          }
-        }
-      });
-
-      // @ts-ignore
-      setMessageArray((old) => {
-        if (old.length < data.length) {
-          if (data[0].tWay !== "send") message?.info("New Message Received", 3);
-          scrollToBottom();
-          localStorage.setItem("isUpdated", "true");
-          return data.sort().reverse();
-        } else return old;
-      });
-    });
-  };
   useEffect(() => {
     var interval = setInterval(() => {
-      getMessages();
+      var msgs = WA_API.GetAllMessagesByNumber("923154074657");
+      msgs.then((resp) => {
+        var data = [];
+        resp.data.forEach((element) => {
+          //In case the messages are in text formate
+          if (element?.message?.body?.messages[0]?.type === "text") {
+            if (element.message.way === "send") {
+              data.push({
+                tWay: "send",
+                msg: element?.message?.body?.messages[0]?.text.body,
+                type: "text",
+              });
+            } else {
+              data.push({
+                cName: element?.message?.body?.messages[0]?.from,
+                tWay: "receive",
+                msg: element?.message?.body?.messages[0]?.text.body,
+                type: "text",
+              });
+            }
+          } else if (element?.message?.body?.messages[0]?.type === "image") {
+            if (element.message.way === "send") {
+              data.push({
+                tWay: "send",
+                msg: "",
+                type: "image",
+                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=image&way=sent`,
+              });
+            } else {
+              data.push({
+                cName: element?.message?.body?.messages[0]?.from,
+                tWay: "receive",
+                msg: "",
+                type: "image",
+                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=image&way=received`,
+              });
+            }
+          } else if (element?.message?.body?.messages[0]?.type === "document") {
+            if (element.message.way === "send") {
+              data.push({
+                tWay: "send",
+                msg: "",
+                type: "document",
+                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=document&way=sent`,
+              });
+            } else {
+              data.push({
+                cName: element?.message?.body?.messages[0]?.from,
+                tWay: "receive",
+                msg: "",
+                type: "document",
+                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=document&way=received`,
+              });
+            }
+          } else if (element?.message?.body?.messages[0]?.type === "video") {
+            if (element.message.way === "send") {
+              data.push({
+                tWay: "send",
+                msg: "",
+                type: "video",
+                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=video&way=sent`,
+              });
+            } else {
+              data.push({
+                cName: element?.message?.body?.messages[0]?.from,
+                tWay: "receive",
+                msg: "",
+                type: "video",
+                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=video&way=received`,
+              });
+            }
+          } else if (element?.message?.body?.messages[0]?.type === "audio") {
+            if (element.message.way === "send") {
+              data.push({
+                tWay: "send",
+                msg: "",
+                type: "audio",
+                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=audio&way=sent`,
+              });
+            } else {
+              data.push({
+                cName: element?.message?.body?.messages[0]?.from,
+                tWay: "receive",
+                msg: "",
+                type: "audio",
+                link: `http://localhost:8888/api/loadfile?messageId=${element?.message?.body?.messages[0]?.id}&fileType=audio&way=received`,
+              });
+            }
+          }
+        });
+
+        // @ts-ignore
+        setMessageArray((old) => {
+          if (old.length < data.length) {
+            if (data[0].tWay !== "send")
+              message?.info("New Message Received", 3);
+            scrollToBottom();
+            localStorage.setItem("isUpdated", "true");
+            return data.sort().reverse();
+          } else return old;
+        });
+      });
     }, 3000);
 
     return () => {
@@ -212,47 +222,64 @@ const Chatpopup = () => {
       <div>
         {/* <!-- Button trigger modal --> */}
         <button
-          type="button"
-          className=" popup-btn chaticon"
-          data-toggle="modal"
-          data-target="#exampleModal">
+          onClick={handleShow}
+          className=" popup-btn chaticon">
           <i className="fa-brands fa-whatsapp"></i>
         </button>
 
         {/* <!-- Modal --> */}
-        <div
-          className="modal"
-          id="exampleModal"
-          // @ts-ignore
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
-          <div
-            className="modal-dialog custom-m-main m-0 rounded-0"
-            role="document">
-            <div className="modal-content position-relative">
-              <div className="modal-header custom-m-header">
-                <div className="d-flex align-items-center">
-                  <h5
-                    className="modal-title ml-2 text-white"
-                    id="exampleModalLabel">
-                    Ta
-                  </h5>
-                </div>
-
-                <button
-                  type="button"
-                  className="close text-white"
-                  data-dismiss="modal"
-                  aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header className="custom-m-header">
+            {recentChatPopup ? (
+              <div className="d-flex align-items-start ml-2 flex-column">
+                <h5 className="modal-title text-white " id="exampleModalLabel">
+                  Raza Awan
+                </h5>
+                <p>Messaging</p>
               </div>
-              <div
-                className="modal-body custom-m-body"
-                // onMouseOver={() => scrollToBottom()}
-                ref={chatContainer}>
+            ) : (
+              <div className="d-flex align-items-center">
+                <h5
+                  className="modal-title text-white ml-2"
+                  id="exampleModalLabel">
+                  Raza Awan
+                </h5>
+              </div>
+            )}
+
+            <button
+              onClick={handleClose}
+              type="button"
+              className="close text-white"
+              aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </Modal.Header>
+          <Modal.Body
+            className={` ${
+              recentChatPopup
+                ? "p-0 custom-m-body-recentchat"
+                : "custom-m-body-detailchat"
+            }`}>
+            {recentChatPopup ? (
+              <>
+                <div className="chatbox-header-searchbar border-bottom px-3 py-1">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <input
+                      type="text"
+                      placeholder="Search or start a new chat"
+                      className=""
+                    />
+                    <i className="fa-solid fa-magnifying-glass cr-p"></i>
+                  </div>
+                </div>
+                <RecentChats
+                  recentChatClass="recent-chats-popup"
+                  setRecentChatPopup={setRecentChatPopup}
+                />
+              </>
+            ) : (
+              <>
                 {
                   <>
                     {messageArray && messageArray.length > 0 ? (
@@ -332,27 +359,27 @@ const Chatpopup = () => {
                     )}
                   </>
                 }
-              </div>
-
-              <div className="modal-footer custom-m-footer">
+              </>
+            )}
+          </Modal.Body>
+          {!recentChatPopup && (
+            <>
+              <Modal.Footer className="custom-m-footer">
                 <textarea
                   placeholder="Talk to me!"
                   className="chatbox"
                   name="chatbox"
-                  minLength={2}
-                  onKeyPress={onKeyPress}
-                  onChange={onchange}
-                  value={msg}
-                  required></textarea>
-                <SendPinPopup MediaUpload={MediaUpload} />
+                  minLength={2}></textarea>
+                <SendPinPopup />
                 <p className="px-3 border-left text-darkgreen">
                   <i className="fas fa-location-arrow "></i>
                 </p>
-              </div>
-            </div>
-          </div>
-        </div>
+              </Modal.Footer>
+            </>
+          )}
+        </Modal>
       </div>
+
       <Modal
         // title="Basic Modal"
         open={isModalOpen}

@@ -1,6 +1,5 @@
 import React from "react";
 const ImgMessage = ({ link, text, transmissionOrientation }) => {
-  console.log(link);
   return (
     <>
       {transmissionOrientation === "sent " ? (

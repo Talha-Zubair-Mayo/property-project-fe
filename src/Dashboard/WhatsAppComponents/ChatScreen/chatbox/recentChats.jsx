@@ -1,65 +1,17 @@
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import { getAllWhatsAppProfilesApi } from "../../../../store/api";
 
-const chats = [
-  {
-    name: "Raza Awan",
-    id: "1",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "2",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "3",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "4",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "5",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "6",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "7",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "8",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "9",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "10",
-    lastmessage: "okk",
-  },
-  {
-    name: "Raza Awan",
-    id: "11",
-    lastmessage: "okk",
-  },
-];
+const RecentChats = ({ userData, recentChatClass, setRecentChatPopup }) => {
+  const [users, setUsers] = useState([]);
 
-const RecentChats = (props) => {
-  const { recentChatClass, setRecentChatPopup } = props;
+  useEffect(() => {
+    getAllWhatsAppProfilesApi().then((res) => {
+      setUsers(res.data.result);
+      userData(res.data.result[0]);
+    });
+  }, []);
   return (
     <>
       <div className={`${recentChatClass} `}>
@@ -67,21 +19,19 @@ const RecentChats = (props) => {
           className="nav flex-column nav-pills "
           id="v-pills-tab"
           role="tablist"
-          aria-orientation="vertical"
-        >
-          {chats.map((data, index) => {
+          aria-orientation="vertical">
+          {users.map((data, index) => {
             return (
               <button
-                onClick={() => setRecentChatPopup(false)}
+                onClick={() => {
+                  userData(data);
+                  // setRecentChatPopup(false);
+                }}
                 key={index}
                 className="nav-link py-3  w-100"
-                id={`v-pills-${data.id}-tab`}
                 data-toggle="pill"
-                href={`#v-pills-${data.id}`}
                 role="tab"
-                aria-controls={`v-pills-${data.id}`}
-                aria-selected="true"
-              >
+                aria-selected="true">
                 <div className="divcont">
                   <div className="pl-3">
                     <div>

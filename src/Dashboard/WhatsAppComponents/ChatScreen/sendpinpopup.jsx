@@ -1,7 +1,7 @@
 import React from "react";
-const SendPinPopup = ({ MediaUpload, phoneNumber }) => {
+const SendPinPopup = ({ MediaUpload }) => {
   return (
-    <div className=" pr-3" id="selectfile">
+    <div className=" pr-3 m-0" id="selectfile">
       <div className="dropdown">
         <button
           className="sendfile-popup-btn text-darkgreen"
@@ -18,14 +18,14 @@ const SendPinPopup = ({ MediaUpload, phoneNumber }) => {
             <div className="d-flex flex-row align-items-center justify-content-between">
               <label
                 className="d-flex flex-column align-items-center cr-p"
-                onClick={() => MediaUpload("image", phoneNumber)}>
+                onClick={() => MediaUpload("image")}>
                 <div className="attach-item attach-item3">
                   <i className="fa-solid fa-image"></i>
                 </div>
                 <p className="pt-1">Image</p>
               </label>
               <label
-                onClick={() => MediaUpload("document", phoneNumber)}
+                onClick={() => MediaUpload("document")}
                 className="d-flex flex-column align-items-center cr-p">
                 <div className="attach-item attach-item1 ">
                   <i className="fa-solid fa-file"></i>
@@ -34,7 +34,7 @@ const SendPinPopup = ({ MediaUpload, phoneNumber }) => {
               </label>
 
               <label
-                onClick={() => MediaUpload("audio", phoneNumber)}
+                onClick={() => MediaUpload("audio")}
                 className="d-flex flex-column align-items-center cr-p">
                 <div className="attach-item attach-item2">
                   <i className="fa-solid fa-headphones"></i>
@@ -43,7 +43,7 @@ const SendPinPopup = ({ MediaUpload, phoneNumber }) => {
               </label>
 
               <label
-                onClick={() => MediaUpload("video", phoneNumber)}
+                onClick={() => MediaUpload("video")}
                 className="d-flex flex-column align-items-center cr-p">
                 <div className="attach-item attach-item3">
                   <i className="fa-solid fa-video"></i>
