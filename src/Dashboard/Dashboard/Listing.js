@@ -4,7 +4,7 @@ export default function Listing() {
   return (
     <>
       <div className="dashborad-box">
-        <h4 className="title">Listing</h4>
+       
         <div className="section-body listing-table">
           <div className="table-responsive">
             <table className="table table-striped">

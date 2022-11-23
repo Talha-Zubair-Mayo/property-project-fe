@@ -20,22 +20,22 @@ import NotFound from "../components/NotFound";
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      {/* <Route path="/" element={<Home />} />
       <Route path="/properties" element={<Properties />} />
       <Route path="/agents" element={<Agents />} />
       <Route path="/propertydetails/:id" element={<SingleProperty />} />
-      <Route path="/agentdetails/:id" element={<AgentDetails />} />
+      <Route path="/agentdetails/:id" element={<AgentDetails />} /> */}
       <Route path="/login" element={<AuthRoutes component={Login} />} />
       <Route path="/register" element={<AuthRoutes component={Register} />} />
-      <Route path="/faq" element={<Faq />} />
+      {/* <Route path="/faq" element={<Faq />} />
       <Route path="/contact" element={<ContactUs />} />
       <Route path="/blog-details" element={<BlogDetails />} />
       <Route path="/coming-soon" element={<ComingSoon />} />
       <Route path="/societies" element={<Societies />} />
       <Route path="/blocks" element={<Blocks />} />
       <Route path="/phases" element={<Phases />} />
-      <Route path="/notfound" element={<NotFound />} />
-      <Route path="*" element={<Navigate replace to="/notfound" />} />
+      <Route path="/notfound" element={<NotFound />} /> */}
+      <Route path="*" element={<Navigate replace to="/login" />} />
     </Routes>
   );
 };

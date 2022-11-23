@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Modal from "react-bootstrap/Modal";
-
 import SendPinPopup from "./sendpinpopup";
 import Video from "./Video";
 import Audio from "./audio";
@@ -10,21 +8,16 @@ import MessageRecorder from "../Tools/VoiceRocorder";
 import TextMessage from "./textMessage";
 import ImgMessage from "./ImgMessage";
 import DocMessage from "./DocumentMessage";
-import RecentChats from "./chatbox/recentChats";
-const Chatpopup = () => {
+const Chatpopup = (props) => {
+  const { number, closeModal } = props;
   const [msg, setMsg] = useState("");
   const [messageArray, setMessageArray] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [recentChatPopup, setRecentChatPopup] = useState(false);
-  const [show, setShow] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-    setRecentChatPopup(true);
-  };
+  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const MediaUpload = useCallback((type) => {
+  const MediaUpload = useCallback((type, number) => {
+    console.log("uploading...", number);
     const inputFile = document.createElement("input");
     inputFile.type = "file";
     // @ts-ignore
@@ -40,7 +33,7 @@ const Chatpopup = () => {
       // @ts-ignore
       const file = e.target.files[0];
       const formData = new FormData();
-      formData.append("receiver", "923154074657");
+      formData.append("receiver", number);
       formData.append("mediaType", type);
       formData.append("file", file);
       message?.loading("Sending...", 1000);
@@ -69,7 +62,7 @@ const Chatpopup = () => {
   };
   useEffect(() => {
     var interval = setInterval(() => {
-      var msgs = WA_API.GetAllMessagesByNumber("923154074657");
+      var msgs = WA_API.GetAllMessagesByNumber(number.senderNumber);
       msgs.then((resp) => {
         var data = [];
         resp.data.forEach((element) => {
@@ -197,18 +190,6 @@ const Chatpopup = () => {
     }
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  // @ts-ignore
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   if (localStorage.getItem("isUpdated") === "true") {
     setTimeout(() => {
       resetScroll();
@@ -219,175 +200,122 @@ const Chatpopup = () => {
 
   return (
     <>
-      <div>
-        {/* <!-- Button trigger modal --> */}
-        <button
-          onClick={handleShow}
-          className=" popup-btn chaticon">
-          <i className="fa-brands fa-whatsapp"></i>
-        </button>
+      <div id="chatpopup">
+        <div className="custom-m-header px-3">
+          <h5 className="modal-title text-white " id="exampleModalLabel">
+            {number.name}
+          </h5>
 
-        {/* <!-- Modal --> */}
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header className="custom-m-header">
-            {recentChatPopup ? (
-              <div className="d-flex align-items-start ml-2 flex-column">
-                <h5 className="modal-title text-white " id="exampleModalLabel">
-                  Raza Awan
-                </h5>
-                <p>Messaging</p>
-              </div>
-            ) : (
-              <div className="d-flex align-items-center">
-                <h5
-                  className="modal-title text-white ml-2"
-                  id="exampleModalLabel">
-                  Raza Awan
-                </h5>
-              </div>
-            )}
-
-            <button
-              onClick={handleClose}
-              type="button"
-              className="close text-white"
-              aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </Modal.Header>
-          <Modal.Body
-            className={` ${
-              recentChatPopup
-                ? "p-0 custom-m-body-recentchat"
-                : "custom-m-body-detailchat"
-            }`}>
-            {recentChatPopup ? (
-              <>
-                <div className="chatbox-header-searchbar border-bottom px-3 py-1">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <input
-                      type="text"
-                      placeholder="Search or start a new chat"
-                      className=""
+          <button
+            onClick={() => closeModal(number._id)}
+            type="button"
+            className="close text-white"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div className="custom-m-body-detailchat">
+          <>
+            {messageArray && messageArray.length > 0 ? (
+              messageArray.map((item, index) => {
+                // @ts-ignore
+                if (item.type === "text")
+                  return (
+                    <TextMessage
+                      key={index}
+                      // @ts-ignore
+                      message={item.msg}
+                      // @ts-ignore
+                      transmissionOrientation={item.tWay}
+                      // @ts-ignore
+                      clientName={item.cName}
                     />
-                    <i className="fa-solid fa-magnifying-glass cr-p"></i>
-                  </div>
-                </div>
-                <RecentChats
-                  recentChatClass="recent-chats-popup"
-                  setRecentChatPopup={setRecentChatPopup}
-                />
-              </>
+                  );
+                // @ts-ignore
+                else if (item.type === "image")
+                  return (
+                    <ImgMessage
+                      key={index}
+                      text=""
+                      link={item.link}
+                      transmissionOrientation={item.tWay}
+                      // clientName={item.cName}
+                    />
+                  );
+                // @ts-ignore
+                else if (item.type === "audio")
+                  return (
+                    <Audio
+                      key={index}
+                      // @ts-ignore
+                      link={item.link}
+                      // @ts-ignore
+                      transmissionOrientation={item.tWay}
+                      // @ts-ignore
+                      clientName={item.cName}
+                    />
+                  );
+                // @ts-ignore
+                else if (item.type === "video")
+                  return (
+                    <Video
+                      key={index}
+                      // @ts-ignore
+                      link={item.link}
+                      // @ts-ignore
+                      transmissionOrientation={item.tWay}
+                      // @ts-ignore
+                      clientName={item.cName}
+                    />
+                  );
+                // @ts-ignore
+                else if (item.type === "document")
+                  return (
+                    <DocMessage
+                      key={index}
+                      // @ts-ignore
+                      link={item.link}
+                      // @ts-ignore
+                      transmissionOrientation={item.tWay}
+                      // @ts-ignore
+                      clientName={item.cName}
+                    />
+                  );
+              })
             ) : (
               <>
-                {
-                  <>
-                    {messageArray && messageArray.length > 0 ? (
-                      messageArray.map((item, index) => {
-                        // @ts-ignore
-                        if (item.type === "text")
-                          return (
-                            <TextMessage
-                              key={index}
-                              // @ts-ignore
-                              message={item.msg}
-                              // @ts-ignore
-                              transmissionOrientation={item.tWay}
-                              // @ts-ignore
-                              clientName={item.cName}
-                            />
-                          );
-                        // @ts-ignore
-                        else if (item.type === "image")
-                          return (
-                            <ImgMessage
-                              key={index}
-                              text=""
-                              link={item.link}
-                              transmissionOrientation={item.tWay}
-                              // clientName={item.cName}
-                            />
-                          );
-                        // @ts-ignore
-                        else if (item.type === "audio")
-                          return (
-                            <Audio
-                              key={index}
-                              // @ts-ignore
-                              link={item.link}
-                              // @ts-ignore
-                              transmissionOrientation={item.tWay}
-                              // @ts-ignore
-                              clientName={item.cName}
-                            />
-                          );
-                        // @ts-ignore
-                        else if (item.type === "video")
-                          return (
-                            <Video
-                              key={index}
-                              // @ts-ignore
-                              link={item.link}
-                              // @ts-ignore
-                              transmissionOrientation={item.tWay}
-                              // @ts-ignore
-                              clientName={item.cName}
-                            />
-                          );
-                        // @ts-ignore
-                        else if (item.type === "document")
-                          return (
-                            <DocMessage
-                              key={index}
-                              // @ts-ignore
-                              link={item.link}
-                              // @ts-ignore
-                              transmissionOrientation={item.tWay}
-                              // @ts-ignore
-                              clientName={item.cName}
-                            />
-                          );
-                      })
-                    ) : (
-                      <>
-                        <Skeleton active />
-                        <Skeleton active />
-                        <Skeleton active />
-                        <Skeleton active />
-                        <Skeleton active />
-                      </>
-                    )}
-                  </>
-                }
+                <Skeleton active />
+                <Skeleton active />
+                <Skeleton active />
+                <Skeleton active />
+                <Skeleton active />
               </>
             )}
-          </Modal.Body>
-          {!recentChatPopup && (
-            <>
-              <Modal.Footer className="custom-m-footer">
-                <textarea
-                  placeholder="Talk to me!"
-                  className="chatbox"
-                  name="chatbox"
-                  minLength={2}></textarea>
-                <SendPinPopup />
-                <p className="px-3 border-left text-darkgreen">
-                  <i className="fas fa-location-arrow "></i>
-                </p>
-              </Modal.Footer>
-            </>
-          )}
-        </Modal>
+          </>
+        </div>
+        <div className="custom-m-footer">
+          <textarea
+            placeholder="Talk to me!"
+            className="chatbox"
+            name="chatbox"
+            minLength="2"></textarea>
+          <SendPinPopup
+            MediaUpload={MediaUpload}
+            senderNumber={number.senderNumber}
+          />
+          <p className="px-3 border-left text-darkgreen">
+            <i className="fas fa-location-arrow "></i>
+          </p>
+        </div>
       </div>
 
-      <Modal
-        // title="Basic Modal"
+      {/* <Modal
         open={isModalOpen}
-        // @ts-ignore
         onOk={false}
-        onCancel={handleCancel}>
+        onCancel={handleCancel}
+      >
         <MessageRecorder />
-      </Modal>
+      </Modal> */}
     </>
   );
 };

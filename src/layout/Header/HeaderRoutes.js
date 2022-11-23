@@ -7,27 +7,27 @@ export const NavbarRoutes = () => {
         {
             name: "Societies",
             link: '/societies',
-            visiblity: true
+            visiblity: false
         },
         {
             name: "Phases",
             link: '/phases',
-            visiblity: true
+            visiblity: false
         },
         {
             name: "Blocks",
             link: '/blocks',
-            visiblity: true
+            visiblity: false
         },
 
         {
             name: "Agents",
             link: '/agents',
-            visiblity: true
+            visiblity: false
         }, {
             name: "Properties",
             link: '/properties',
-            visiblity: true
+            visiblity: false
         },
 
 

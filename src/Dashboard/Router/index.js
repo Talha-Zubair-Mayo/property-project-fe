@@ -18,13 +18,18 @@ import EventScheduler from '../EventScheduler';
 import NotFound from '../../components/NotFound';
 import SocietyDetails from '../pages/SocietyDetails';
 import Chat from '../pages/Chat';
+import UsersList from '../pages/Users';
+import RolesList from '../pages/Roles';
 const UserRouter = () => {
     return (
         <Routes>
-            {/* <Route  path="/dashboard" element={<ProtectedRoutes component={Dashboard} />} /> */}
+            <Route path="/dashboard" element={<ProtectedRoutes component={Dashboard} />} />
             <Route path="/dashboard/profile" element={<AuthenticatedRoutes component={UserProfile} />} />
             <Route path="/dashboard/properties" element={<ProtectedRoutes component={UserProperties} />} />
-            {/* <Route  path="/dashboard/favproperties" element={<AuthenticatedRoutes component={UserFavoriteProperties} />} /> */}
+            <Route path="/dashboard/users" element={<AuthenticatedRoutes component={UsersList} />} />
+            <Route path="/dashboard/roles" element={<AuthenticatedRoutes component={RolesList} />} />
+
+
             {/* <Route path="/dashboard/addproperty" element={<ProtectedRoutes component={UserAddProperty} />} /> */}
             <Route path="'/dashboard/paymentmethod" element={<ProtectedRoutes component={UserPaymentMethod} />} />
             <Route path="/dashboard/invoice" element={<ProtectedRoutes component={UserInvoice} />} />

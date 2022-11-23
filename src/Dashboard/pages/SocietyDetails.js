@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { Space, Table, Tag } from 'antd';
 import { Pagination } from 'antd';
 import WhatsAppChat from "../WhatsAppComponents/ChatScreen"
+import RecentChatPP from '../WhatsAppComponents/ChatScreen/chatpopup';
 const { Dragger } = Upload;
 const SocietyDetails = () => {
     const { SuperAdmin } = Hooks();
@@ -268,7 +269,7 @@ const SocietyDetails = () => {
                 <Pagination defaultPageSize={10} current={current} onChange={onChange} total={pages} />
 
             </div>
-            <WhatsAppChat />
+            <RecentChatPP />
 
         </div>
     )

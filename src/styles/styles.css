@@ -20940,9 +20940,10 @@ section.pricing-table {
   align-items: center;
 }
 
-a.social_bt {
+button.social_bt {
   border-radius: 3px;
   color: #fff;
+  width: 100%;
   min-width: 200px;
   display: block;
   padding: 12px;
@@ -20950,46 +20951,47 @@ a.social_bt {
   position: relative;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
+  border: none;
 }
 
-a.social_bt.facebook {
+button.social_bt.facebook {
   background-color: #3b5998;
 }
 
-a.social_bt.google {
+button.social_bt.google {
   background-color: #dc4e41;
 }
 
-a.social_bt.linkedin {
+button.social_bt.linkedin {
   background-color: #0077b5;
 }
 
 .add_bottom_15,
-a.social_bt {
+button.social_bt {
   margin-bottom: 15px;
 }
 
-a.social_bt {
+button.social_bt {
   text-align: center;
   text-decoration: none;
 }
 
-a.social_bt.facebook:before {
+button.social_bt.facebook:before {
   content: "\f09a";
 }
 
-a.social_bt.google:before {
+button.social_bt.google:before {
   content: "\f0d5";
   top: 12px;
 }
 
-a.social_bt.linkedin:before {
+button.social_bt.linkedin:before {
   content: "\f0e1";
 }
 
-a.social_bt.facebook:before,
-a.social_bt.google:before,
-a.social_bt.linkedin:before {
+button.social_bt.facebook:before,
+button.social_bt.google:before,
+button.social_bt.linkedin:before {
   font-family: FontAwesome;
   position: absolute;
   left: 12px;
@@ -25693,31 +25695,21 @@ label {
   border-radius: 10px 10px 0 0 !important;
   color: white !important;
   border: 0;
-}
-.modal-dialog {
-  min-width: 400px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  margin: 0 !important;
-  background-color: white;
-  border-radius: 10px !important;
-  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
-}
-.modal-content {
-  border-radius: 10px !important;
-  border: 0 !important;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .custom-m-footer {
-  border-radius: 0 0 10px 10px !important;
   justify-content: space-between;
   padding: 0 !important;
-  /* position: absolute; */
   bottom: 0;
   background: white;
   border: 0;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 .custom-m-footer .m-input {
   width: 80%;
@@ -25749,8 +25741,9 @@ textarea[name="chatbox"]::-webkit-scrollbar-thumb {
 }
 .custom-m-body-detailchat {
   background-image: url("../../public/images/bgimg.png");
-  height: 470px;
+  height: calc(500px - 64px - 38px);
   overflow-y: auto;
+  padding: 15px;
 }
 .custom-m-body-recentchat {
   background-color: white;
@@ -25775,13 +25768,6 @@ textarea[name="chatbox"]::-webkit-scrollbar-thumb {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 @media screen and (max-width: 575px) {
-  .modal-dialog {
-    width: 100vw;
-    position: unset;
-    height: 100vh;
-    box-shadow: 0;
-    min-width: 300px !important;
-  }
   .custom-m-main {
     width: 100vw;
     position: unset;
@@ -25792,9 +25778,7 @@ textarea[name="chatbox"]::-webkit-scrollbar-thumb {
   .custom-m-header {
     border-radius: 0 !important;
   }
-  .custom-m-main .modal-content {
-    height: 100vh !important;
-  }
+
   .custom-m-body-detailchat {
     height: 83vh !important;
     border-radius: 0 !important;
@@ -25806,9 +25790,7 @@ textarea[name="chatbox"]::-webkit-scrollbar-thumb {
   .recent-chats-popup {
     height: calc(100vh - 135px) !important;
   }
-  .modal-dialog {
-    border-radius: 0 !important;
-  }
+
   .custom-m-footer {
     border-radius: 0 !important;
   }
@@ -25828,13 +25810,6 @@ textarea[name="chatbox"]::-webkit-scrollbar-thumb {
     transform: translate3d(-233px, -106px, 0px) !important;
     border-radius: 10px !important;
   }
-}
-.custom-m-main .modal-content {
-  border: 0 !important;
-  border-radius: 10px !important;
-}
-.modal-backdrop {
-  all: unset !important;
 }
 
 .rcv-mesg-main {
@@ -25894,9 +25869,7 @@ textarea[name="chatbox"]::-webkit-scrollbar-thumb {
 .sendfile-popup-btn {
   all: unset;
 }
-.custom-file-main .modal-content {
-  border-radius: 10px !important;
-}
+
 .attach-item {
   border-radius: 50%;
   height: 50px;
@@ -26039,10 +26012,10 @@ textarea[name="chatbox"]::-webkit-scrollbar-thumb {
   width: 250px;
 }
 .dropdown-menu-width {
-  width: 402px;
+  width: 301px;
 }
 .dropdown-menu-position {
-  left: -14px !important;
+  left: -221px !important;
   top: -16px !important;
   border-radius: 0;
 }
@@ -26201,4 +26174,90 @@ textarea[name="chatbox"]::-webkit-scrollbar-thumb {
 .audio-messages {
   height: calc(100vh - 218px) !important;
   padding: 15px;
+}
+
+.recentchat-pp {
+  position: absolute;
+  bottom: 0px;
+  right: 15px;
+  width: 250px;
+  padding: 10px;
+  z-index: 5;
+  border-radius: 10px 10px 0px 0px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  background-color: white;
+}
+.recent-chats-detail-pp {
+  height: 500px;
+  z-index: 5;
+  position: absolute;
+  color: black;
+  overflow-y: auto;
+  bottom: 0;
+  right: 15px;
+  width: 250px;
+  background: white;
+  border-radius: 10px 10px 0px 0px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+}
+.recent-chats-detail-header {
+  height: calc(64px + 45px);
+}
+.recent-chats-detail-body {
+  height: calc(100% - 64px - 37px);
+  z-index: 2;
+  position: sticky;
+  color: black;
+  overflow-y: auto;
+}
+.bg-whatsapp-green {
+  background-color: #075e54;
+}
+.chat-popups-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 15px;
+  z-index: 100000;
+  width: 100%;
+}
+
+#chatpopup {
+  border-radius: 10px 10px 0 0 !important;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  width: 300px;
+  height: 500px;
+  margin: 0 10px;
+}
+.google-btn {
+  font-size: 13px;
+  border: none;
+  background: white;
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 15px;
+  color: black;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  border-radius: 3px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+}
+.facebook-btn {
+  font-size: 13px;
+  border: none;
+  background: #3a559f;
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 10px;
+  color: white;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  border-radius: 3px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+}
+button:focus {
+  outline: 0 !important;
 }

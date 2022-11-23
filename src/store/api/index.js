@@ -258,7 +258,6 @@ export const SendMultimediaMessage = async (Data) => {
 };
 
 export const GetAllMessagesByNumber = async (phoneNumber) => {
-  console.log(phoneNumber)
   const res = await api.get(`/loadmessagebyuser/${phoneNumber}`);
   return res;
 };
@@ -267,3 +266,24 @@ export const getAllWhatsAppProfilesApi = async () => {
   const res = await api.get("/getwhatsappuserlist");
   return res;
 }
+
+export const socialRegisterApi = async (data) => {
+  const res = await api.post("/socialregister", data);
+  return res;
+}
+
+export const socialLoginApi = async (data) => {
+  const res = await api.post("/sociallogin", data);
+  return res;
+}
+
+export const getAllUsersApi = async () => {
+  const res = await api.get(`/userlist`, config);
+  return res;
+};
+
+export const getAllRolesApi = async () => {
+  const res = await api.get(`/roleslist`, config);
+  return res;
+};
+

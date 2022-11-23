@@ -12,13 +12,25 @@ const SideBarRoutes = () => {
       name: "Dashboard",
       link: "/dashboard",
       icon: "fa fa-map-marker",
-      visiblity: false,
+      visiblity: SuperAdmin(),
+    },
+    {
+      name: "Users List",
+      link: "/dashboard/users",
+      icon: "fa fa-user",
+      visiblity: SuperAdmin(),
     },
     {
       name: "Profile",
       link: "/dashboard/profile",
       icon: "fa fa-user",
       visiblity: IsUserLoggedIn(),
+    },
+    {
+      name: "Roles",
+      link: "/dashboard/roles",
+      icon: "fa fa-user",
+      visiblity: SuperAdmin(),
     },
     {
       name: "Societies",

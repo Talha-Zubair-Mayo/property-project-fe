@@ -52,9 +52,9 @@ export default function Header() {
                       );
                     }
                   })}
-                  <li>
+                  {/* <li>
                     <a href="contact-us.html">Contact</a>
-                  </li>
+                  </li> */}
                   <li className="d-none d-xl-none d-block d-lg-block">
                     <a href="login.html">Login</a>
                   </li>

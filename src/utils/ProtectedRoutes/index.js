@@ -40,7 +40,7 @@ export const AuthenticatedRoutes = ({
         return <Component />;
     } else {
         return (
-            <Navigate to="/" />
+            <Navigate to="/login" />
         );
     }
 };
