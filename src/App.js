@@ -6,6 +6,7 @@ import Layout from './layout';
 import UserLayout from './Dashboard/UserLayout';
 import UserRouter from './Dashboard/Router';
 import { useLocation } from 'react-router-dom';
+import RecentChatPP from './Dashboard/WhatsAppComponents/ChatScreen/chatpopup';
 function App() {
   // const [isOnline] = useNetwork();
   // // const networkState = useNetworkState();
@@ -24,6 +25,7 @@ function App() {
     return (
       <UserLayout>
         <UserRouter />
+        <RecentChatPP />
       </UserLayout>
     );
   } else {

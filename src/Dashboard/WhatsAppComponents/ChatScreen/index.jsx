@@ -60,6 +60,20 @@ const Chatpopup = (props) => {
     console.log(scroll);
     chatContainer?.current?.scrollTo(0, scroll);
   };
+  const onKeyPress = (event) => {
+    if (event.charCode === 13) {
+      message?.loading("Sending...", 1000000);
+      WA_API.SendTextMessage({ receiver: number.senderNumber, text: msg }).then(
+        // @ts-ignore
+        (resp) => {
+          message?.destroy();
+          setMsg("");
+          scrollToBottom();
+          message?.success("Send ", 2);
+        }
+      );
+    }
+  };
   useEffect(() => {
     var interval = setInterval(() => {
       var msgs = WA_API.GetAllMessagesByNumber(number.senderNumber);
@@ -175,21 +189,6 @@ const Chatpopup = (props) => {
     setMsg(e.target.value);
   };
 
-  const onKeyPress = (event) => {
-    if (event.charCode === 13) {
-      message?.loading("Sending...", 1000000);
-      WA_API.SendTextMessage({ receiver: "923154074657", text: msg }).then(
-        // @ts-ignore
-        (resp) => {
-          message?.destroy();
-          setMsg("");
-          scrollToBottom();
-          message?.success("Send ", 2);
-        }
-      );
-    }
-  };
-
   if (localStorage.getItem("isUpdated") === "true") {
     setTimeout(() => {
       resetScroll();
@@ -298,7 +297,9 @@ const Chatpopup = (props) => {
             placeholder="Talk to me!"
             className="chatbox"
             name="chatbox"
-            minLength="2"></textarea>
+            onKeyPress={onKeyPress}
+            onChange={onchange}
+            minLength={2}></textarea>
           <SendPinPopup
             MediaUpload={MediaUpload}
             senderNumber={number.senderNumber}

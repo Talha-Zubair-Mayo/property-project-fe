@@ -77,7 +77,7 @@ function Login() {
         console.log(response);
         setIsLoading(false);
         localStorage.setItem("token", response?.data?.result?.token);
-        // navigate("/");
+        navigate("/dashboard");
         dispatch(loginAction(response?.data?.result));
         toast.success(response?.data?.message);
       })

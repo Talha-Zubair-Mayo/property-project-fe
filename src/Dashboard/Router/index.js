@@ -28,9 +28,7 @@ const UserRouter = () => {
             <Route path="/dashboard/properties" element={<ProtectedRoutes component={UserProperties} />} />
             <Route path="/dashboard/users" element={<AuthenticatedRoutes component={UsersList} />} />
             <Route path="/dashboard/roles" element={<AuthenticatedRoutes component={RolesList} />} />
-
-
-            {/* <Route path="/dashboard/addproperty" element={<ProtectedRoutes component={UserAddProperty} />} /> */}
+            <Route path="/dashboard/addproperty" element={<ProtectedRoutes component={UserAddProperty} />} />
             <Route path="'/dashboard/paymentmethod" element={<ProtectedRoutes component={UserPaymentMethod} />} />
             <Route path="/dashboard/invoice" element={<ProtectedRoutes component={UserInvoice} />} />
             <Route path="/dashboard/societies" element={<ProtectedRoutes component={AllSocieties} />} />

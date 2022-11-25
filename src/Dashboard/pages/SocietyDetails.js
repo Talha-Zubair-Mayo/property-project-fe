@@ -269,7 +269,7 @@ const SocietyDetails = () => {
                 <Pagination defaultPageSize={10} current={current} onChange={onChange} total={pages} />
 
             </div>
-            <RecentChatPP />
+            
 
         </div>
     )
