@@ -1,3 +1,5 @@
+import React from "react";
+
 // https://kentcdodds.com/blog/use-react-error-boundary-to-handle-errors-in-react
 export default function ErrorFallback({ error }) {
   return (
