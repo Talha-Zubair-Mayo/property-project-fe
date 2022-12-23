@@ -33,8 +33,6 @@ ReactDOM.render(
         // draggable
         // pauseOnHover
       />
-      {/* Same as */}
-      <ToastContainer />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

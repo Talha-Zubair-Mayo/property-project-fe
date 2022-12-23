@@ -37,13 +37,18 @@ export const verifyForgotPasswordKey = async (Data) => {
   return res;
 };
 // Reset Password API
-export const resetPasswordApi = async (Data) => {
-  const res = await api.patch("/reset-password", Data, config);
+export const resetPasswordApi = async (Data, code) => {
+  config.headers = { Authorization: code };
+  const res = await api.post("/resetpassword", Data, config);
   return res;
 };
 
 export const updateUserApi = async (id, Data) => {
   const res = await api.patch(`/user/${id}`, Data, config);
+  return res;
+};
+export const verifyAccount = async (Data) => {
+  const res = await api.post("/accountverification", Data);
   return res;
 };
 

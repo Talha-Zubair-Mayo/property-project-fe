@@ -20,19 +20,12 @@ function App() {
   //   });
   // }
   const location = useLocation();
-  if (location.pathname.includes('dashboard')) {
-    return (
-      <UserLayout>
-        <UserRouter />
-      </UserLayout>
-    );
-  } else {
-    return (
-      <Layout>
-        <Router />
-      </Layout>
-    );
-  }
+  return (
+    <UserLayout>
+      <UserRouter />
+    </UserLayout>
+  );
+
 }
 
 export default App;

@@ -35,8 +35,8 @@ export const ProtectedRoutes = ({
 export const AuthenticatedRoutes = ({
     component: Component,
 }) => {
-    const { IsUserLoggedIn, AgentRole } = Hooks();
-    if (IsUserLoggedIn() || AgentRole()) {
+    const { IsUserLoggedIn } = Hooks();
+    if (IsUserLoggedIn()) {
         return <Component />;
     } else {
         return (

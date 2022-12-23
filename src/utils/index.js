@@ -9,29 +9,15 @@ export const DataEncryption = (Data) => {
 
 
 export const registerValidationSchema = Yup.object().shape({
-    firstName: Yup.string().min(3, 'Minimum Length Should Be 3').required('First Name is Required'),
-    lastName: Yup.string().min(3, 'Minimum Length Should Be 3').required('Last Name is Required'),
+
     email: Yup.string().email('Enter valid email').required('Email is Required'),
-    userType: Yup.string().oneOf(['customer', 'agent'], 'Required').required('Select User Type'),
     password: Yup.string()
         .min(8, 'Password minimum length should be 8')
         .required('Password is Required'),
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Password not matched')
         .required('Confrim Your Password'),
-    photo: Yup.mixed()
-        .nullable()
-        .required('Profile Image is required')
-        // .test(
-        //     "fileSize",
-        //     "File is too large",
-        //     value => !value || (value && value.size <= 1024 * 1024 * 1024 * 1024)
-        // )
-        .test(
-            "fileFormat",
-            "Unsupported Format",
-            value => !value || (value => value && ["image/jpg", "image/jpeg", "image/gif", "image/png"].includes(value.type))
-        )
+    phone: Yup.string().required('Phone is Required'),
 
 });
 
@@ -57,7 +43,7 @@ export const resetPasswordValidationSchema = Yup.object().shape({
 
 
 export const loginValidationSchema = Yup.object().shape({
-    email: Yup.string().email('Enter valid email').required('Email is Required'),
+    userEmailPhone: Yup.string().required('This Field  is Required'),
     password: Yup.string()
         .min(8, 'Password minimum length should be 8')
         .required('Password is Required'),
@@ -80,6 +66,19 @@ export const PhasesValidationSchema = Yup.object().shape({
     ownerName: Yup.string().required('Owner Name is Required'),
     status: Yup.string().oneOf(['Active', 'InActive']).required('Status is Required'),
     society: Yup.string().required('Society is Required'),
+});
+
+
+export const verifyAccountSchema = Yup.object().shape({
+    phoneOtp: Yup.number().required('Email otp is Required'),
+    emailOtp: Yup.number().required('Phone Otp is Required'),
+
+});
+
+export const forgetPasswordSchema = Yup.object().shape({
+    password: Yup.string().required('Password is Required'),
+    confirmPassword: Yup.string().required('Confirm Password Otp is Required'),
+
 });
 
 

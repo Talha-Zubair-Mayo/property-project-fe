@@ -1,21 +1,11 @@
 import { Route, Link, Routes, Navigate } from "react-router-dom";
 import React from "react";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import Faq from "../pages/Faq";
-import ContactUs from "../pages/ContactUs";
-import BlogDetails from "../pages/BlogDetails";
-import ComingSoon from "../pages/ComingSoon";
-import Properties from "../pages/Properties";
-import Agents from "../pages/Agents";
-import SingleProperty from "../pages/PropertyDetails";
-import AgentDetails from "../pages/AgentDetails";
+import Login from "../Forms/Login";
+import Signup from "../Forms/signup";
+import AccountVerification from "../Forms/accountVerification";
+import ForgotPasword from "../Forms/forgotPasword";
+
 import { AuthRoutes } from "../utils/ProtectedRoutes";
-import Societies from "../pages/Societies";
-import Blocks from "../pages/Blocks";
-import Phases from "../pages/Phases";
-import NotFound from "../components/NotFound";
 
 const Router = () => {
   return (
@@ -25,8 +15,14 @@ const Router = () => {
       <Route path="/agents" element={<Agents />} />
       <Route path="/propertydetails/:id" element={<SingleProperty />} />
       <Route path="/agentdetails/:id" element={<AgentDetails />} /> */}
-      <Route path="/login" element={<AuthRoutes component={Login} />} />
-      <Route path="/register" element={<AuthRoutes component={Register} />} />
+      {/* <Route path="/login" element={<AuthRoutes component={Login} />} />
+      <Route path="/signup" element={<AuthRoutes component={Signup} />} />
+      <Route path="/accountverification" element={<AuthRoutes component={AccountVerification} />} />
+      <Route path="/forgotpassword" element={<AuthRoutes component={ForgotPasword} />} /> */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/accountverification" element={<AccountVerification />} />
+      <Route path="/forgotpassword" element={<ForgotPasword />} />{" "}
       {/* <Route path="/faq" element={<Faq />} />
       <Route path="/contact" element={<ContactUs />} />
       <Route path="/blog-details" element={<BlogDetails />} />
@@ -35,7 +31,7 @@ const Router = () => {
       <Route path="/blocks" element={<Blocks />} />
       <Route path="/phases" element={<Phases />} />
       <Route path="/notfound" element={<NotFound />} /> */}
-      <Route path="*" element={<Navigate replace to="/login" />} />
+      {/* <Route path="*" element={<Navigate replace to="/login" />} /> */}
     </Routes>
   );
 };

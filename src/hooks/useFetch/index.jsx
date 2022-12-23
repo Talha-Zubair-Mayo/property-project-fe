@@ -16,8 +16,8 @@ export default function useFetch(fetchingFn) {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
   return { result, isSuccess, isLoading };
 }
