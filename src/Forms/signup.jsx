@@ -13,7 +13,6 @@ import { userRegisterApi, socialRegisterApi } from "../store/api";
 import { FormDataFunc, registerValidationSchema } from "../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/material.css";
 import ReactFacebookLogin from "react-facebook-login";
 import GoogleLogin from "react-google-login";
 const Signup = () => {
